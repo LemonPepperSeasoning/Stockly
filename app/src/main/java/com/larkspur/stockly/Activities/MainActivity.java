@@ -1,8 +1,10 @@
-package com.larkspur.stockly;
+package com.larkspur.stockly.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.larkspur.stockly.R;
 
 public class MainActivity extends AppCompatActivity {
 
