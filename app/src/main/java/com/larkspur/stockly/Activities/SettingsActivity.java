@@ -1,55 +1,59 @@
 package com.larkspur.stockly.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.larkspur.stockly.R;
 
 public class SettingsActivity extends AppCompatActivity {
-    DrawerLayout _drawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        _drawerLayout = findViewById(R.id.drawer_layout);
+
+        ConstraintLayout card = findViewById(R.id.base_expandablelayout);
+        ImageButton button = findViewById(R.id.expand_button_5);
+        ConstraintLayout hiddenLayout = findViewById(R.id.hidden_layout_5);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // If the CardView is already expanded, set its visibility
+                //  to gone and change the expand less icon to expand more.
+                if (hiddenLayout.getVisibility() == View.VISIBLE) {
+
+
+                    //TODO: Fix this transition. This transition works but its glitchy.
+//                    TransitionManager.beginDelayedTransition(card,
+//                            new AutoTransition());
+                    hiddenLayout.setVisibility(View.GONE);
+                    button.setImageResource(R.drawable.expand_button);
+                }
+
+                // If the CardView is not expanded, set its visibility
+                // to visible and change the expand more icon to expand less.
+                else {
+                    TransitionManager.beginDelayedTransition(card,
+                            new AutoTransition());
+                    hiddenLayout.setVisibility(View.VISIBLE);
+                    button.setImageResource(R.drawable.unexpand_button);
+                }
+            }
+        });
     }
 
-    public void clickMenu(View view){
-        MainActivity.openDrawer(_drawerLayout);
-    }
 
-    public void clickCloseSideMenu(View view){
-        MainActivity.closeDrawer(_drawerLayout);
-    }
-
-    public void clickHome(View view){
+    public void clickBack(View view){
         MainActivity.redirectActivity(this,MainActivity.class);
-    }
-
-    public void clickPortfolio(View view){
-        MainActivity.redirectActivity(this,PortfolioActivity.class);
-    }
-
-    public void clickWatchlist(View view){
-        MainActivity.redirectActivity(this,WatchlistActivity.class);
-    }
-
-    public void clickSettings(View view){
-        recreate();
-    }
-
-    public void clickHelp(View view) {
-        MainActivity.redirectActivity(this,HelpActivity.class);
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
-        MainActivity.closeDrawer(_drawerLayout);
     }
 }
