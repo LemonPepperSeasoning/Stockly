@@ -8,7 +8,6 @@ import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.larkspur.stockly.R;
 
