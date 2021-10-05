@@ -8,11 +8,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.R;
 
 public class MainActivity extends AppCompatActivity {
 
     DrawerLayout _drawerLayout;
+    StockAdaptor _stockAdaptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

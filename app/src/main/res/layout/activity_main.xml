@@ -18,12 +18,33 @@
             layout="@layout/main_toolbar" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Most Viewed"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+            android:layout_margin="5dp"
+
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Home"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            android:gravity="center" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/most_popular_view"
+            android:layout_margin="5dp"
+
+            />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:id="@+id/categories_view"
+            android:layout_margin="5dp"
+
+            />
     </LinearLayout>
 
 
