@@ -9,7 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-
+        <activity
+            android:name=".Activities.SettingsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.HelpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.WatchlistActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Activities.PortfolioActivity"
+            android:exported="true" />
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
