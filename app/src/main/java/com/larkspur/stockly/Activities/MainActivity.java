@@ -21,14 +21,14 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout _drawerLayout;
     StockAdaptor _stockAdaptor;
     RecyclerView _mostPopular;
-    ListView _categories;
+    //ListView _categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
-        _categories = (ListView) findViewById(R.id.categories_view);
+     //   _categories = (ListView) findViewById(R.id.categories_view);
         _drawerLayout = findViewById(R.id.drawer_layout);
 
         //set horizontal recycler view
