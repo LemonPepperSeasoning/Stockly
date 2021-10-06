@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Watchlist implements IWatchlist{
 
-    List<IStock> _watchlist;
+    private List<IStock> _watchlist;
 
     public Watchlist(){
         _watchlist = new ArrayList<>();
