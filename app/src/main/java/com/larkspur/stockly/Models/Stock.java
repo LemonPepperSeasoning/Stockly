@@ -2,41 +2,48 @@ package com.larkspur.stockly.Models;
 
 public class Stock implements IStock{
 
-    private int stockId;
-    private String companyName;
-    private String symbol;
-    private String description;
-    private Category category;
-    private IHistoricalPrice historicalPrice;
+    private int _stockId;
+    private String _companyName;
+    private String _symbol;
+    private String _description;
+    private Category _category;
+    private IHistoricalPrice _historicalPrice;
+
+    public Stock(int stockId, String companyName, String symbol){
+        // contructor for lazy fetching or something like that
+        _stockId = stockId;
+        _companyName = companyName;
+        _symbol = symbol;
+    }
 
     @Override
     public String getCompName() {
-        return this.companyName;
+        return this._companyName;
     }
 
     @Override
     public String getSymbol() {
-        return this.symbol;
+        return this._symbol;
     }
 
     @Override
     public String getDesc() {
-        return this.description;
+        return this._description;
     }
 
     @Override
     public Category getCategory() {
-        return this.category;
+        return this._category;
     }
 
     @Override
     public Float getPrice() {
         // THIS HAS HIGH DEPENDENCY
-        return this.historicalPrice.getPrice();
+        return this._historicalPrice.getPrice();
     }
 
     @Override
     public IHistoricalPrice getHistoricalPrice() {
-        return this.historicalPrice;
+        return this._historicalPrice;
     }
 }
