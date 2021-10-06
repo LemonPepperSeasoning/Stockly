@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/stock_image_view"
-            android:layout_ParentLeft="true"
+            android:layout_alignParentLeft="true"
             android:text="Stock"
             android:textColor="@color/white" />
         android:textSize="12sp" />
