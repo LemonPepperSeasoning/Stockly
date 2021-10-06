@@ -61,8 +61,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin_bottom="2dp"
-                    android:layout_margin_top="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -88,7 +88,6 @@
                     <ImageView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_alignParentCenter="True"
                         android:layout_gravity="bottom"
                         android:layout_marginLeft="4dp"
                         android:layout_marginBottom="2dp"
@@ -112,8 +111,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin_bottom="2dp"
-                    android:layout_margin_top="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -139,7 +138,6 @@
                     <ImageView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_alignParentCenter="True"
                         android:layout_gravity="bottom"
                         android:layout_marginLeft="4dp"
                         android:layout_marginBottom="2dp"
@@ -163,8 +161,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin_bottom="2dp"
-                    android:layout_margin_top="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -190,7 +188,6 @@
                     <ImageView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_alignParentCenter="True"
                         android:layout_gravity="bottom"
                         android:layout_marginLeft="4dp"
                         android:layout_marginBottom="2dp"
@@ -241,7 +238,6 @@
                     <ImageView
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_alignParentCenter="True"
                         android:layout_gravity="bottom"
                         android:layout_marginLeft="4dp"
                         android:layout_marginBottom="2dp"
