@@ -14,16 +14,48 @@
         android:orientation="vertical"
         >
 
+
+
         <include
             layout="@layout/main_toolbar" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:src="@drawable/back_arrow"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="bottom"
+                android:paddingBottom="2dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="return"
+                android:textSize="10sp"
+                android:gravity="bottom"
+                android:textColor="@color/white"
+                />
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Watchlist"
             android:textSize="50sp"
             android:textStyle="bold"
-            android:gravity="center" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
+        <ListView
+            android:id="@+id/watchlist_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></ListView>
     </LinearLayout>
 
     <RelativeLayout
@@ -32,8 +64,7 @@
         android:layout_gravity="start"
         android:background="#00FFFFFF">
 
-        <include
-            layout="@layout/main_nav_drawer"/>
+        <include layout="@layout/main_nav_drawer" />
     </RelativeLayout>
 
 
