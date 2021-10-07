@@ -1,12 +1,19 @@
 package com.larkspur.stockly.Activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -15,37 +22,41 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
 
-public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener, OnChartValueSelectedListener {
+public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     private LineChart chart;
-    private SeekBar seekBarX, seekBarY;
-    private TextView tvX, tvY;
+//    private SeekBar seekBarX, seekBarY;
+//    private TextView tvX, tvY;
     private Typeface tfLight;
+    private DrawerLayout _drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock);
+        _drawerLayout = findViewById(R.id.drawer_layout);
 
-        tfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
-        tvX = findViewById(R.id.tvXMax);
-        tvY = findViewById(R.id.tvYMax);
+        setTitle("CubicLineChartActivity");
 
-        seekBarX = findViewById(R.id.seekBar1);
-        seekBarX.setOnSeekBarChangeListener(this);
+//        tvX = findViewById(R.id.tvXMax);
+//        tvY = findViewById(R.id.tvYMax);
 
-        seekBarY = findViewById(R.id.seekBar2);
-        seekBarY.setOnSeekBarChangeListener(this);
+//        seekBarX = findViewById(R.id.seekBar1);
+//        seekBarY = findViewById(R.id.seekBar2);
 
         chart = findViewById(R.id.chart1);
-        chart.setOnChartValueSelectedListener(this);
+        chart.setViewPortOffsets(0, 0, 0, 0);
+        chart.setBackgroundColor(Color.rgb(46, 46, 51));
 
         // no description text
         chart.getDescription().setEnabled(false);
@@ -53,146 +64,93 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         // enable touch gestures
         chart.setTouchEnabled(true);
 
-        chart.setDragDecelerationFrictionCoef(0.9f);
-
         // enable scaling and dragging
         chart.setDragEnabled(true);
         chart.setScaleEnabled(true);
-        chart.setDrawGridBackground(false);
-        chart.setHighlightPerDragEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(true);
+        chart.setPinchZoom(false);
 
-        // set an alternative background color
-        chart.setBackgroundColor(Color.LTGRAY);
+        chart.setDrawGridBackground(false);
+        chart.setMaxHighlightDistance(300);
+
+        XAxis x = chart.getXAxis();
+        x.setEnabled(false);
+
+        YAxis y = chart.getAxisLeft();
+        y.setTypeface(tfLight);
+        y.setLabelCount(6, false);
+        y.setTextColor(Color.WHITE);
+        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        y.setDrawGridLines(false);
+        y.setAxisLineColor(Color.WHITE);
+
+        chart.getAxisRight().setEnabled(false);
 
         // add data
-        seekBarX.setProgress(20);
-        seekBarY.setProgress(30);
+//        seekBarY.setOnSeekBarChangeListener(this);
+//        seekBarX.setOnSeekBarChangeListener(this);
+//
+//        // lower max, as cubic runs significantly slower than linear
+//        seekBarX.setMax(700);
+//
+//        seekBarX.setProgress(45);
+//        seekBarY.setProgress(100);
+        setData(45, new Float(100));
 
-        chart.animateX(1500);
+        chart.getLegend().setEnabled(false);
 
-        // get the legend (only possible after setting data)
-        Legend l = chart.getLegend();
+        chart.animateXY(2000, 2000);
 
-        // modify the legend ...
-        l.setForm(Legend.LegendForm.LINE);
-        l.setTypeface(tfLight);
-        l.setTextSize(11f);
-        l.setTextColor(Color.WHITE);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-        l.setDrawInside(false);
-//        l.setYOffset(11f);
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setTypeface(tfLight);
-        xAxis.setTextSize(11f);
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
-
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTypeface(tfLight);
-        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
-        leftAxis.setAxisMaximum(200f);
-        leftAxis.setAxisMinimum(0f);
-        leftAxis.setDrawGridLines(true);
-        leftAxis.setGranularityEnabled(true);
-
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setTypeface(tfLight);
-        rightAxis.setTextColor(Color.RED);
-        rightAxis.setAxisMaximum(900);
-        rightAxis.setAxisMinimum(-200);
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setDrawZeroLine(false);
-        rightAxis.setGranularityEnabled(false);
+        // don't forget to refresh the drawing
+        chart.invalidate();
     }
 
     private void setData(int count, float range) {
 
-        ArrayList<Entry> values1 = new ArrayList<>();
+        ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * (range / 2f)) + 50;
-            values1.add(new Entry(i, val));
+            float val = (float) (Math.random() * (range + 1)) + 20;
+            values.add(new Entry(i, val));
         }
 
-        ArrayList<Entry> values2 = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 450;
-            values2.add(new Entry(i, val));
-        }
-
-        ArrayList<Entry> values3 = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * range) + 500;
-            values3.add(new Entry(i, val));
-        }
-
-        LineDataSet set1, set2, set3;
+        LineDataSet set1;
 
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
-            set2 = (LineDataSet) chart.getData().getDataSetByIndex(1);
-            set3 = (LineDataSet) chart.getData().getDataSetByIndex(2);
-            set1.setValues(values1);
-            set2.setValues(values2);
-            set3.setValues(values3);
+            set1.setValues(values);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(values1, "DataSet 1");
+            set1 = new LineDataSet(values, "DataSet 1");
 
-            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-            set1.setColor(ColorTemplate.getHoloBlue());
-            set1.setCircleColor(Color.WHITE);
-            set1.setLineWidth(2f);
-            set1.setCircleRadius(3f);
-            set1.setFillAlpha(65);
-            set1.setFillColor(ColorTemplate.getHoloBlue());
+            set1.setMode(LineDataSet.Mode.LINEAR);
+            set1.setCubicIntensity(0.2f);
+            set1.setDrawFilled(true);
+            set1.setDrawCircles(false);
+            set1.setLineWidth(1.8f);
+            set1.setCircleRadius(4f);
+            set1.setCircleColor(Color.rgb(159,125,225));
             set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setDrawCircleHole(false);
-            //set1.setFillFormatter(new MyFillFormatter(0f));
-            //set1.setDrawHorizontalHighlightIndicator(false);
-            //set1.setVisible(false);
-            //set1.setCircleHoleColor(Color.WHITE);
-
-            // create a dataset and give it a type
-            set2 = new LineDataSet(values2, "DataSet 2");
-            set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            set2.setColor(Color.RED);
-            set2.setCircleColor(Color.WHITE);
-            set2.setLineWidth(2f);
-            set2.setCircleRadius(3f);
-            set2.setFillAlpha(65);
-            set2.setFillColor(Color.RED);
-            set2.setDrawCircleHole(false);
-            set2.setHighLightColor(Color.rgb(244, 117, 117));
-            //set2.setFillFormatter(new MyFillFormatter(900f));
-
-            set3 = new LineDataSet(values3, "DataSet 3");
-            set3.setAxisDependency(YAxis.AxisDependency.RIGHT);
-            set3.setColor(Color.YELLOW);
-            set3.setCircleColor(Color.WHITE);
-            set3.setLineWidth(2f);
-            set3.setCircleRadius(3f);
-            set3.setFillAlpha(65);
-            set3.setFillColor(ColorTemplate.colorWithAlpha(Color.YELLOW, 200));
-            set3.setDrawCircleHole(false);
-            set3.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setColor(Color.rgb(159,125,225));
+            set1.setFillColor(Color.rgb(159,125,225));
+            set1.setFillAlpha(100);
+            set1.setDrawHorizontalHighlightIndicator(false);
+            set1.setFillFormatter(new IFillFormatter() {
+                @Override
+                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                    return chart.getAxisLeft().getAxisMinimum();
+                }
+            });
 
             // create a data object with the data sets
-            LineData data = new LineData(set1, set2, set3);
-            data.setValueTextColor(Color.WHITE);
+            LineData data = new LineData(set1);
+            data.setValueTypeface(tfLight);
             data.setValueTextSize(9f);
+            data.setDrawValues(false);
 
             // set data
             chart.setData(data);
@@ -200,34 +158,59 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     }
 
     @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        chart.centerViewToAnimated(e.getX(), e.getY(), chart.getData().getDataSetByIndex(h.getDataSetIndex())
-                .getAxisDependency(), 500);
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.line, menu);
+        return true;
     }
 
     @Override
-    public void onNothingSelected() {
-        System.out.println("Nothing is selected");
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        tvX.setText(String.valueOf(seekBarX.getProgress()));
-        tvY.setText(String.valueOf(seekBarY.getProgress()));
-
-        setData(seekBarX.getProgress(), seekBarY.getProgress());
-
-        // redraw
-        chart.invalidate();
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        return;
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {}
+
+
+    public void clickMenu(View view){
+        MainActivity.openDrawer(_drawerLayout);
+    }
+
+    public void clickCloseSideMenu(View view){
+        MainActivity.closeDrawer(_drawerLayout);
+    }
+
+    public void clickHome(View view){
+        MainActivity.redirectActivity(this,MainActivity.class);
+    }
+
+    public void clickPortfolio(View view){
+        MainActivity.redirectActivity(this,PortfolioActivity.class);
+    }
+
+    public void clickWatchlist(View view){
+        MainActivity.redirectActivity(this,WatchlistActivity.class);
+    }
+
+    public void clickSettings(View view){
+        MainActivity.redirectActivity(this,SettingsActivity.class);
+    }
+
+    public void clickHelp(View view) {
+        MainActivity.redirectActivity(this,HelpActivity.class);
     }
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
+    protected void onPause(){
+        super.onPause();
+        MainActivity.closeDrawer(_drawerLayout);
     }
 }

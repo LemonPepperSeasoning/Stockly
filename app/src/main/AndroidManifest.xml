@@ -22,10 +22,10 @@
             android:name=".Activities.PortfolioActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Activities.StockActivity"
             android:exported="true" />
         <activity
-            android:name=".Activities.StockActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
