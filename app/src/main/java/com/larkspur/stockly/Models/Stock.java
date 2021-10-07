@@ -9,6 +9,8 @@ public class Stock implements IStock{
     private Category _category;
     private IHistoricalPrice _historicalPrice;
 
+    public Stock(){}
+
     public Stock(int stockId, String companyName, String symbol){
         // contructor for lazy fetching or something like that
         _stockId = stockId;
@@ -19,6 +21,10 @@ public class Stock implements IStock{
     @Override
     public String getCompName() {
         return this._companyName;
+    }
+
+    public void setname(String name){
+        _companyName = name;
     }
 
     @Override
@@ -36,11 +42,16 @@ public class Stock implements IStock{
         return this._category;
     }
 
+    public void setsector(String sector){
+
+    }
+
     @Override
     public Float getPrice() {
         // THIS HAS HIGH DEPENDENCY
         return this._historicalPrice.getPrice();
     }
+
 
     @Override
     public IHistoricalPrice getHistoricalPrice() {
