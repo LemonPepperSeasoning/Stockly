@@ -43,7 +43,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:shape="ring"
         app:cardBackgroundColor="@color/black"
-        android:onClick="clickSearch"
         android:contentDescription="search button">
 
         <ImageView
