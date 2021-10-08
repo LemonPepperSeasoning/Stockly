@@ -14,6 +14,16 @@
         android:orientation="vertical">
 
         <include layout="@layout/main_toolbar" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
+            android:text="Portfolio"
+            android:textColor="@color/white"
+            android:textSize="34sp"
+
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,15 +48,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="5">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:cardBackgroundColor="@android:color/transparent"
                 app:cardCornerRadius="5dp"
-                android:layout_margin="20dp">
+                android:layout_margin="10dp">
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/doughnut_chart"
@@ -61,9 +72,10 @@
         <LinearLayout
             android:id="@+id/list_view"
             android:layout_width="match_parent"
-            android:layout_height="290dp"
-            android:layout_margin="10dp"
-            android:orientation="vertical" >
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:orientation="vertical"
+            android:layout_weight="5">
 
             <include
                 layout="@layout/portfolio_card"
@@ -85,10 +97,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_gravity="bottom"
-            android:layout_alignParentBottom = "true">
+            android:layout_alignParentBottom = "true"
+            android:layout_weight="1">
 
             <include
                 layout="@layout/portfolio_export_component"
