@@ -43,7 +43,7 @@ public class Stock implements IStock{
     }
 
     public void setsector(String sector){
-
+        _category = Category.valueOf(sector);
     }
 
     @Override

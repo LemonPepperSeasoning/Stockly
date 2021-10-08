@@ -24,11 +24,9 @@ public class StockHandler extends DataHandler {
     private FirebaseFirestore _db;
 
     public StockHandler(FirebaseFirestore db) {
-      //  FirebaseApp.initializeApp(this);
        _db = db;
     }
     public StockHandler() {
-        //  FirebaseApp.initializeApp(this);
         _db = FirebaseFirestore.getInstance();
     }
 

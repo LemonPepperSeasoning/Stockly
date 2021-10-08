@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
-import com.google.firebase.FirebaseApp;
 import com.larkspur.stockly.Data.StockHandler;
 import com.larkspur.stockly.Models.IStock;
 
@@ -19,7 +17,7 @@ public class TestStockHandler {
 
     @Before
     public void setup() {
-        
+
     }
 
     @Test
