@@ -63,7 +63,7 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
 
         holder._stockSymbol.setText(stock.getSymbol());
         holder._stockPercent.setText("RANDOM PERCENT");
-        holder._stockPrice.setText(stock.getPrice().toString());
+        holder._stockPrice.setText((stock.getPrice().toString()));
 
     }
 

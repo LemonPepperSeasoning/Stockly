@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface IHistoricalPrice {
 
-    public Float getPrice();
+    public Double getPrice();
 
-    public List<Float> getHistoricalPrice();
+    public List<Double> getHistoricalPrice();
 
     public Float getLast24HourChange();
 

@@ -10,7 +10,7 @@ public interface IStock {
 
     public Category getCategory();
 
-    public Float getPrice();
+    public Double getPrice();
 
     public IHistoricalPrice getHistoricalPrice();
 }

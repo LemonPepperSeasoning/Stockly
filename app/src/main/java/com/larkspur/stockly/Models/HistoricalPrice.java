@@ -6,19 +6,19 @@ public class HistoricalPrice implements IHistoricalPrice{
 
     private int _historicalPriceId;
     private IStock _stock;
-    private List<Float> _historicalPrice;
+    private List<Double> _historicalPrice;
 
-    public HistoricalPrice(List<Float> historicalPrice){
+    public HistoricalPrice(List<Double> historicalPrice){
         _historicalPrice = historicalPrice;
     }
 
     @Override
-    public Float getPrice() {
+    public Double getPrice() {
         return _historicalPrice.get(_historicalPrice.size()-1);
     }
 
     @Override
-    public List<Float> getHistoricalPrice() {
+    public List<Double> getHistoricalPrice() {
         return _historicalPrice;
     }
 

@@ -11,7 +11,7 @@ public class Stock implements IStock{
     private Category _category;
     private IHistoricalPrice _historicalPrice;
 
-    private List<Float> price;
+    private List<Double> price;
 
     //Extra field
     private String _subindustry;
@@ -67,7 +67,7 @@ public class Stock implements IStock{
 
 
     @Override
-    public Float getPrice() {
+    public Double getPrice() {
         // THIS HAS HIGH DEPENDENCY
         return this._historicalPrice.getPrice();
     }

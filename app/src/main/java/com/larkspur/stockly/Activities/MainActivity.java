@@ -39,19 +39,21 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawerLayout _drawerLayout;
-    StockAdaptor _stockAdaptor;
-    RecyclerView _mostPopular;
-    //ListView _categories;
     private ViewHolder _vh;
-    private class ViewHolder{
+
+    private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
 
-        public ViewHolder(){
-            _techView = findViewById(R.id.technology_recycle_view);
-            _financeView = findViewById(R.id.finance_recycle_view);
-            _industryView = findViewById(R.id.industrial_recycle_view);
-            _healthView = findViewById(R.id.health_recycle_view);
+        DrawerLayout _drawerLayout;
+        // StockAdaptor _stockAdaptor;
+        RecyclerView _mostPopular;
+
+        public ViewHolder() {
+            _techView = (RecyclerView) findViewById(R.id.technology_recycle_view);
+            _financeView = (RecyclerView) findViewById(R.id.finance_recycle_view);
+            _industryView = (RecyclerView) findViewById(R.id.industrial_recycle_view);
+            _healthView = (RecyclerView) findViewById(R.id.health_recycle_view);
+            _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
         }
     }
 
@@ -60,26 +62,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      
-        _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
-     //   _categories = (ListView) findViewById(R.id.categories_view);
-        _drawerLayout = findViewById(R.id.drawer_layout);
         _vh = new ViewHolder();
+        //   _categories = (ListView) findViewById(R.id.categories_view);
+        _vh._drawerLayout = findViewById(R.id.drawer_layout);
+
         //set horizontal recycler view
-        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        //  LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
-        fetchStockByCategory(Category.Utilities);
+        fetchStockByCategory(Category.HealthCare);
     }
 
-    public void getData(){
-        System.out.println("===========HER=============");
-        StockHandler x = new StockHandler();
-        IStock y = x.getStock2("FedEx");
-
-    }
+//    public void getData(){
+//        System.out.println("===========HER=============");
+//        StockHandler x = new StockHandler();
+//        IStock y = x.getStock2("FedEx");
+//
+//    }
 
     public void clickMenu(View view) {
-        openDrawer(vh._drawerLayout);
+        openDrawer(_vh._drawerLayout);
     }
 
     public static void openDrawer(DrawerLayout drawerLayout) {
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickCloseSideMenu(View view) {
-        closeDrawer(vh._drawerLayout);
+        closeDrawer(_vh._drawerLayout);
     }
 
     public static void closeDrawer(DrawerLayout drawerLayout) {
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickHome(View view) {
-        closeDrawer(vh._drawerLayout);
+        closeDrawer(_vh._drawerLayout);
     }
 
     public void clickPortfolio(View view) {
@@ -127,12 +128,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        closeDrawer(vh._drawerLayout);
+        closeDrawer(_vh._drawerLayout);
     }
 
-    private void fetchStockByCategory(Category category){
 
-        List<IStock> stockList = new ArrayList<>();
+    private void fetchStockByCategory(Category category) {
+
+        List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -147,35 +149,37 @@ public class MainActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
 //                        Log.d("+++++", document.getId() + " => " + document.getData());
                         Map<String, Object> data = document.getData();
-                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Float>) data.get("Price"));
+                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
                         IStock tmpStock = new Stock(
-                                ((String)data.get("Name")),
-                                ((String)data.get("Symbol")),
-                                (Category.valueOf((String)data.get("Category"))),
-                                ((String)data.get("Subindustry")),
-                                ((String)data.get("location")),
+                                ((String) data.get("Name")),
+                                ((String) data.get("Symbol")),
+                                (Category.getValue((String) data.get("Category"))),
+                                ((String) data.get("Subindustry")),
+                                ((String) data.get("location")),
                                 tmpHistoricalPrice);
                         stockList.add(tmpStock);
                     }
 
                     System.out.println("============================");
                     System.out.println(stockList.size());
-                    for (IStock i : stockList){
-                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol()+" == ");
+                    for (IStock i : stockList) {
+                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
                     }
                     System.out.println("============================");
 
                     if (stockList.size() > 0) {
                         Log.i("Getting colors", "Success");
+
+                        propogateCatAdapter(stockList, category);
                         // Once the task is successful and data is fetched, propagate the adaptor
-                        propagateAdaptor(stockList);
+                        //  propagateAdaptor(stockList);
 
                         // Hide the ProgressBar
 //                        vh.progressBar.setVisibility(View.GONE);
                     } else {
 //                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
                     }
-                } else{
+                } else {
 //                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
                 }
             }
@@ -189,7 +193,34 @@ public class MainActivity extends AppCompatActivity {
 //        vh.listView.setVisibility(View.VISIBLE);
     }
 
-    public void propgateAdapter(List<IStock> data){
+    private void propogateCatAdapter(List<IStock> data, Category category) {
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
+        switch (category) {
+            case InformationTechnology:
+
+                _vh._techView.setAdapter(adapter);
+                _vh._techView.setLayoutManager(lm);
+                break;
+            case HealthCare:
+                _vh._healthView.setAdapter(adapter);
+                _vh._healthView.setLayoutManager(lm);
+                break;
+            case Industrials:
+                _vh._industryView.setAdapter(adapter);
+                _vh._industryView.setLayoutManager(lm);
+                break;
+            case ConsumerDiscretionary:
+                _vh._financeView.setAdapter(adapter);
+                _vh._financeView.setLayoutManager(lm);
+                break;
+            default:
+                throw new IllegalArgumentException("Category not supported at the moment");
+        }
+
+    }
+
+    public void propgateAdapter(List<IStock> data) {
         StockCategoriesMainAdatper stockCatAdatper = new StockCategoriesMainAdatper(data);
     }
 
