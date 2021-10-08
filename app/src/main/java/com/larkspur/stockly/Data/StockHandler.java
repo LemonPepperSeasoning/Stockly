@@ -15,6 +15,7 @@ import com.larkspur.stockly.Models.IStock;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.larkspur.stockly.Models.Stock;
@@ -32,7 +33,7 @@ public class StockHandler extends DataHandler {
 
     public List<IStock> getStocksList() {
         List<IStock> stockList = new LinkedList<IStock>();
-        _db.collection("company_v1")
+        _db.collection("company_v2")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -55,17 +56,17 @@ public class StockHandler extends DataHandler {
 
     public IStock getStock(String name) {
         final IStock[] stock = {new Stock()};
-        _db.collection("company_v1")
-                .whereEqualTo("name", name)
+        _db.collection("company_v2")
+                .whereEqualTo("Name", name)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        System.out.println("=======2===========");
                         if (task.isSuccessful()) {
                             QuerySnapshot results = task.getResult();
                             System.out.println(results.toString());
                             if(results.size() == 1) {
-
                                 stock[0] = results.toObjects(Stock.class).get(0);
                                 Log.d("Parsing stocks", stock[0].getCompName() + "loaded");
                             }
@@ -75,6 +76,28 @@ public class StockHandler extends DataHandler {
                     }
                 });
         return stock[0];
+    }
 
+    public IStock getStock2(String name) {
+        _db.collection("company_v2")
+                .whereEqualTo("Name", name)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("+++++", document.getId() + " => " + document.getData());
+                                Map<String, Object> data = document.getData();
+                                List<Float> tmpList = (List<Float>)data.get("Price");
+                                System.out.println(tmpList);
+                                System.out.println(tmpList.getClass());
+                            }
+                        } else {
+                            Log.d("+++++", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return null;
     }
 }

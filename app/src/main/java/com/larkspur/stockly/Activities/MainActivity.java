@@ -1,5 +1,6 @@
 package com.larkspur.stockly.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,36 +10,68 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
+import com.larkspur.stockly.Data.StockHandler;
+import com.larkspur.stockly.Models.Category;
+import com.larkspur.stockly.Models.HistoricalPrice;
+import com.larkspur.stockly.Models.IStock;
+import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.R;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawerLayout _drawerLayout;
-    StockAdaptor _stockAdaptor;
-    RecyclerView _mostPopular;
-    //ListView _categories;
+    private class ViewHolder {
+        DrawerLayout _drawerLayout;
+        StockAdaptor _stockAdaptor;
+        RecyclerView _mostPopular;
+        //ListView _categories;
+
+        public ViewHolder() {
+            _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
+            //   _categories = (ListView) findViewById(R.id.categories_view);
+            _drawerLayout = findViewById(R.id.drawer_layout);
+        }
+    }
+
+    ViewHolder vh;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
-     //   _categories = (ListView) findViewById(R.id.categories_view);
-        _drawerLayout = findViewById(R.id.drawer_layout);
 
-        //set horizontal recycler view
+        vh = new ViewHolder();
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        _mostPopular.setLayoutManager(lm);
+        vh._mostPopular.setLayoutManager(lm);
+
+        fetchStockByCategory(Category.Utilities);
+    }
+
+    public void getData(){
+        System.out.println("===========HER=============");
+        StockHandler x = new StockHandler();
+        IStock y = x.getStock2("FedEx");
 
     }
 
     public void clickMenu(View view) {
-        openDrawer(_drawerLayout);
+        openDrawer(vh._drawerLayout);
     }
 
     public static void openDrawer(DrawerLayout drawerLayout) {
@@ -46,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickCloseSideMenu(View view) {
-        closeDrawer(_drawerLayout);
+        closeDrawer(vh._drawerLayout);
     }
 
     public static void closeDrawer(DrawerLayout drawerLayout) {
@@ -57,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickHome(View view) {
-        closeDrawer(_drawerLayout);
+        closeDrawer(vh._drawerLayout);
     }
 
     public void clickPortfolio(View view) {
@@ -86,6 +119,65 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        closeDrawer(_drawerLayout);
+        closeDrawer(vh._drawerLayout);
+    }
+
+    private void fetchStockByCategory(Category category){
+
+        List<IStock> stockList = new ArrayList<>();
+
+        // Getting numbers collection from Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("company_v2")
+                .whereEqualTo("Category", category.toString())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    QuerySnapshot results = task.getResult();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Log.d("+++++", document.getId() + " => " + document.getData());
+                        Map<String, Object> data = document.getData();
+                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Float>) data.get("Price"));
+                        IStock tmpStock = new Stock(
+                                ((String)data.get("Name")),
+                                ((String)data.get("Symbol")),
+                                (Category.valueOf((String)data.get("Category"))),
+                                ((String)data.get("Subindustry")),
+                                ((String)data.get("location")),
+                                tmpHistoricalPrice);
+                        stockList.add(tmpStock);
+                    }
+
+                    System.out.println("============================");
+                    System.out.println(stockList.size());
+                    for (IStock i : stockList){
+                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol()+" == ");
+                    }
+                    System.out.println("============================");
+
+                    if (stockList.size() > 0) {
+                        Log.i("Getting colors", "Success");
+                        // Once the task is successful and data is fetched, propagate the adaptor
+                        propagateAdaptor(stockList);
+
+                        // Hide the ProgressBar
+//                        vh.progressBar.setVisibility(View.GONE);
+                    } else {
+//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
+                    }
+                } else{
+//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void propagateAdaptor(List<IStock> data) {
+        StockAdaptor stockAdapter = new StockAdaptor(this, R.layout.stock_most_viewed_recycler_view,
+                data);
+//        vh._mostPopular.setAdapter(stockAdapter);
+//        vh.listView.setVisibility(View.VISIBLE);
     }
 }
