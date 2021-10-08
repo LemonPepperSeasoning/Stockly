@@ -1,12 +1,13 @@
 package com.larkspur.stockly.Models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface IHistoricalPrice {
+public interface IHistoricalPrice extends Serializable {
 
-    public Float getPrice();
+    public Double getPrice();
 
-    public List<Float> getHistoricalPrice();
+    public List<Double> getHistoricalPrice();
 
     public Float getLast24HourChange();
 
