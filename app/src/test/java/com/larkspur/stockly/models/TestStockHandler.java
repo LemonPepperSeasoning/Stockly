@@ -1,6 +1,7 @@
 package com.larkspur.stockly.models;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,6 +13,7 @@ import com.larkspur.stockly.Models.IStock;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@Ignore
 public class TestStockHandler {
     private final StockHandler _stockHandler = new StockHandler();
 
