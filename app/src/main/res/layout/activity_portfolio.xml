@@ -2,27 +2,74 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.PortfolioActivity"
-    android:id="@+id/drawer_layout"
-    android:background="@drawable/gradient">
+    android:background="@drawable/gradient"
+    tools:context=".Activities.PortfolioActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-        <include
-            layout="@layout/main_toolbar" />
+        android:orientation="vertical">
 
-        <TextView
+        <include layout="@layout/main_toolbar" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Portfolio"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            android:gravity="center" />
+            android:layout_height="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="2dp"
+                android:src="@drawable/back_arrow" />
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:text="Return to Main"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/portfolio_doughnut_graph"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp" />
+
+        </LinearLayout>
+
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="290dp"
+            android:layout_marginTop="10dp"></ListView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/portfolio_export_component"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <RelativeLayout
@@ -31,8 +78,7 @@
         android:layout_gravity="start"
         android:background="#00FFFFFF">
 
-        <include
-            layout="@layout/main_nav_drawer"/>
+        <include layout="@layout/main_nav_drawer" />
     </RelativeLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
