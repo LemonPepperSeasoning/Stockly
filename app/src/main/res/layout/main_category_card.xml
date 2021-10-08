@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="0">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/black"
+        android:padding="5dp"
+        >
+        <TextView
+            android:id="@+id/stock_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AAPL"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            />
+        <TextView
+            android:id="@+id/stock_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$3343.6"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            />
+        <TextView
+            android:id="@+id/stock_percent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+1.2%"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            />
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
