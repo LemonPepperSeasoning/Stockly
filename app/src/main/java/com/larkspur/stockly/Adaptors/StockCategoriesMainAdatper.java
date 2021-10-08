@@ -1,16 +1,20 @@
 package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
@@ -28,10 +32,24 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
             _stockSymbol = (TextView) view.findViewById(R.id.stock_symbol);
             _stockPrice = (TextView) view.findViewById(R.id.stock_price);
             _stockPercent = (TextView) view.findViewById(R.id.stock_percent);
+
         }
 
         @Override
         public void onClick(View view) {
+            IStock stock = _stockList.get(getAdapterPosition());
+            Intent intent = new Intent(view.getContext(), StockActivity.class);
+            System.out.println("serializing stock");
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("stock", stock);
+            System.out.println(bundle.getSerializable("stock"));
+            IStock test = (IStock) bundle.getSerializable("stock");
+            System.out.println(test.getCompName());
+
+            intent.putExtras(bundle);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            view.getContext().startActivity(intent);
+            Toast.makeText(_context, stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
 
         }
     }

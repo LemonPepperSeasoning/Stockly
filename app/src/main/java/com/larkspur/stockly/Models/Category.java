@@ -2,7 +2,7 @@ package com.larkspur.stockly.Models;
 
 public enum Category {
 
-    Industrials("Industrial"),
+    Industrials("Industrials"),
     HealthCare("Health Care"),
     InformationTechnology("Information Technology"),
     CommunicationServices("Communication Services"),

@@ -1,6 +1,7 @@
 package com.larkspur.stockly.Activities;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -28,6 +30,8 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.larkspur.stockly.Models.IStock;
+import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -35,17 +39,41 @@ import java.util.ArrayList;
 public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     private LineChart chart;
-//    private SeekBar seekBarX, seekBarY;
+    //    private SeekBar seekBarX, seekBarY;
 //    private TextView tvX, tvY;
     private Typeface tfLight;
     private DrawerLayout _drawerLayout;
+
+    private class ViewHolder {
+        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent;
+
+        public ViewHolder() {
+            _stockName = findViewById(R.id.stock_name);
+            _stockNameAndSymbol = findViewById(R.id.stock_name_and_symbol);
+            _stockPrice = findViewById(R.id.stock_price);
+            _stockPercent = findViewById(R.id.stock_percent);
+        }
+    }
+    private ViewHolder _vh;
+    private IStock _stock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock);
         _drawerLayout = findViewById(R.id.drawer_layout);
+        _vh = new ViewHolder();
+        if (getIntent().getExtras() != null) {
+            System.out.println("STOCK DATA HERE\n");
+            Intent intent = this.getIntent();
+            Bundle bundle = intent.getExtras();
+            _stock = (IStock) bundle.getSerializable("stock");
+            setupStockView();
 
+            Toast.makeText(this, _stock.getSymbol() + " was Launched!", Toast.LENGTH_SHORT).show();
+        }else{
+            throw new RuntimeException("Stock not found!");
+        }
         setTitle("CubicLineChartActivity");
 
 //        tvX = findViewById(R.id.tvXMax);
@@ -106,6 +134,12 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         chart.invalidate();
     }
 
+    private void setupStockView(){
+        _vh._stockName.setText(_stock.getCompName());
+        _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
+        _vh._stockPrice.setText(_stock.getPrice().toString());
+    }
+
     private void setData(int count, float range) {
 
         ArrayList<Entry> values = new ArrayList<>();
@@ -133,10 +167,10 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             set1.setDrawCircles(false);
             set1.setLineWidth(1.8f);
             set1.setCircleRadius(4f);
-            set1.setCircleColor(Color.rgb(159,125,225));
+            set1.setCircleColor(Color.rgb(159, 125, 225));
             set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setColor(Color.rgb(159,125,225));
-            set1.setFillColor(Color.rgb(159,125,225));
+            set1.setColor(Color.rgb(159, 125, 225));
+            set1.setFillColor(Color.rgb(159, 125, 225));
             set1.setFillAlpha(100);
             set1.setDrawHorizontalHighlightIndicator(false);
             set1.setFillFormatter(new IFillFormatter() {
@@ -174,42 +208,44 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {}
+    public void onStartTrackingTouch(SeekBar seekBar) {
+    }
 
     @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {}
+    public void onStopTrackingTouch(SeekBar seekBar) {
+    }
 
 
-    public void clickMenu(View view){
+    public void clickMenu(View view) {
         MainActivity.openDrawer(_drawerLayout);
     }
 
-    public void clickCloseSideMenu(View view){
+    public void clickCloseSideMenu(View view) {
         MainActivity.closeDrawer(_drawerLayout);
     }
 
-    public void clickHome(View view){
-        MainActivity.redirectActivity(this,MainActivity.class);
+    public void clickHome(View view) {
+        MainActivity.redirectActivity(this, MainActivity.class);
     }
 
-    public void clickPortfolio(View view){
-        MainActivity.redirectActivity(this,PortfolioActivity.class);
+    public void clickPortfolio(View view) {
+        MainActivity.redirectActivity(this, PortfolioActivity.class);
     }
 
-    public void clickWatchlist(View view){
-        MainActivity.redirectActivity(this,WatchlistActivity.class);
+    public void clickWatchlist(View view) {
+        MainActivity.redirectActivity(this, WatchlistActivity.class);
     }
 
-    public void clickSettings(View view){
-        MainActivity.redirectActivity(this,SettingsActivity.class);
+    public void clickSettings(View view) {
+        MainActivity.redirectActivity(this, SettingsActivity.class);
     }
 
     public void clickHelp(View view) {
-        MainActivity.redirectActivity(this,HelpActivity.class);
+        MainActivity.redirectActivity(this, HelpActivity.class);
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         MainActivity.closeDrawer(_drawerLayout);
     }

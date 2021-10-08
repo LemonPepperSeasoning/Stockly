@@ -69,7 +69,15 @@ public class MainActivity extends AppCompatActivity {
         //set horizontal recycler view
         //  LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
+        setupCategoryViews();
+
+    }
+
+    private void setupCategoryViews(){
         fetchStockByCategory(Category.HealthCare);
+        fetchStockByCategory(Category.InformationTechnology);
+        fetchStockByCategory(Category.ConsumerDiscretionary);
+        fetchStockByCategory(Category.Industrials);
     }
 
 //    public void getData(){
@@ -194,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void propogateCatAdapter(List<IStock> data, Category category) {
-        LinearLayoutManager lm = new LinearLayoutManager(this);
+        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
         switch (category) {
             case InformationTechnology:
