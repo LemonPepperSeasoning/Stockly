@@ -32,7 +32,7 @@
                 <!--        ============Search Functionality=========================-->
 
 
-                <SearchView
+                <androidx.appcompat.widget.SearchView
                     android:id="@+id/search"
                     android:layout_width="350dp"
                     android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:iconifiedByDefault="true">
 
                     <requestFocus />
-                </SearchView>
+                </androidx.appcompat.widget.SearchView>
             </LinearLayout>
 
             <ListView
