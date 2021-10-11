@@ -4,18 +4,22 @@ import java.util.List;
 
 public class HistoricalPrice implements IHistoricalPrice{
 
-    private int historicalPriceId;
-    private IStock stock;
-    private List<Float> historicalPrice;
+    private int _historicalPriceId;
+    private IStock _stock;
+    private List<Double> _historicalPrice;
 
-    @Override
-    public Float getPrice() {
-        return historicalPrice.get(historicalPrice.size()-1);
+    public HistoricalPrice(List<Double> historicalPrice){
+        _historicalPrice = historicalPrice;
     }
 
     @Override
-    public List<Float> getHistoricalPrice() {
-        return historicalPrice;
+    public Double getPrice() {
+        return _historicalPrice.get(_historicalPrice.size()-1);
+    }
+
+    @Override
+    public List<Double> getHistoricalPrice() {
+        return _historicalPrice;
     }
 
     @Override

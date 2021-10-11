@@ -12,5 +12,4 @@ public interface IWatchlist {
 
     boolean hasStock(IStock stock);
 
-
 }

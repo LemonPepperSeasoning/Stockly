@@ -31,8 +31,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Stock;
+import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
@@ -60,7 +60,6 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     private IStock _stock;
     private boolean _watchlisted;
     private IWatchlist _watchlist;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -255,6 +254,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         super.onPause();
         MainActivity.closeDrawer(_drawerLayout);
     }
+
 
     public void clickAddWatchlist(View view){
         if(_watchlisted == false){

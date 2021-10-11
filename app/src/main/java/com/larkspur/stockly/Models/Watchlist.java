@@ -1,7 +1,5 @@
 package com.larkspur.stockly.Models;
-
 import android.widget.ListView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class Watchlist implements IWatchlist {
 
     @Override
     public void removeStock(IStock stock) {
-        if (!_watchlist.contains(stock)) {
+        if (!_watchlist.contains(stock)){
             //TODO : Might want to throw exception
             return;
         }
@@ -50,4 +48,5 @@ public class Watchlist implements IWatchlist {
     public boolean hasStock(IStock stock) {
         return _watchlist.contains(stock);
     }
+
 }
