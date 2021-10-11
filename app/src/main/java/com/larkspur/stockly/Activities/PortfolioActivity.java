@@ -16,6 +16,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +35,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.larkspur.stockly.Adaptors.PorfolioAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
+import com.larkspur.stockly.Adaptors.WatchlistAdapter;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
@@ -53,14 +56,20 @@ import java.util.Map;
 
 public class PortfolioActivity extends AppCompatActivity {
 
-    DrawerLayout _drawerLayout;
+    private class ViewHolder {
+        ListView _stockList;
+        DrawerLayout _drawerLayout;
+
+        public ViewHolder() {
+            _stockList = findViewById(R.id.portfolio_stocklist);
+            _drawerLayout = findViewById(R.id.drawer_layout);
+        }
+    }
+
+    private ViewHolder _vh;
     private PieChart chart;
-    private Typeface tf;
-    private TextView tvX, tvY;
-    private SeekBar seekBarX, seekBarY;
     protected Typeface tfRegular;
     protected Typeface tfLight;
-
     private IPortfolio _portfolio;
 
     @Override
@@ -69,74 +78,28 @@ public class PortfolioActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_portfolio);
-        _drawerLayout = findViewById(R.id.drawer_layout);
 
-        _portfolio = Portfolio.getInstance();
+        _vh = new ViewHolder();
+
         setPiechart();
-//            setData(_portfolio.getPortfolio());
-
-        // THIS CODE BELOW IS TEMPLORY TO GENERATE PORTFOLIO
-        fetchStockByCategory(Category.HealthCare);
+        displayData();
+    }
+    private void displayData(){
+        _portfolio = Portfolio.getInstance();
+        setData(_portfolio.getPortfolio());
+        Toast.makeText(this,"watchlist size is " + _portfolio.getPortfolio().size(), Toast.LENGTH_SHORT).show();;
+        if(_portfolio.getPortfolio().size()>0){
+            List<IStock> data = new ArrayList<>();
+            data.addAll( _portfolio.getPortfolio().keySet() );
+            propagateAadapter(data);
+        }
     }
 
-    private void fetchStockByCategory(Category category) {
-
-        List<IStock> stockList = new LinkedList<>();
-
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
-                .whereEqualTo("Category", category.toString())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    QuerySnapshot results = task.getResult();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.d("+++++", document.getId() + " => " + document.getData());
-                        Map<String, Object> data = document.getData();
-                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
-                        IStock tmpStock = new Stock(
-                                ((String) data.get("Name")),
-                                ((String) data.get("Symbol")),
-                                (Category.getValue((String) data.get("Category"))),
-                                ((String) data.get("Subindustry")),
-                                ((String) data.get("location")),
-                                tmpHistoricalPrice);
-                        stockList.add(tmpStock);
-                    }
-
-                    System.out.println("============================");
-                    System.out.println(stockList.size());
-                    for (IStock i : stockList) {
-                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
-                    }
-                    System.out.println("============================");
-
-                    if (stockList.size() > 0) {
-                        Log.i("Getting colors", "Success");
-
-                        int counter = 1;
-                        for (IStock i : stockList){
-                            _portfolio.addStock(i,counter);
-                            counter++;
-                            if (counter >= 7){
-                                break;
-                            }
-                        }
-                        setData(_portfolio.getPortfolio());
-
-                    } else {
-//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+    private void propagateAadapter(List<IStock> data){
+        PorfolioAdapter stockAdapter = new PorfolioAdapter(this, R.layout.portfolio_card,data,chart);
+        _vh._stockList.setAdapter(stockAdapter);
+        _vh._stockList.setVisibility(View.VISIBLE);
     }
-
 
     private void setPiechart(){
         chart = findViewById(R.id.doughnut_chart);
@@ -167,26 +130,7 @@ public class PortfolioActivity extends AppCompatActivity {
         chart.setRotationEnabled(true);
         chart.setHighlightPerTapEnabled(true);
 
-        // chart.setUnit(" €");
-        // chart.setDrawUnitsInChart(true);
-
-//        // add a selection listener
-//        chart.setOnChartValueSelectedListener(this);
-//        seekBarX.setProgress(4);
-//        seekBarY.setProgress(10);
-
         chart.animateY(1400, Easing.EaseInOutQuad);
-        // chart.spin(2000, 0, 360);
-
-//        Legend l = chart.getLegend();
-//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        l.setDrawInside(false);
-//        l.setXEntrySpace(7f);
-//        l.setYEntrySpace(0f);
-//        l.setYOffset(0f);
-
         chart.getLegend().setEnabled(false);
 
         // entry label styling
@@ -269,11 +213,11 @@ public class PortfolioActivity extends AppCompatActivity {
     }
 
     public void clickMenu(View view){
-        MainActivity.openDrawer(_drawerLayout);
+        MainActivity.openDrawer(_vh._drawerLayout);
     }
 
     public void clickCloseSideMenu(View view){
-        MainActivity.closeDrawer(_drawerLayout);
+        MainActivity.closeDrawer(_vh._drawerLayout);
     }
 
     public void clickHome(View view){
@@ -299,6 +243,6 @@ public class PortfolioActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        MainActivity.closeDrawer(_drawerLayout);
+        MainActivity.closeDrawer(_vh._drawerLayout);
     }
 }

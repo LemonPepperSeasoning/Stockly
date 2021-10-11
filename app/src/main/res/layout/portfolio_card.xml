@@ -28,6 +28,7 @@
                 android:layout_height="50dp">
 
                 <TextView
+                    android:id="@+id/stock_symbol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="AMZN"
@@ -47,6 +48,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/stock_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Amazon.com Inc."
@@ -55,6 +57,7 @@
                 />
 
             <TextView
+                android:id="@+id/stock_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$3301.1 -0.45%"
@@ -94,6 +97,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/stock_total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$54859.43"
@@ -124,6 +128,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/stock_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="97"
@@ -158,6 +163,7 @@
             android:layout_marginLeft="4dp"/>
 
         <LinearLayout
+            android:id="@+id/remove_stock"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"

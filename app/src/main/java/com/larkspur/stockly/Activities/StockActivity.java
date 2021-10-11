@@ -26,8 +26,10 @@ import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import com.larkspur.stockly.Models.IHistoricalPrice;
+import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
@@ -69,6 +71,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _stock = (IStock) bundle.getSerializable("stock");
             _watchlist = Watchlist.getInstance();
             _watchlisted = _watchlist.hasStock(_stock);
+
             setupStockView();
             setupGraph();
 
@@ -247,6 +250,14 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _watchlist.removeStock(_stock);
             Toast.makeText(this,"removed " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = false;
+        }
+    }
+
+    public void clickAddPortfolio(View view){
+        if(_watchlisted == false){
+            IPortfolio portfolio = Portfolio.getInstance();
+            portfolio.addStock(_stock,1);
+            Toast.makeText(this,"added " + _stock.getCompName() + " to portfolio", Toast.LENGTH_SHORT).show();
         }
     }
 }
