@@ -49,6 +49,11 @@ public class Watchlist implements IWatchlist {
     }
 
     @Override
+    public void removeAllStocks() {
+        _watchlist.clear();
+    }
+
+    @Override
     public boolean hasStock(IStock stock) {
         return _watchlist.containsKey(stock.getSymbol());
     }
