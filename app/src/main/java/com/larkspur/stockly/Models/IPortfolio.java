@@ -12,4 +12,7 @@ public interface IPortfolio {
     Hashtable<IStock,Integer> getPortfolio();
 
     void removeAllStocks();
+
+
+    int getQuantity(String stockSymbol);
 }

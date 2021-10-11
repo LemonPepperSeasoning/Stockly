@@ -69,10 +69,10 @@ public class PorfolioAdapter extends ArrayAdapter {
 
         IStock currentStock = _stocks.get(position);
 
-        return populateWatchList(currentStock, currentListViewItem);
+        return populatePortfolio(currentStock, currentListViewItem);
     }
 
-    private View populateWatchList(IStock currentStock, View currentListView){
+    private View populatePortfolio(IStock currentStock, View currentListView){
         System.out.println("stock list size is " + _stocks.size());
 
         ViewHolder vh = new ViewHolder(currentListView);
@@ -83,12 +83,20 @@ public class PorfolioAdapter extends ArrayAdapter {
         vh._stockSymbol.setText(currentStock.getSymbol());
         vh._stockPrice.setText(currentStock.getPrice().toString());
 
+        IPortfolio p = Portfolio.getInstance();
+        int quantity = p.getQuantity(currentStock.getSymbol());
+        Double totalPrice = currentStock.getPrice()*quantity;
+        vh._stockTotalPrice.setText( totalPrice.toString() );
+        vh._quantityStock.setText( String.valueOf(quantity) );
+
         vh._removeStock.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 IPortfolio portfolio = Portfolio.getInstance();
                 portfolio.removeStock(currentStock,1);
-                _stocks.remove(currentStock);
+                if ( portfolio.getQuantity(currentStock.getSymbol()) == -1){
+                    _stocks.remove(currentStock);
+                }
                 setData(portfolio.getPortfolio());
                 notifyDataSetChanged();
             }

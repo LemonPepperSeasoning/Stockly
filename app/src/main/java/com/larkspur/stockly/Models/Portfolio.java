@@ -69,4 +69,14 @@ public class Portfolio implements IPortfolio{
         _stocks.clear();
         _quantity.clear();
     }
+
+    @Override
+    public int getQuantity(String stockSymbol) {
+        try{
+            int x = _quantity.get(stockSymbol);
+            return x;
+        }catch(NullPointerException e){
+            return -1;
+        }
+    }
 }
