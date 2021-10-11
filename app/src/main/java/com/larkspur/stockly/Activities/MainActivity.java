@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         //  LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
         setupCategoryViews();
-
     }
 
     private void setupCategoryViews(){
@@ -79,13 +78,6 @@ public class MainActivity extends AppCompatActivity {
         fetchStockByCategory(Category.ConsumerDiscretionary);
         fetchStockByCategory(Category.Industrials);
     }
-
-//    public void getData(){
-//        System.out.println("===========HER=============");
-//        StockHandler x = new StockHandler();
-//        IStock y = x.getStock2("FedEx");
-//
-//    }
 
     public void clickMenu(View view) {
         openDrawer(_vh._drawerLayout);
@@ -206,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
         StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
         switch (category) {
             case InformationTechnology:
-
                 _vh._techView.setAdapter(adapter);
                 _vh._techView.setLayoutManager(lm);
                 break;
@@ -225,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 throw new IllegalArgumentException("Category not supported at the moment");
         }
-
     }
 
     public void propgateAdapter(List<IStock> data) {

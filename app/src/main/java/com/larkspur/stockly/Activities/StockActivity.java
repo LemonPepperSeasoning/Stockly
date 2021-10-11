@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -126,7 +127,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         chart.invalidate();
     }
 
-    private void setData(IHistoricalPrice prices){
+    private void setData(@NonNull IHistoricalPrice prices){
         ArrayList<Entry> values = new ArrayList<>();
 
         int index = 0;

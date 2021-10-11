@@ -14,16 +14,6 @@
         android:orientation="vertical">
 
         <include layout="@layout/main_toolbar" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="5dp"
-            android:text="Portfolio"
-            android:textColor="@color/white"
-            android:textSize="34sp"
-
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,54 +36,55 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
+            android:text="Portfolio"
+            android:textColor="@color/white"
+            android:textSize="34sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="5">
 
-            <androidx.cardview.widget.CardView
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/doughnut_chart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:cardCornerRadius="5dp"
-                android:layout_margin="10dp">
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/doughnut_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </androidx.cardview.widget.CardView>
-
+                android:layout_height="match_parent" />
         </LinearLayout>
 
 <!--        replace with listView later. This is a placeholder.-->
-        <LinearLayout
-            android:id="@+id/list_view"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            android:orientation="vertical"
-            android:layout_weight="5">
-
-            <include
-                layout="@layout/portfolio_card"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/list_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp" />
-            <include
-                layout="@layout/portfolio_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
-            <include
-                layout="@layout/portfolio_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
-
-        </LinearLayout>
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:orientation="vertical"
+                android:layout_weight="5">
+                <include
+                    layout="@layout/portfolio_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp" />
+                <include
+                    layout="@layout/portfolio_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+                <include
+                    layout="@layout/portfolio_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"

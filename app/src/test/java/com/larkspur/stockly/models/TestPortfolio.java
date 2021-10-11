@@ -18,7 +18,7 @@ public class TestPortfolio {
 
     @Before
     public void setupPortfolio(){
-        portfolio = new Portfolio();
+        portfolio = Portfolio.getInstance();
     }
 
     @Test
