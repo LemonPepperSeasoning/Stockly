@@ -10,4 +10,6 @@ public interface IPortfolio {
     void removeStock(IStock stock, int quantity);
 
     Hashtable<IStock,Integer> getPortfolio();
+
+    void removeAllStocks();
 }

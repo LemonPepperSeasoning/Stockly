@@ -63,4 +63,10 @@ public class Portfolio implements IPortfolio{
         }
         return x;
     }
+
+    @Override
+    public void removeAllStocks() {
+        _stocks.clear();
+        _quantity.clear();
+    }
 }
