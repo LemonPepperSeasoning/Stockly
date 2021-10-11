@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.StockActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -120,7 +120,9 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="2dp"
+                android:onClick="clickAddWatchlist">
+
 
                 <ImageView
                     android:layout_width="wrap_content"

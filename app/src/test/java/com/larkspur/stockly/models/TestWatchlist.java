@@ -16,7 +16,7 @@ public class TestWatchlist {
 
     @Before
     public void setupPortfolio(){
-        watchlist = new Watchlist();
+        watchlist = Watchlist.getInstance();
     }
 
     @Test

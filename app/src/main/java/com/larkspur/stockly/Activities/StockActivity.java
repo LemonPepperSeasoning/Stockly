@@ -32,6 +32,8 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Stock;
+import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -56,7 +58,8 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     }
     private ViewHolder _vh;
     private IStock _stock;
-
+    private boolean _watchlisted;
+    private IWatchlist _watchlist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,8 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             Intent intent = this.getIntent();
             Bundle bundle = intent.getExtras();
             _stock = (IStock) bundle.getSerializable("stock");
+            _watchlist = Watchlist.getInstance();
+            _watchlisted = _watchlist.hasStock(_stock);
             setupStockView();
 
             Toast.makeText(this, _stock.getSymbol() + " was Launched!", Toast.LENGTH_SHORT).show();
@@ -248,5 +253,19 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     protected void onPause() {
         super.onPause();
         MainActivity.closeDrawer(_drawerLayout);
+    }
+
+
+    public void clickAddWatchlist(View view){
+        if(_watchlisted == false){
+            _watchlist.addStock(_stock);
+            Toast.makeText(this,"added " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
+            _watchlisted = true;
+
+        }else{
+            _watchlist.removeStock(_stock);
+            Toast.makeText(this,"removed " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
+            _watchlisted = false;
+        }
     }
 }
