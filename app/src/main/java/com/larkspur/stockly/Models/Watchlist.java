@@ -11,7 +11,6 @@ public class Watchlist implements IWatchlist {
     private Map<String,IStock> _watchlist;
     private static Watchlist single_instance = null;
 
-
     private Watchlist() {
         _watchlist = new HashMap<>();
     }

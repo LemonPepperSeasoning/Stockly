@@ -1,8 +1,6 @@
 package com.larkspur.stockly.Activities;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,26 +11,25 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
+
+import com.larkspur.stockly.Models.IHistoricalPrice;
+import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
@@ -66,6 +63,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         setContentView(R.layout.activity_stock);
         _drawerLayout = findViewById(R.id.drawer_layout);
         _vh = new ViewHolder();
+
         if (getIntent().getExtras() != null) {
             System.out.println("STOCK DATA HERE\n");
             Intent intent = this.getIntent();
@@ -73,20 +71,24 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _stock = (IStock) bundle.getSerializable("stock");
             _watchlist = Watchlist.getInstance();
             _watchlisted = _watchlist.hasStock(_stock);
+
             setupStockView();
+            setupGraph();
 
             Toast.makeText(this, _stock.getSymbol() + " was Launched!", Toast.LENGTH_SHORT).show();
         }else{
             throw new RuntimeException("Stock not found!");
         }
-        setTitle("CubicLineChartActivity");
 
-//        tvX = findViewById(R.id.tvXMax);
-//        tvY = findViewById(R.id.tvYMax);
+    }
 
-//        seekBarX = findViewById(R.id.seekBar1);
-//        seekBarY = findViewById(R.id.seekBar2);
+    private void setupStockView(){
+        _vh._stockName.setText(_stock.getCompName());
+        _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
+        _vh._stockPrice.setText(_stock.getPrice().toString());
+    }
 
+    private void setupGraph(){
         chart = findViewById(R.id.chart1);
         chart.setViewPortOffsets(0, 0, 0, 0);
         chart.setBackgroundColor(Color.rgb(46, 46, 51));
@@ -119,41 +121,23 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         y.setAxisLineColor(Color.WHITE);
 
         chart.getAxisRight().setEnabled(false);
-
-        // add data
-//        seekBarY.setOnSeekBarChangeListener(this);
-//        seekBarX.setOnSeekBarChangeListener(this);
-//
-//        // lower max, as cubic runs significantly slower than linear
-//        seekBarX.setMax(700);
-//
-//        seekBarX.setProgress(45);
-//        seekBarY.setProgress(100);
-        setData(45, new Float(100));
-
         chart.getLegend().setEnabled(false);
-
         chart.animateXY(2000, 2000);
+
+        setData(_stock.getHistoricalPrice());
 
         // don't forget to refresh the drawing
         chart.invalidate();
     }
 
-    private void setupStockView(){
-        _vh._stockName.setText(_stock.getCompName());
-        _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
-        _vh._stockPrice.setText(_stock.getPrice().toString());
-    }
-
-    private void setData(int count, float range) {
-
+    private void setData(@NonNull IHistoricalPrice prices){
         ArrayList<Entry> values = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
-            float val = (float) (Math.random() * (range + 1)) + 20;
-            values.add(new Entry(i, val));
+        int index = 0;
+        for (Double i : prices.getHistoricalPrice()) {
+            values.add(new Entry(index, i.floatValue()));
+            index++;
         }
-
         LineDataSet set1;
 
         if (chart.getData() != null &&
@@ -266,6 +250,14 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _watchlist.removeStock(_stock);
             Toast.makeText(this,"removed " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = false;
+        }
+    }
+
+    public void clickAddPortfolio(View view){
+        if(_watchlisted == false){
+            IPortfolio portfolio = Portfolio.getInstance();
+            portfolio.addStock(_stock,1);
+            Toast.makeText(this,"added " + _stock.getCompName() + " to portfolio", Toast.LENGTH_SHORT).show();
         }
     }
 }
