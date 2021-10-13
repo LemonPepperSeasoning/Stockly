@@ -89,7 +89,10 @@ public class WatchlistAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(v.getContext(), StockActivity.class);
+                intent.putExtra("Screen", "Watchlist");
+                intent.putExtra("Class", _context.getClass());
                 System.out.println("serializing stock");
+                System.out.println(_context.getClass());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("stock", currentStock);
                 System.out.println(bundle.getSerializable("stock"));

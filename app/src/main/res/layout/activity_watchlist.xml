@@ -24,22 +24,32 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             >
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:src="@drawable/back_arrow"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="bottom"
-                android:paddingBottom="2dp"
-                />
-            <TextView
+            <LinearLayout
+                android:id="@+id/return_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="return"
-                android:textSize="10sp"
-                android:gravity="bottom"
-                android:textColor="@color/white"
-                />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:onClick="clickReturn"
+                >
+
+
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/back_arrow"
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="bottom"
+                    android:paddingBottom="2dp" />
+                <TextView
+                    android:id="@+id/previous_screen_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Return to Category"
+                    android:textSize="10sp"
+                    android:gravity="bottom"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -25,10 +25,12 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _stockSymbol, _stockPrice, _stockPercent;
+        private Class _parent;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             view.setOnClickListener(this);
+            _parent = view.getContext().getClass();
             _stockSymbol = (TextView) view.findViewById(R.id.stock_symbol);
             _stockPrice = (TextView) view.findViewById(R.id.stock_price);
             _stockPercent = (TextView) view.findViewById(R.id.stock_percent);
@@ -39,6 +41,8 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
         public void onClick(View view) {
             IStock stock = _stockList.get(getAdapterPosition());
             Intent intent = new Intent(view.getContext(), StockActivity.class);
+            intent.putExtra("Screen", "Home");
+            intent.putExtra("Class", _parent);
             System.out.println("serializing stock");
             Bundle bundle = new Bundle();
             bundle.putSerializable("stock", stock);
