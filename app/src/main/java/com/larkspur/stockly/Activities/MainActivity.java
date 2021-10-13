@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,10 +26,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
 import com.larkspur.stockly.Models.IStock;
+import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.R;
 import com.larkspur.stockly.Data.StockHandler;
 import com.larkspur.stockly.Models.Category;
@@ -45,14 +48,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ViewHolder _vh;
-
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
 
         DrawerLayout _drawerLayout;
         // StockAdaptor _stockAdaptor;
         RecyclerView _mostPopular;
+        TextView _usernameText;
 
         public ViewHolder() {
             _techView = (RecyclerView) findViewById(R.id.technology_recycle_view);
@@ -60,9 +62,13 @@ public class MainActivity extends AppCompatActivity {
             _industryView = (RecyclerView) findViewById(R.id.industrial_recycle_view);
             _healthView = (RecyclerView) findViewById(R.id.health_recycle_view);
             _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
+            _usernameText = (TextView) findViewById(R.id.username);
+            _drawerLayout = findViewById(R.id.drawer_layout);
         }
     }
 
+    private ViewHolder _vh;
+    private UserInfo _userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +76,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         _vh = new ViewHolder();
         //   _categories = (ListView) findViewById(R.id.categories_view);
-        _vh._drawerLayout = findViewById(R.id.drawer_layout);
+
+        _userInfo = UserInfo.getInstance();
+        _vh._usernameText.setText("Hi " + _userInfo.getUsername());
 
         //set horizontal recycler view
         //  LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);

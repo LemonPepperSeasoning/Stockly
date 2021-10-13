@@ -2,24 +2,60 @@ package com.larkspur.stockly.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private class ViewHolder {
+        EditText _usernameTextField;
+
+        public ViewHolder() {
+            _usernameTextField = (EditText) findViewById(R.id.usernameTextfield);
+        }
+    }
+
+    private ViewHolder _vh;
+    private UserInfo _userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        _userInfo = UserInfo.getInstance();
+
+        _vh =  new ViewHolder();
+        _vh._usernameTextField.setText(_userInfo.getUsername());
+        _vh._usernameTextField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                String username = _vh._usernameTextField.getText().toString();
+                _userInfo.setUsername(username);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
 
         ConstraintLayout card = findViewById(R.id.base_expandablelayout);
         ImageButton button = findViewById(R.id.expand_button_5);
@@ -71,5 +107,18 @@ public class SettingsActivity extends AppCompatActivity {
         }else {
             MainActivity.redirectActivity(this, activity);
         }
+    }
+
+
+    public void clearPortfolio(){
+
+    }
+
+    public void clearWatchlist(){
+
+    }
+
+    public void setName(){
+
     }
 }
