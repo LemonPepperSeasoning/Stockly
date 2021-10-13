@@ -36,7 +36,7 @@ public class Stock implements IStock {
                  Category category,
                  String subIndustry,
                  String location,
-                 HistoricalPrice historicalPrice) {
+                 IHistoricalPrice historicalPrice) {
         _companyName = companyName;
         _symbol = symbol;
         _category = category;
@@ -137,9 +137,4 @@ public class Stock implements IStock {
         _location = location;
 
     }
-
-
-//    public void setSector(String sector){
-//        _category = Category.valueOf(sector);
-//    }
 }

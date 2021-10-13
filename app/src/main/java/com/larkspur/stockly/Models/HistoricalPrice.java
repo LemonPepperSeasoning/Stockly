@@ -28,14 +28,20 @@ public class HistoricalPrice implements IHistoricalPrice{
     }
 
     @Override
-    public Float getLast24HourChange() {
-        //TODO : implement computation
-        return null;
+    public Double getLast24HourChange() {
+        Double todayPrice = _historicalPrice.get(_historicalPrice.size()-1);
+        Double yesterdayPrice = _historicalPrice.get(_historicalPrice.size()-2);
+
+        Double change = (todayPrice-yesterdayPrice)/yesterdayPrice;
+        return change;
     }
 
     @Override
-    public Float getLastWeekChange() {
-        //TODO : implement computation
-        return null;
+    public Double getLastWeekChange() {
+        Double todayPrice = _historicalPrice.get(_historicalPrice.size()-1);
+        Double weekBeforePrice = _historicalPrice.get(_historicalPrice.size()-8);
+
+        Double change = (todayPrice-weekBeforePrice)/weekBeforePrice;
+        return change;
     }
 }
