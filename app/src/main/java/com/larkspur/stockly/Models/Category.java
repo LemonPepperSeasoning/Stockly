@@ -29,11 +29,9 @@ public enum Category {
     }
 
     public static Category getValue(String value){
-        System.out.println(value);
         Category category;
         String newValue = value.replaceAll(" ", "");
-        System.out.println(newValue);
-      category = Category.valueOf(newValue);
+        category = Category.valueOf(newValue);
         return category;
     }
 }
