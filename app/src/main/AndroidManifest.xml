@@ -25,6 +25,9 @@
             android:name=".Activities.StockActivity"
             android:exported="true" />
         <activity
+            android:name=".Activities.ListActivity"
+            android:exported="true" />
+        <activity
             android:name=".Activities.MainActivity"
             android:exported="true">
             <intent-filter>

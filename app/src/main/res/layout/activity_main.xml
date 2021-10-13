@@ -24,8 +24,7 @@
             android:layout_margin="5dp"
             android:text="Most Viewed"
             android:textColor="@color/white"
-            android:textSize="34sp"
-            />
+            android:textSize="34sp" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -60,8 +59,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -73,24 +72,33 @@
                         android:textColor="@color/white"
                         android:textSize="20sp" />
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/technology_browse_all_view"
+                        android:tag="technology"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="0"
-                        android:text="browse all"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:onClick="browseAll">
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/back_arrow" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="0"
+                            android:text="browse all"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:src="@drawable/back_arrow" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -110,8 +118,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -123,24 +131,33 @@
                         android:textColor="@color/white"
                         android:textSize="20sp" />
 
-                    <TextView
+                    <LinearLayout
+                        android:tag="finance"
+                        android:id="@+id/finance_browse_all_view"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="0"
-                        android:text="browse all"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:onClick="browseAll">
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/back_arrow" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="0"
+                            android:text="browse all"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:src="@drawable/back_arrow" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -160,8 +177,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -173,24 +190,33 @@
                         android:textColor="@color/white"
                         android:textSize="20sp" />
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/industrial_browse_all_view"
+                        android:tag="industrials"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="0"
-                        android:text="browse all"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:onClick="browseAll">
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/back_arrow" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="0"
+                            android:text="browse all"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:src="@drawable/back_arrow" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -210,9 +236,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
                     android:orientation="horizontal">
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -223,24 +250,33 @@
                         android:textColor="@color/white"
                         android:textSize="20sp" />
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/healthcare_browse_all_view"
+                        android:tag="health care"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_gravity="bottom"
-                        android:layout_weight="0"
-                        android:text="browse all"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:onClick="browseAll">
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_gravity="bottom"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginBottom="2dp"
-                        android:src="@drawable/back_arrow" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="0"
+                            android:text="browse all"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="bottom"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:src="@drawable/back_arrow" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
