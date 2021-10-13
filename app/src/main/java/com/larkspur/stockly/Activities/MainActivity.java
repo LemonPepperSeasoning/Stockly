@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -291,6 +292,35 @@ public class MainActivity extends AppCompatActivity {
                 break;
             default:
                 throw new IllegalArgumentException("Category not supported at the moment");
+        }
+    }
+
+    public void browseAll(View view){
+        System.out.println(view.getResources().getResourceName(view.getId()));
+        System.out.println(view.getTag());
+        String categoryView = view.getTag().toString();
+        Intent intent = new Intent(view.getContext(),ListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        switch (categoryView){
+            case "technology":
+                intent.putExtra("Category","Information Technology");
+                view.getContext().startActivity(intent);
+                break;
+            case "finance":
+                intent.putExtra("Category","Consumer Discretionary");
+                view.getContext().startActivity(intent);
+                break;
+            case "industrials":
+                intent.putExtra("Category","Industrials");
+                view.getContext().startActivity(intent);
+                break;
+            case "health care":
+                intent.putExtra("Category","Health Care");
+                view.getContext().startActivity(intent);
+                    break;
+
+            default:
+                throw new IllegalArgumentException("category not found");
         }
     }
 
