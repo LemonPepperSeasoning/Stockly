@@ -4,10 +4,17 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -287,10 +294,41 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     }
 
     public void clickAddPortfolio(View view){
+
+
         if(_watchlisted == false){
             IPortfolio portfolio = Portfolio.getInstance();
-            portfolio.addStock(_stock,1);
+           // portfolio.addStock(_stock,1);
             Toast.makeText(this,"added " + _stock.getCompName() + " to portfolio", Toast.LENGTH_SHORT).show();
+
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.add_portfolio_popup,null);
+            PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT,true);
+            popupWindow.showAtLocation(view, Gravity.CENTER,0,0);
+//            popupView.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View v, MotionEvent event) {
+//                    popupWindow.dismiss();
+//                    return true;
+//                }
+//            });
+
+            Button closePopup = (Button) popupView.findViewById(R.id.add_to_portfolio_confirmbutton);
+            EditText numberOfStocks = (EditText) popupView.findViewById(R.id.add_to_portfolio_edittext);
+            closePopup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println(numberOfStocks.getText().toString());
+                    if(!numberOfStocks.getText().toString().equals(null)) {
+                        int numStocks = Integer.parseInt(numberOfStocks.getText().toString());
+                        portfolio.addStock(_stock,numStocks);
+                    }else{
+                        Toast.makeText(view.getContext(), "A number needs to be input", Toast.LENGTH_SHORT).show();
+                    }
+
+                    popupWindow.dismiss();
+                }
+            });
         }
     }
 }
