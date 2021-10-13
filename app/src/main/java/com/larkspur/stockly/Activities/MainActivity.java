@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.security.identity.DocTypeNotSupportedException;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,9 +19,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
 import com.larkspur.stockly.Models.IStock;
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set horizontal recycler view
         //  LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        fetchStockMostView();
 
         setupCategoryViews();
     }
@@ -161,12 +167,12 @@ public class MainActivity extends AppCompatActivity {
                         stockList.add(tmpStock);
                     }
 
-                    System.out.println("============================");
-                    System.out.println(stockList.size());
-                    for (IStock i : stockList) {
-                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
-                    }
-                    System.out.println("============================");
+//                    System.out.println("============================");
+//                    System.out.println(stockList.size());
+//                    for (IStock i : stockList) {
+//                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
+//                    }
+//                    System.out.println("============================");
 
                     if (stockList.size() > 0) {
                         Log.i("Getting colors", "Success");
@@ -187,11 +193,81 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchStockMostView(){
+        List<IStock> stockList = new LinkedList<>();
+
+        // Getting numbers collection from Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        List<DocumentReference> stockRef = new ArrayList<>();
+        db.collection("viewcount")
+                .orderBy("viewcount", Query.Direction.DESCENDING)
+                .limit(10)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    QuerySnapshot results = task.getResult();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d("----------", document.getId() + " => " + document.getData());
+                        Map<String, Object> data = document.getData();
+
+                        stockRef.add((DocumentReference) data.get("company"));
+                        DocumentReference ref = (DocumentReference)data.get("company");
+                        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+
+                                    DocumentSnapshot results = task.getResult();
+                                    Log.d("============", results.getId() + " => " + results.getData());
+                                    Map<String, Object> data = results.getData();
+
+                                    HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
+                                    IStock tmpStock = new Stock(
+                                            ((String) data.get("Name")),
+                                            ((String) data.get("Symbol")),
+                                            (Category.getValue((String) data.get("Category"))),
+                                            ((String) data.get("Subindustry")),
+                                            ((String) data.get("location")),
+                                            tmpHistoricalPrice);
+                                    stockList.add(tmpStock);
+                                    Log.i("?????", String.valueOf(stockList.size()) );
+
+                                    if(stockList.size() == 10){
+                                        propogateMostViewAdapter(stockList);
+                                    }
+
+                                } else {
+//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+
+                } else {
+//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
+
     private void propagateAdaptor(List<IStock> data) {
         StockAdaptor stockAdapter = new StockAdaptor(this, R.layout.stock_most_viewed_recycler_view,
                 data);
 //        vh._mostPopular.setAdapter(stockAdapter);
 //        vh.listView.setVisibility(View.VISIBLE);
+    }
+
+    private void propogateMostViewAdapter(List<IStock> data){
+        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        MostViewAdapter adapter = new MostViewAdapter(data);
+        _vh._mostPopular.setAdapter(adapter);
+        _vh._mostPopular.setLayoutManager(lm);
     }
 
     private void propogateCatAdapter(List<IStock> data, Category category) {

@@ -2,7 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-   >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@android:color/transparent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_toRightOf="@id/status_view"
-            android:src="@drawable/settingscomponent" />
+            android:background="@color/white"
+            android:src="@drawable/apple" />
 
         <TextView
             android:id="@+id/stock_name_view"
@@ -37,6 +39,7 @@
         android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/stock_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/stock_name_view"
