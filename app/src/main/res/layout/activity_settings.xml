@@ -20,7 +20,7 @@
             android:layout_marginTop="30dp"
             android:backgroundTint="#00FFFFFF"
             android:contentDescription="Back button"
-            android:onClick="clickBack"
+            android:onClick="clickReturn"
             android:padding="0dp"
             android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"

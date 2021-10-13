@@ -16,6 +16,7 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -59,10 +60,16 @@ public class PortfolioActivity extends AppCompatActivity {
     private class ViewHolder {
         ListView _stockList;
         DrawerLayout _drawerLayout;
+        TextView _previousScreen;
+        LinearLayout _return;
+
+
 
         public ViewHolder() {
             _stockList = findViewById(R.id.portfolio_stocklist);
             _drawerLayout = findViewById(R.id.drawer_layout);
+            _return = findViewById(R.id.return_view);
+            _previousScreen = findViewById(R.id.previous_screen_text_view);
         }
     }
 
@@ -78,9 +85,17 @@ public class PortfolioActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_portfolio);
-
         _vh = new ViewHolder();
+      
         _portfolio = Portfolio.getInstance();
+
+        if (getIntent().getExtras() != null) {
+            Intent intent = this.getIntent();
+            String previousScreen = intent.getStringExtra("Screen");
+            _vh._previousScreen.setText("Return to " + previousScreen);
+        }else{
+            throw new RuntimeException("Something went wrong : previous screen not found");
+        }
 
         setPiechart();
         displayData();
@@ -256,5 +271,16 @@ public class PortfolioActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         MainActivity.closeDrawer(_vh._drawerLayout);
+    }
+    public void clickReturn(View view){
+        Intent intent = this.getIntent();
+        Class activity = (Class) intent.getExtras().getSerializable("Class");
+        if(activity == StockActivity.class){
+            Bundle bundle = intent.getExtras();
+            intent.putExtras(bundle);
+            MainActivity.redirectActivity(this,activity,bundle);
+        }else {
+            MainActivity.redirectActivity(this, activity);
+        }
     }
 }

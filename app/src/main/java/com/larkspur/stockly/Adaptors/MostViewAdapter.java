@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +25,12 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _stockSymbol, _stockPrice;
 
+        private Class _parent;
+
         public ViewHolder(@NonNull View view) {
             super(view);
+            _parent = view.getContext().getClass();
+
             view.setOnClickListener(this);
             _stockSymbol = (TextView) view.findViewById(R.id.stock_name_view);
             _stockPrice = (TextView) view.findViewById(R.id.stock_price);
@@ -35,6 +40,8 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
         public void onClick(View view) {
             IStock stock = _stockList.get(getAdapterPosition());
             Intent intent = new Intent(view.getContext(), StockActivity.class);
+            intent.putExtra("Screen", "Home");
+            intent.putExtra("Class", _parent);
             System.out.println("serializing stock");
             Bundle bundle = new Bundle();
             bundle.putSerializable("stock", stock);
@@ -55,6 +62,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
 
     private List<IStock> _stockList;
     private Context _context;
+    private ViewGroup _parent;
 
     public MostViewAdapter(List<IStock> stockList){
         _stockList = stockList;
@@ -64,6 +72,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        _parent = parent;
         _context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(_context);
 

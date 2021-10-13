@@ -11,24 +11,31 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".Activities.SettingsActivity"
+            android:label="Settings"
             android:exported="true" />
         <activity
             android:name=".Activities.HelpActivity"
+            android:label="Help"
             android:exported="true" />
         <activity
             android:name=".Activities.WatchlistActivity"
+            android:label="Watchlist"
             android:exported="true" />
         <activity
             android:name=".Activities.PortfolioActivity"
+            android:label="Portfolio"
             android:exported="true" />
         <activity
             android:name=".Activities.StockActivity"
+            android:label="Stock"
             android:exported="true" />
         <activity
             android:name=".Activities.ListActivity"
+            android:label="Category"
             android:exported="true" />
         <activity
             android:name=".Activities.MainActivity"
+            android:label="Home"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

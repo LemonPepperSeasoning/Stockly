@@ -128,6 +128,20 @@ public class MainActivity extends AppCompatActivity {
 
     public static void redirectActivity(Activity activity, Class aClass) {
         Intent intent = new Intent(activity, aClass);
+        String screenName = activity.getTitle().toString();
+        System.out.println("this is the screen "+ screenName);
+        intent.putExtra("Screen", screenName);
+        intent.putExtra("Class",activity.getClass());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
+
+    public static void redirectActivity(Activity activity, Class aClass, Bundle stock){
+        Intent intent = new Intent(activity, aClass);
+        String screenName = activity.getTitle().toString();
+        intent.putExtra("Screen", screenName);
+        intent.putExtra("Class",activity.getClass());
+        intent.putExtras(stock);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
@@ -301,6 +315,8 @@ public class MainActivity extends AppCompatActivity {
         String categoryView = view.getTag().toString();
         Intent intent = new Intent(view.getContext(),ListActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("Screen", "Home");
+        intent.putExtra("Class",this.getClass());
         switch (categoryView){
             case "technology":
                 intent.putExtra("Category","Information Technology");

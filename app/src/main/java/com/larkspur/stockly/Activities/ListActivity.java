@@ -1,9 +1,11 @@
 package com.larkspur.stockly.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,13 +38,16 @@ public class ListActivity extends AppCompatActivity {
     private class ViewHolder{
         DrawerLayout _drawerLayout;
         ListView _listView;
-        TextView _categoryText;
+        TextView _categoryText,_previousScreen;
+        LinearLayout _return;
 
 
         public ViewHolder(){
             _drawerLayout = findViewById(R.id.drawer_layout);
             _listView = findViewById(R.id.list_view);
             _categoryText = findViewById(R.id.category_text_view);
+            _return = findViewById(R.id.return_view);
+            _previousScreen = findViewById(R.id.previous_screen_text_view);
         }
     }
 
@@ -57,6 +62,9 @@ public class ListActivity extends AppCompatActivity {
         _vh = new ViewHolder();
         if (getIntent().getExtras() != null) {
             Intent intent = this.getIntent();
+            System.out.println(intent.getExtras().getSerializable("Class"));
+            String previousScreen = intent.getStringExtra("Screen");
+            _vh._previousScreen.setText("Return to " + previousScreen);
             String stringCategory = intent.getStringExtra("Category");
             _vh._categoryText.setText(stringCategory);
             Category category = Category.getValue(stringCategory);
@@ -151,6 +159,12 @@ public class ListActivity extends AppCompatActivity {
 
     public void clickHelp(View view) {
         MainActivity.redirectActivity(this,HelpActivity.class);
+    }
+
+    public void clickReturn(View view){
+        Intent intent = this.getIntent();
+     Class activity = (Class) intent.getExtras().getSerializable("Class");
+        MainActivity.redirectActivity(this, activity);
     }
 
     @Override
