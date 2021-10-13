@@ -1,16 +1,20 @@
 package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Watchlist;
@@ -22,7 +26,7 @@ public class WatchlistAdapter extends ArrayAdapter {
 
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice;
-        LinearLayout _removeStock;
+        LinearLayout _removeStock,_stockStats;
 
 
         public ViewHolder(View currentListViewItem) {
@@ -30,6 +34,7 @@ public class WatchlistAdapter extends ArrayAdapter {
             _stockSymbol = currentListViewItem.findViewById(R.id.stock_symbol_view);
             _stockPrice = currentListViewItem.findViewById(R.id.stock_price_view);
             _removeStock = currentListViewItem.findViewById(R.id.remove_item_view);
+            _stockStats = currentListViewItem.findViewById(R.id.stock_stats_view);
         }
     }
 
@@ -79,6 +84,26 @@ public class WatchlistAdapter extends ArrayAdapter {
                 notifyDataSetChanged();
             }
         });
+
+        vh._stockStats.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(v.getContext(), StockActivity.class);
+                System.out.println("serializing stock");
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("stock", currentStock);
+                System.out.println(bundle.getSerializable("stock"));
+                IStock test = (IStock) bundle.getSerializable("stock");
+                System.out.println(test.getCompName());
+
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+                Toast.makeText(_context, currentStock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         return currentListView;
     }
