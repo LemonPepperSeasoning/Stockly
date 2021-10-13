@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,13 +45,16 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     private DrawerLayout _drawerLayout;
 
     private class ViewHolder {
-        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent;
+        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen;
+        LinearLayout _return;
 
         public ViewHolder() {
             _stockName = findViewById(R.id.stock_name);
             _stockNameAndSymbol = findViewById(R.id.stock_name_and_symbol);
             _stockPrice = findViewById(R.id.stock_price);
             _stockPercent = findViewById(R.id.stock_percent);
+            _return = findViewById(R.id.return_view);
+            _previousScreen = findViewById(R.id.previous_screen_text_view);
         }
     }
     private ViewHolder _vh;
@@ -68,9 +72,15 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             System.out.println("STOCK DATA HERE\n");
             Intent intent = this.getIntent();
             Bundle bundle = intent.getExtras();
+            System.out.println(bundle.getSerializable("stock"));
             _stock = (IStock) bundle.getSerializable("stock");
             _watchlist = Watchlist.getInstance();
             _watchlisted = _watchlist.hasStock(_stock);
+            System.out.println("STOCK STARTS HERE");
+            System.out.println(intent.getStringExtra("Screen"));
+            System.out.println("previous class: "+ intent.getExtras().getSerializable("Class"));
+            String previousScreen = intent.getStringExtra("Screen");
+            _vh._previousScreen.setText("Return to " + previousScreen);
 
             setupStockView();
             setupGraph();
@@ -214,29 +224,52 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     }
 
     public void clickHome(View view) {
-        MainActivity.redirectActivity(this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stock", _stock);
+        MainActivity.redirectActivity(this, MainActivity.class,bundle);
     }
 
     public void clickPortfolio(View view) {
-        MainActivity.redirectActivity(this, PortfolioActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stock", _stock);
+        MainActivity.redirectActivity(this, PortfolioActivity.class,bundle);
     }
 
     public void clickWatchlist(View view) {
-        MainActivity.redirectActivity(this, WatchlistActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stock", _stock);
+        MainActivity.redirectActivity(this, WatchlistActivity.class,bundle);
     }
 
     public void clickSettings(View view) {
-        MainActivity.redirectActivity(this, SettingsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stock", _stock);
+        MainActivity.redirectActivity(this, SettingsActivity.class,bundle);
     }
 
     public void clickHelp(View view) {
-        MainActivity.redirectActivity(this, HelpActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stock", _stock);
+        MainActivity.redirectActivity(this, HelpActivity.class, bundle);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         MainActivity.closeDrawer(_drawerLayout);
+    }
+
+    public void clickReturn(View view){
+        Intent intent = this.getIntent();
+        Class activity = (Class) intent.getExtras().getSerializable("Class");
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("stock", _stock);
+        System.out.println(bundle.getSerializable("stock"));
+        IStock test = (IStock) bundle.getSerializable("stock");
+        System.out.println(test.getCompName());
+
+        intent.putExtras(bundle);
+        MainActivity.redirectActivity(this, activity,bundle);
     }
 
 
