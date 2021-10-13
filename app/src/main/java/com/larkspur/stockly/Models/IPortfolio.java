@@ -13,6 +13,9 @@ public interface IPortfolio {
 
     void removeAllStocks();
 
-
     int getQuantity(String stockSymbol);
+
+    Double getTotalValue();
+
+    Double getTotal24HrChange();
 }

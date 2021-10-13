@@ -79,4 +79,31 @@ public class Portfolio implements IPortfolio{
             return -1;
         }
     }
+
+    @Override
+    public Double getTotalValue(){
+        Double total = 0.0;
+        for (String s : _stocks.keySet()){
+            total += _stocks.get(s).getPrice() * _quantity.get(s);
+        }
+        return total;
+    }
+
+    public Double getYesterdaysValue(){
+        Double total = 0.0;
+        for (String s : _stocks.keySet()){
+            total += _stocks.get(s).getHistoricalPrice().getYesterdaysPrice() * _quantity.get(s);
+        }
+        return total;
+    }
+
+    @Override
+    public Double getTotal24HrChange(){
+
+        Double todayValue = getTotalValue();
+        Double yesterday = getYesterdaysValue();
+        Double change = (todayValue-yesterday)/yesterday;
+        return change;
+    }
+
 }

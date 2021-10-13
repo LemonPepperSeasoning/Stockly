@@ -7,6 +7,8 @@ public interface IHistoricalPrice extends Serializable {
 
     public Double getPrice();
 
+    public Double getYesterdaysPrice();
+
     public List<Double> getHistoricalPrice();
 
     public Float getLast24HourChange();
