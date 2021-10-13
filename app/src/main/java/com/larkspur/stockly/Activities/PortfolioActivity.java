@@ -80,12 +80,12 @@ public class PortfolioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_portfolio);
 
         _vh = new ViewHolder();
+        _portfolio = Portfolio.getInstance();
 
         setPiechart();
         displayData();
     }
     private void displayData(){
-        _portfolio = Portfolio.getInstance();
         setData(_portfolio.getPortfolio());
         Toast.makeText(this,"watchlist size is " + _portfolio.getPortfolio().size(), Toast.LENGTH_SHORT).show();;
         if(_portfolio.getPortfolio().size()>0){
@@ -199,16 +199,28 @@ public class PortfolioActivity extends AppCompatActivity {
     }
 
     private SpannableString generateCenterSpannableText() {
-        SpannableString s = new SpannableString("Total value:\n$10640\nToday:+0.6%");
+        Double totalValue = _portfolio.getTotalValue();
+        Double percentageChange =_portfolio.getTotal24HrChange();
+
+        String topLine = "Total value:\n";
+        String middleLine = "$"+String.format("%.2f",totalValue) +"\n";
+        String percentage = String.format("%.2f",percentageChange)+"%";
+        String bottomLine  = "Today:"+percentage;
+
+        SpannableString s = new SpannableString(topLine+middleLine+bottomLine);
+
         s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2.2f), 0, topLine.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), topLine.length(), s.length() - bottomLine.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2.0f), topLine.length(), s.length() - bottomLine.length(), 0);
 
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, 13, 0);
-
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 13, s.length() - 15, 0);
-        s.setSpan(new RelativeSizeSpan(1.2f), 13, s.length() - 11, 0);
-
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 11, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 11, s.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length()-bottomLine.length(), s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(1.8f), s.length()-bottomLine.length(), s.length(), 0);
+        if (percentageChange >= 0){
+            s.setSpan(new ForegroundColorSpan(Color.GREEN), s.length()-percentage.length(), s.length(), 0);
+        }else{
+            s.setSpan(new ForegroundColorSpan(Color.RED), s.length()-percentage.length(), s.length(), 0);
+        }
         return s;
     }
 

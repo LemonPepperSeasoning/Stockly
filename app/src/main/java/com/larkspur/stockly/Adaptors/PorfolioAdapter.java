@@ -2,6 +2,11 @@ package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,8 +88,8 @@ public class PorfolioAdapter extends ArrayAdapter {
         vh._stockSymbol.setText(currentStock.getSymbol());
         vh._stockPrice.setText(currentStock.getPrice().toString());
 
-        IPortfolio p = Portfolio.getInstance();
-        int quantity = p.getQuantity(currentStock.getSymbol());
+        IPortfolio portfolio = Portfolio.getInstance();
+        int quantity = portfolio.getQuantity(currentStock.getSymbol());
         Double totalPrice = currentStock.getPrice()*quantity;
         vh._stockTotalPrice.setText( totalPrice.toString() );
         vh._quantityStock.setText( String.valueOf(quantity) );
@@ -98,6 +103,7 @@ public class PorfolioAdapter extends ArrayAdapter {
                     _stocks.remove(currentStock);
                 }
                 setData(portfolio.getPortfolio());
+                _chart.setCenterText(generateCenterSpannableText(portfolio));
                 notifyDataSetChanged();
             }
         });
@@ -160,6 +166,33 @@ public class PorfolioAdapter extends ArrayAdapter {
         _chart.highlightValues(null);
 
         _chart.invalidate();
+    }
+
+
+    private SpannableString generateCenterSpannableText(IPortfolio portfolio) {
+        Double totalValue = portfolio.getTotalValue();
+        Double percentageChange =portfolio.getTotal24HrChange();
+
+        String topLine = "Total value:\n";
+        String middleLine = "$"+String.format("%.2f",totalValue) +"\n";
+        String percentage = String.format("%.2f",percentageChange)+"%";
+        String bottomLine  = "Today:"+percentage;
+
+        SpannableString s = new SpannableString(topLine+middleLine+bottomLine);
+
+        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2.2f), 0, topLine.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), topLine.length(), s.length() - bottomLine.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2.0f), topLine.length(), s.length() - bottomLine.length(), 0);
+
+        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length()-bottomLine.length(), s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(1.8f), s.length()-bottomLine.length(), s.length(), 0);
+        if (percentageChange >= 0){
+            s.setSpan(new ForegroundColorSpan(Color.GREEN), s.length()-percentage.length(), s.length(), 0);
+        }else{
+            s.setSpan(new ForegroundColorSpan(Color.RED), s.length()-percentage.length(), s.length(), 0);
+        }
+        return s;
     }
 
 }

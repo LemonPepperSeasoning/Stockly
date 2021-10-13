@@ -18,6 +18,11 @@ public class HistoricalPrice implements IHistoricalPrice{
     }
 
     @Override
+    public Double getYesterdaysPrice() {
+        return _historicalPrice.get(_historicalPrice.size()-2);
+    }
+
+    @Override
     public List<Double> getHistoricalPrice() {
         return _historicalPrice;
     }
