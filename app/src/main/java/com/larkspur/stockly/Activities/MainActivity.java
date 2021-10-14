@@ -113,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void clickSearch(View view) {
+        redirectActivity(this, SearchActivity.class);
+    }
+
     public void clickHome(View view) {
         closeDrawer(_vh._drawerLayout);
     }
