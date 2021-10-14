@@ -2,6 +2,7 @@ package com.larkspur.stockly.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.larkspur.stockly.Activities.Search.StockNames;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
 import com.larkspur.stockly.Models.IStock;
@@ -37,9 +40,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private ViewHolder _vh;
+    ListView list;
+    com.larkspur.stockly.Activities.Search.SearchListViewAdaptor adaptor;
+    SearchView editsearch;
+    String[] stockNameList;
+    ArrayList<StockNames> arraylist = new ArrayList<StockNames>();
 
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
@@ -53,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             _financeView = (RecyclerView) findViewById(R.id.finance_recycle_view);
             _industryView = (RecyclerView) findViewById(R.id.industrial_recycle_view);
             _healthView = (RecyclerView) findViewById(R.id.health_recycle_view);
-            _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
+//            _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
         }
     }
 
@@ -71,6 +79,52 @@ public class MainActivity extends AppCompatActivity {
 
         setupCategoryViews();
 
+        //        =======================Search functionality=============================
+
+        // Generate sample data
+
+        stockNameList = new String[]{"Amazon", "Apple", "Microsoft",
+                "Facebook", "Google", "Alphabet", "Tesla", "NVIDIA",
+                "Berkshire","JPMorgan","VISA"};
+
+        // Locate the ListView in listview_main.xml
+        list = (ListView) findViewById(R.id.searchList);
+
+        for (int i = 0; i < stockNameList.length; i++) {
+            StockNames stockNames = new StockNames(stockNameList[i]);
+            // Binds all strings into an array
+            arraylist.add(stockNames);
+        }
+
+        // Pass results to SearchListViewAdapter Class
+        adaptor = new com.larkspur.stockly.Activities.Search.SearchListViewAdaptor(this, arraylist);
+
+        // Binds the Adapter to the ListView
+        list.setAdapter(adaptor);
+
+        // Locate the EditText in listview_main.xml
+        editsearch = (SearchView) findViewById(R.id.search);
+        editsearch.setOnQueryTextListener(this);
+
+        // Set up the searchbar settings
+        editsearch.clearFocus();
+        editsearch.requestFocusFromTouch();
+
+//        ========================================================================
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String text = newText;
+        adaptor.filter(text);
+        return false;
     }
 
     private void setupCategoryViews(){
@@ -78,6 +132,18 @@ public class MainActivity extends AppCompatActivity {
         fetchStockByCategory(Category.InformationTechnology);
         fetchStockByCategory(Category.ConsumerDiscretionary);
         fetchStockByCategory(Category.Industrials);
+    }
+
+    public void clickSearch(View view) {
+        Log.d("fail","did not register ===========================================");
+        ListView listview = findViewById(R.id.searchList);
+        listview.setVisibility(View.VISIBLE);
+
+        // Show the keyboard
+        editsearch.setFocusable(true);
+        editsearch.setIconified(false);
+        editsearch.requestFocusFromTouch();
+
     }
 
 //    public void getData(){

@@ -1,6 +1,7 @@
 package com.larkspur.stockly.Activities.Search;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -81,6 +82,7 @@ public class SearchTemplateActivity extends AppCompatActivity implements SearchV
         adaptor.filter(text);
         return false;
     }
+
 
     public void clickMenu(View view){
         MainActivity.openDrawer(_drawerLayout);
