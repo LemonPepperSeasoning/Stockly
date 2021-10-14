@@ -1,4 +1,4 @@
-package com.larkspur.stockly.Activities.Search;
+package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.larkspur.stockly.Activities.Search.StockNames;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;

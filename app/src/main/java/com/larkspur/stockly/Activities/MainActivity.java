@@ -12,9 +12,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,28 +22,25 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Activities.Search.StockNames;
+import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
-import com.larkspur.stockly.Data.StockHandler;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
-import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Stock;
-import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private ViewHolder _vh;
     ListView list;
-    com.larkspur.stockly.Activities.Search.SearchListViewAdaptor adaptor;
+    SearchListViewAdaptor adaptor;
     SearchView editsearch;
     String[] stockNameList;
     ArrayList<StockNames> arraylist = new ArrayList<StockNames>();
@@ -97,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         // Pass results to SearchListViewAdapter Class
-        adaptor = new com.larkspur.stockly.Activities.Search.SearchListViewAdaptor(this, arraylist);
+        adaptor = new SearchListViewAdaptor(this, arraylist);
 
         // Binds the Adapter to the ListView
         list.setAdapter(adaptor);
@@ -135,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public void clickSearch(View view) {
-        Log.d("fail","did not register ===========================================");
+//        Log.d("fail","did not register ===========================================");
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.VISIBLE);
 
@@ -144,6 +140,30 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         editsearch.setIconified(false);
         editsearch.requestFocusFromTouch();
 
+        // Show text
+        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setCursorVisible(true);
+    }
+
+    public void closeSearch(View view) {
+        Log.d("pass","registered ===========================================");
+        // Collapse searchList
+        ListView listview = findViewById(R.id.searchList);
+        listview.setVisibility(View.GONE);
+
+        //Hide keyboard
+        editsearch.clearFocus();
+        editsearch.requestFocusFromTouch();
+
+        //Stop blinking in searchbar
+        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setCursorVisible(false);
+
+//        searchEditText.setTextColor(Color.TRANSPARENT);
+//        searchEditText.setHintTextColor(Color.TRANSPARENT);
+
+        //Clear text in searchbar
+        searchEditText.setText("");
     }
 
 //    public void getData(){

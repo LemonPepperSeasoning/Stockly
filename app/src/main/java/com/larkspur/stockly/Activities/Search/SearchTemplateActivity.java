@@ -1,7 +1,6 @@
 package com.larkspur.stockly.Activities.Search;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -13,6 +12,7 @@ import com.larkspur.stockly.Activities.HelpActivity;
 import com.larkspur.stockly.Activities.MainActivity;
 import com.larkspur.stockly.Activities.PortfolioActivity;
 import com.larkspur.stockly.Activities.SettingsActivity;
+import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class SearchTemplateActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
     DrawerLayout _drawerLayout;
     ListView list;
-    com.larkspur.stockly.Activities.Search.SearchListViewAdaptor adaptor;
+    SearchListViewAdaptor adaptor;
     SearchView editsearch;
     String[] stockNameList;
     ArrayList<StockNames> arraylist = new ArrayList<StockNames>();
@@ -57,7 +57,7 @@ public class SearchTemplateActivity extends AppCompatActivity implements SearchV
         }
 
         // Pass results to SearchListViewAdapter Class
-        adaptor = new com.larkspur.stockly.Activities.Search.SearchListViewAdaptor(this, arraylist);
+        adaptor = new SearchListViewAdaptor(this, arraylist);
 
         // Binds the Adapter to the ListView
         list.setAdapter(adaptor);
