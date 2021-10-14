@@ -1,13 +1,14 @@
 package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.larkspur.stockly.Activities.Search.StockNames;
+import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -27,19 +28,25 @@ public class SearchListViewAdaptor extends BaseAdapter {
 
     Context mContext;
     LayoutInflater inflater;
-    private List<StockNames> _stockNamesList = null;
-    private ArrayList<StockNames> _arraylist;
+    private List<IStock> _stockNamesList = null;
+    private List<IStock> _arraylist;
 
-    public SearchListViewAdaptor(Context context, List<StockNames> stockNamesList) {
+    public SearchListViewAdaptor(Context context, List<IStock> stockNamesList) {
         mContext = context;
         _stockNamesList = stockNamesList;
         inflater = LayoutInflater.from(mContext);
-        _arraylist = new ArrayList<StockNames>();
+        _arraylist = new ArrayList<IStock>();
         _arraylist.addAll(stockNamesList);
     }
 
     public class ViewHolder {
         TextView name;
+    }
+
+    public void addData(List<IStock> data){
+        _stockNamesList = data;
+        _arraylist = new ArrayList<IStock>();
+        _arraylist.addAll(data);
     }
 
     @Override
@@ -48,7 +55,7 @@ public class SearchListViewAdaptor extends BaseAdapter {
     }
 
     @Override
-    public StockNames getItem(int position) {
+    public IStock getItem(int position) {
         return _stockNamesList.get(position);
     }
 
@@ -69,19 +76,23 @@ public class SearchListViewAdaptor extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         // Set the results into TextViews
-        holder.name.setText(_stockNamesList.get(position).getStockName());
+        holder.name.setText(_stockNamesList.get(position).getCompName());
         return view;
     }
 
     // Filter Class
     public void filter(String charText) {
+        // change to lower case
         charText = charText.toLowerCase(Locale.getDefault());
+        // clear all stocks
         _stockNamesList.clear();
         if (charText.length() == 0) {
+            // _stockNamesList refers to the stocks which contain the search query
+            // _arrayList refers to the all stocks
             _stockNamesList.addAll(_arraylist);
         } else {
-            for (StockNames wp : _arraylist) {
-                if (wp.getStockName().toLowerCase(Locale.getDefault()).contains(charText)) {
+            for (IStock wp : _arraylist) {
+                if (wp.getCompName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     _stockNamesList.add(wp);
                 }
             }
@@ -89,4 +100,11 @@ public class SearchListViewAdaptor extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void printData(){
+        for (IStock stock : _stockNamesList) {
+            Log.d("", stock.getCompName());
+        }
+    }
+
 }
+

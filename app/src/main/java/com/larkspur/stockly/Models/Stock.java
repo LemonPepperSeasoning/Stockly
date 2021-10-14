@@ -24,13 +24,13 @@ public class Stock implements IStock {
     }
 
     public Stock(int stockId, String companyName, String symbol) {
-        // contructor for lazy fetching or something like that
+        // constructor for lazy fetching or something like that
         _stockId = stockId;
         _companyName = companyName;
         _symbol = symbol;
     }
 
-    // The consturctor I will be using for creating Stock object from Firebase.
+    // The constructor I will be using for creating Stock object from Firebase.
     public Stock(String companyName,
                  String symbol,
                  Category category,

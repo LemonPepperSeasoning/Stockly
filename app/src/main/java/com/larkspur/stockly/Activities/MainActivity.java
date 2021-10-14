@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.larkspur.stockly.Activities.Search.StockNames;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
@@ -40,10 +39,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private ViewHolder _vh;
     ListView list;
-    SearchListViewAdaptor adaptor;
+    SearchListViewAdaptor _adaptor;
     SearchView editsearch;
     String[] stockNameList;
-    ArrayList<StockNames> arraylist = new ArrayList<StockNames>();
 
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
@@ -79,24 +77,25 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         // Generate sample data
 
-        stockNameList = new String[]{"Amazon", "Apple", "Microsoft",
-                "Facebook", "Google", "Alphabet", "Tesla", "NVIDIA",
-                "Berkshire","JPMorgan","VISA"};
-
+//        stockNameList = new String[]{"Amazon", "Apple", "Microsoft",
+//                "Facebook", "Google", "Alphabet", "Tesla", "NVIDIA",
+//                "Berkshire","JPMorgan","VISA"};
+//
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.searchList);
 
-        for (int i = 0; i < stockNameList.length; i++) {
-            StockNames stockNames = new StockNames(stockNameList[i]);
-            // Binds all strings into an array
-            arraylist.add(stockNames);
-        }
+//        for (int i = 0; i < stockNameList.length; i++) {
+//            StockNames stockNames = new StockNames(stockNameList[i]);
+//            // Binds all strings into an array
+//            arraylist.add(stockNames);
+//        }
+//
+//        // Pass results to SearchListViewAdapter Class
 
-        // Pass results to SearchListViewAdapter Class
-        adaptor = new SearchListViewAdaptor(this, arraylist);
+        _adaptor = new SearchListViewAdaptor(this, new ArrayList<>());
 
         // Binds the Adapter to the ListView
-        list.setAdapter(adaptor);
+        list.setAdapter(_adaptor);
 
         // Locate the EditText in listview_main.xml
         editsearch = (SearchView) findViewById(R.id.search);
@@ -119,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onQueryTextChange(String newText) {
         String text = newText;
-        adaptor.filter(text);
+        _adaptor.filter(text);
         return false;
     }
 
@@ -134,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //        Log.d("fail","did not register ===========================================");
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.VISIBLE);
+        _adaptor.printData();
 
         // Show the keyboard
         editsearch.setFocusable(true);
@@ -143,6 +143,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         // Show text
         EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(true);
+
+        // Fetch the stock data for suggestions
+        fetchAllStocks();
     }
 
     public void closeSearch(View view) {
@@ -225,6 +228,58 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         closeDrawer(_vh._drawerLayout);
     }
 
+    private void fetchAllStocks() {
+
+        List<IStock> stockList = new LinkedList<>();
+
+        // Getting numbers collection from Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("company_v2")
+                .whereEqualTo("Category", Category.InformationTechnology.toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    QuerySnapshot results = task.getResult();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Log.d("+++++", document.getId() + " => " + document.getData());
+                        Map<String, Object> data = document.getData();
+                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
+                        IStock tmpStock = new Stock(
+                                ((String) data.get("Name")),
+                                ((String) data.get("Symbol")),
+                                (Category.getValue((String) data.get("Category"))),
+                                ((String) data.get("Subindustry")),
+                                ((String) data.get("location")),
+                                tmpHistoricalPrice);
+                        stockList.add(tmpStock);
+                    }
+
+                    System.out.println("============================");
+                    System.out.println(stockList.size());
+                    for (IStock i : stockList) {
+                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
+                    }
+                    System.out.println("============================");
+
+                    if (stockList.size() > 0) {
+                        Log.i("Getting colors", "Success");
+
+                        _adaptor.addData(stockList);
+                        // Once the task is successful and data is fetched, propagate the adaptor
+                        //  propagateAdaptor(stockList);
+
+                        // Hide the ProgressBar
+//                        vh.progressBar.setVisibility(View.GONE);
+                    } else {
+//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
 
     private void fetchStockByCategory(Category category) {
 
