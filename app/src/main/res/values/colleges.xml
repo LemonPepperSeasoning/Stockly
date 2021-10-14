@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Spinner with Search</string>
+
+    <string-array name="colleges">
+
+        //Arts and Science Colleges
+
+        <item>Mahatma Gandhi Government College,Andaman and Nicobar Islands</item>
+        <item>Tagore Government College of Education,Andaman and Nicobar Islands</item>
+        <item>Dr B R Ambedkar Institute of Technology Port Blair,Andaman and Nicobar Islands</item>
+        <item>Government Arts College, Rajahmundry,Andhra Pradesh</item>
+        <item>Government Medical College, Anantapur,Andhra Pradesh</item>
+        <item>Maharajah\'s Government College of Music and Dance,Andhra Pradesh</item>
+        <item>P. V. K. N. Government College,Andhra Pradesh</item>
+        <item>Silver Jubilee Government Degree College,Andhra Pradesh</item>
+
+
+    </string-array>
+</resources>
