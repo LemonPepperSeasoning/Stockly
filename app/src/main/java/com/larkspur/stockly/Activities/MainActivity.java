@@ -26,7 +26,8 @@ import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.IUser;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
@@ -61,7 +62,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
     ListView list;
     String[] stockNameList;
-    private UserInfo _userInfo;
+    private IUser _userInfo;
 
     //        =======================--------------------=============================
 
@@ -71,7 +72,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         setContentView(R.layout.activity_main);
         _vh = new ViewHolder();
         this.setTitle("Home");
-        _userInfo = UserInfo.getInstance();
+        _userInfo = User.getInstance();
         _vh._usernameText.setText("Hi " + _userInfo.getUsername());
 
         //set horizontal recycler view

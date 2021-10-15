@@ -40,6 +40,7 @@ import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Portfolio;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
@@ -106,7 +107,7 @@ public class PorfolioAdapter extends ArrayAdapter {
         String formattedPrice = df.format(currentStock.getPrice());
         vh._stockPrice.setText(formattedPrice);
 
-        IPortfolio portfolio = Portfolio.getInstance();
+        IPortfolio portfolio = User.getInstance().getPortfolio();
         int quantity = portfolio.getQuantity(currentStock.getSymbol());
         Double totalPrice = currentStock.getPrice() * quantity;
         String formattedTotalPrice = df.format(totalPrice);
@@ -142,7 +143,7 @@ public class PorfolioAdapter extends ArrayAdapter {
                 View popupView = inflater.inflate(R.layout.add_portfolio_popup, null);
                 PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
                 popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-                IPortfolio portfolio = Portfolio.getInstance();
+                IPortfolio portfolio = User.getInstance().getPortfolio();
 
                 Button closePopup = (Button) popupView.findViewById(R.id.add_to_portfolio_confirmbutton);
                 EditText numberOfStocks = (EditText) popupView.findViewById(R.id.add_to_portfolio_edittext);

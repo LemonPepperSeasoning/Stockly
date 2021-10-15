@@ -60,7 +60,7 @@ import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Portfolio;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
@@ -109,7 +109,7 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
 
     ListView list;
     String[] stockNameList;
-    private UserInfo _userInfo;
+    private User _userInfo;
 
     //        =======================--------------------=============================
 
@@ -130,7 +130,7 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             _currentImageIndex = 0;
             downloadImage(_stock.getImageLink().get(_currentImageIndex));
 
-            _watchlist = Watchlist.getInstance();
+            _watchlist = User.getInstance().getWatchlist();
             _watchlisted = _watchlist.hasStock(_stock);
             if (_watchlisted == false) {
                 _vh._addWatchList.setImageResource(R.drawable.grey_watchlist_button);
@@ -425,7 +425,7 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         View popupView = inflater.inflate(R.layout.add_portfolio_popup, null);
         PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        IPortfolio portfolio = Portfolio.getInstance();
+        IPortfolio portfolio = User.getInstance().getPortfolio();
         Button closePopup = (Button) popupView.findViewById(R.id.add_to_portfolio_confirmbutton);
         EditText numberOfStocks = (EditText) popupView.findViewById(R.id.add_to_portfolio_edittext);
         ImageView plus = (ImageView) popupView.findViewById(R.id.plus_view);

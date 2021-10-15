@@ -22,7 +22,7 @@ import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Stock;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
 
     ListView list;
     String[] stockNameList;
-    private UserInfo _userInfo;
+    private User _userInfo;
 
     //        =======================--------------------=============================
 

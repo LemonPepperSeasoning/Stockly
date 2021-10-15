@@ -31,7 +31,7 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Portfolio;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
     ListView list;
     String[] stockNameList;
-    private UserInfo _userInfo;
+    private User _userInfo;
 
     //        =======================--------------------=============================
 
@@ -77,7 +77,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_portfolio);
         _vh = new ViewHolder();
       
-        _portfolio = Portfolio.getInstance();
+        _portfolio = User.getInstance().getPortfolio();
 
         if (getIntent().getExtras() != null) {
             Intent intent = this.getIntent();

@@ -12,7 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.IUser;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 public class SettingsActivity extends CoreActivity {
@@ -26,14 +27,14 @@ public class SettingsActivity extends CoreActivity {
     }
 
     private ViewHolder _vh;
-    private UserInfo _userInfo;
+    private IUser _userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        _userInfo = UserInfo.getInstance();
+        _userInfo = User.getInstance();
 
         _vh =  new ViewHolder();
         _vh._usernameTextField.setText(_userInfo.getUsername());

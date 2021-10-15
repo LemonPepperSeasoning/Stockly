@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
@@ -82,7 +83,7 @@ public class WatchlistAdapter extends ArrayAdapter {
         vh._removeStock.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                IWatchlist watchlist = Watchlist.getInstance();
+                IWatchlist watchlist = User.getInstance().getWatchlist();
                 watchlist.removeStock(currentStock);
                 _stocks.remove(currentStock);
                 notifyDataSetChanged();

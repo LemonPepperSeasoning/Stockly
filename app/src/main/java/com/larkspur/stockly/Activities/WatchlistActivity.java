@@ -15,7 +15,7 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.WatchlistAdapter;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
@@ -45,7 +45,7 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
 
     ListView list;
     String[] stockNameList;
-    private UserInfo _userInfo;
+    private User _userInfo;
 
     //        =======================--------------------=============================
 
@@ -90,7 +90,7 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
     }
 
     private void getWatchList() {
-        IWatchlist watchlist = Watchlist.getInstance();
+        IWatchlist watchlist = User.getInstance().getWatchlist();
         List<IStock> stockList = watchlist.getWatchlist();
         Toast.makeText(this, "watchlist size is " + stockList.size(), Toast.LENGTH_SHORT).show();
         ;
