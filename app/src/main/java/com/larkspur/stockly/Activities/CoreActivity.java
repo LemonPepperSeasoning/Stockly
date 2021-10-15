@@ -9,19 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.larkspur.stockly.R;
-
-public class DrawerActivity extends AppCompatActivity {
+public abstract class CoreActivity extends AppCompatActivity {
 
     protected  DrawerLayout _drawerLayout;
-    public DrawerActivity(){
+    public CoreActivity(){
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView();
-//    }
 
     public void clickMenu(View view) {
         openDrawer(_drawerLayout);
@@ -42,8 +35,8 @@ public class DrawerActivity extends AppCompatActivity {
         }
     }
 
-    public void clickHome(View view) {
-        closeDrawer(_drawerLayout);
+    public void clickHome(View view){
+       redirectActivity(this,MainActivity.class);
     }
 
     public void clickPortfolio(View view) {

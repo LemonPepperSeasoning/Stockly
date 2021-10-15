@@ -1,6 +1,5 @@
 package com.larkspur.stockly.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,13 +8,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,13 +19,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.ListViewAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.Models.UserInfo;
-import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -38,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ListActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
+public class ListActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
     private class ViewHolder {
         ListView _listView;

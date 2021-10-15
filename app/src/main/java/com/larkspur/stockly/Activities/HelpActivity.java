@@ -7,12 +7,12 @@ import android.widget.ImageButton;
 import androidx.cardview.widget.CardView;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.larkspur.stockly.R;
 
-public class HelpActivity extends DrawerActivity{
+public class HelpActivity extends CoreActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

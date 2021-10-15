@@ -1,23 +1,18 @@
 package com.larkspur.stockly.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.security.identity.DocTypeNotSupportedException;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +23,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-import com.google.firebase.firestore.auth.User;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
@@ -44,7 +38,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
@@ -189,9 +183,10 @@ public class MainActivity extends DrawerActivity implements SearchView.OnQueryTe
 //        }
 //    }
 //
-//    public void clickHome(View view) {
-//        closeDrawer(_vh._drawerLayout);
-//    }
+    @Override
+    public void clickHome(View view) {
+        closeDrawer(_drawerLayout);
+    }
 //
 //    public void clickPortfolio(View view) {
 //        redirectActivity(this, PortfolioActivity.class);

@@ -1,9 +1,6 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +11,11 @@ import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.R;
 
-public class SettingsActivity extends DrawerActivity {
+public class SettingsActivity extends CoreActivity {
 
     private class ViewHolder {
         EditText _usernameTextField;

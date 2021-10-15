@@ -1,10 +1,8 @@
 package com.larkspur.stockly.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -20,13 +18,11 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -40,9 +36,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.PorfolioAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-import com.larkspur.stockly.Adaptors.StockAdaptor;
-import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
-import com.larkspur.stockly.Adaptors.WatchlistAdapter;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
@@ -50,7 +43,6 @@ import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.Models.UserInfo;
-import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -59,7 +51,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class PortfolioActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
+public class PortfolioActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
     private class ViewHolder {
         ListView _stockList;
@@ -391,9 +383,10 @@ public class PortfolioActivity extends DrawerActivity implements SearchView.OnQu
 //        MainActivity.redirectActivity(this,MainActivity.class);
 //    }
 //
-//    public void clickPortfolio(View view){
-//        recreate();
-//    }
+    @Override
+    public void clickPortfolio(View view){
+        closeDrawer(_drawerLayout);
+    }
 //
 //    public void clickWatchlist(View view){
 //        MainActivity.redirectActivity(this,WatchlistActivity.class);

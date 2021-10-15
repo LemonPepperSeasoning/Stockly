@@ -1,7 +1,6 @@
 package com.larkspur.stockly.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -36,7 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class WatchlistActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
+public class WatchlistActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
     private class ViewHolder {
         ListView _watchlistView;
@@ -243,9 +242,10 @@ public class WatchlistActivity extends DrawerActivity implements SearchView.OnQu
 //        MainActivity.redirectActivity(this, PortfolioActivity.class);
 //    }
 //
-//    public void clickWatchlist(View view) {
-//        recreate();
-//    }
+    @Override
+    public void clickWatchlist(View view) {
+        closeDrawer(_drawerLayout);
+    }
 //
 //    public void clickSettings(View view) {
 //        MainActivity.redirectActivity(this, SettingsActivity.class);

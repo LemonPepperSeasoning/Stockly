@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 
 import android.widget.ListView;
@@ -21,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 
 
@@ -30,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -67,7 +64,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class StockActivity extends DrawerActivity implements SeekBar.OnSeekBarChangeListener,
+public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
  SearchView.OnQueryTextListener{
 
     private LineChart chart;
