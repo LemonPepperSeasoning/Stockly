@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,6 +38,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _stockSymbol, _stockPrice;
+        CardView _statusView;
         ImageView _stockImage;
         private Class _parent;
 
@@ -47,6 +50,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
             _stockSymbol = (TextView) view.findViewById(R.id.stock_name_view);
             _stockPrice = (TextView) view.findViewById(R.id.stock_price);
             _stockImage = (ImageView) view.findViewById(R.id.stock_image_view);
+            _statusView = (CardView) view.findViewById(R.id.status_view);
         }
 
         @Override
@@ -60,10 +64,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
             bundle.putSerializable("stock", stock);
             System.out.println(bundle.getSerializable("stock"));
             IStock test = (IStock) bundle.getSerializable("stock");
-//            System.out.println(
-//
-//
-//            .getCompName());
+
 
             intent.putExtras(bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -105,9 +106,16 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
 
         holder._stockSymbol.setText(stock.getSymbol());
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        String formattedPrice = df.format(stock.getPrice());
-        holder._stockPrice.setText(formattedPrice);
+        holder._stockPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
+                + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
+
+        if (stock.getHistoricalPrice().getLast24HourChange() > 0 ){
+            holder._stockPrice.setTextColor(Color.GREEN);
+            holder._statusView.setCardBackgroundColor(Color.GREEN);
+        }else{
+            holder._stockPrice.setTextColor(Color.RED);
+            holder._statusView.setCardBackgroundColor(Color.RED);
+        }
         downloadImage(stock.getImageLink().get(0),holder._stockImage);
     }
 
