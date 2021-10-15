@@ -41,7 +41,6 @@ public class ListActivity extends AppCompatActivity {
         TextView _categoryText,_previousScreen;
         LinearLayout _return;
 
-
         public ViewHolder(){
             _drawerLayout = findViewById(R.id.drawer_layout);
             _listView = findViewById(R.id.list_view);
@@ -52,8 +51,6 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private ViewHolder _vh;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
