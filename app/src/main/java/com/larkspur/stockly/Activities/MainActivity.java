@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //
 //        // Pass results to SearchListViewAdapter Class
 
-        _adaptor = new SearchListViewAdaptor(this, new ArrayList<>());
+        _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
 
         // Binds the Adapter to the ListView
         list.setAdapter(_adaptor);

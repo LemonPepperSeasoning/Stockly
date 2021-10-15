@@ -42,7 +42,7 @@
                     android:clickable="true"
                     android:onClick="clickSearch"
 
-                    android:background="@color/teal_200">
+                    android:background="@color/grey">
     <!--                <requestFocus />-->
                 </androidx.appcompat.widget.SearchView>
 
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:id="@+id/searchList"
-            android:background="@color/purple_500">
+            android:background="@drawable/gradient">
 
         </ListView>
 
