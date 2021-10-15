@@ -52,8 +52,6 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     //        =======================Search functionality=============================
 
     ListView list;
-    SearchListViewAdaptor _adaptor;
-    SearchView editsearch;
     String[] stockNameList;
     private UserInfo _userInfo;
 
@@ -98,111 +96,111 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
-    //        =======================Search functionality=============================
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        _adaptor.filter(text);
-        return false;
-    }
-
-    public void clickSearch(View view) {
-        ListView listview = findViewById(R.id.searchList);
-        listview.setVisibility(View.VISIBLE);
-
-        // Show the keyboard
-        editsearch.setFocusable(true);
-        editsearch.setIconified(false);
-        editsearch.requestFocusFromTouch();
-
-        // Show text
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setCursorVisible(true);
-
-        // Fetch the stock data for suggestions
-        fetchAllStocks();
-    }
-
-    public void closeSearch(View view) {
-        // Collapse searchList
-        ListView listview = findViewById(R.id.searchList);
-        listview.setVisibility(View.GONE);
-
-        //Hide keyboard
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
-
-        //Stop blinking in searchbar
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setCursorVisible(false);
-
-        //Clear text in searchbar
-        searchEditText.setText("");
-    }
-
-    //        =======================--------------------=============================
-
-    //        =======================Search functionality=============================
-
-    private void fetchAllStocks() {
-        List<IStock> stockList = new LinkedList<>();
-
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
-                .whereEqualTo("Category", Category.InformationTechnology.toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    QuerySnapshot results = task.getResult();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.d("+++++", document.getId() + " => " + document.getData());
-                        Map<String, Object> data = document.getData();
-                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
-                        IStock tmpStock = new Stock(
-                                ((String) data.get("Name")),
-                                ((String) data.get("Symbol")),
-                                (Category.getValue((String) data.get("Category"))),
-                                ((String) data.get("Subindustry")),
-                                ((String) data.get("location")),
-                                tmpHistoricalPrice);
-                        stockList.add(tmpStock);
-                    }
-
-                    System.out.println("============================");
-                    System.out.println(stockList.size());
-                    for (IStock i : stockList) {
-                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
-                    }
-                    System.out.println("============================");
-
-                    if (stockList.size() > 0) {
-                        Log.i("Getting colors", "Success");
-
-                        _adaptor.addData(stockList);
-                        // Once the task is successful and data is fetched, propagate the adaptor
-                        //  propagateAdaptor(stockList);
-
-                        // Hide the ProgressBar
-//                        vh.progressBar.setVisibility(View.GONE);
-                    } else {
-//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
-
-    //        =======================--------------------=============================
+//    //        =======================Search functionality=============================
+//
+//    @Override
+//    public boolean onQueryTextSubmit(String query) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onQueryTextChange(String newText) {
+//        String text = newText;
+//        _adaptor.filter(text);
+//        return false;
+//    }
+//
+//    public void clickSearch(View view) {
+//        ListView listview = findViewById(R.id.searchList);
+//        listview.setVisibility(View.VISIBLE);
+//
+//        // Show the keyboard
+//        editsearch.setFocusable(true);
+//        editsearch.setIconified(false);
+//        editsearch.requestFocusFromTouch();
+//
+//        // Show text
+//        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+//        searchEditText.setCursorVisible(true);
+//
+//        // Fetch the stock data for suggestions
+//        fetchAllStocks();
+//    }
+//
+//    public void closeSearch(View view) {
+//        // Collapse searchList
+//        ListView listview = findViewById(R.id.searchList);
+//        listview.setVisibility(View.GONE);
+//
+//        //Hide keyboard
+//        editsearch.clearFocus();
+//        editsearch.requestFocusFromTouch();
+//
+//        //Stop blinking in searchbar
+//        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+//        searchEditText.setCursorVisible(false);
+//
+//        //Clear text in searchbar
+//        searchEditText.setText("");
+//    }
+//
+//    //        =======================--------------------=============================
+//
+//    //        =======================Search functionality=============================
+//
+//    private void fetchAllStocks() {
+//        List<IStock> stockList = new LinkedList<>();
+//
+//        // Getting numbers collection from Firestore
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("company_v2")
+//                .whereEqualTo("Category", Category.InformationTechnology.toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//
+//                    QuerySnapshot results = task.getResult();
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+////                        Log.d("+++++", document.getId() + " => " + document.getData());
+//                        Map<String, Object> data = document.getData();
+//                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
+//                        IStock tmpStock = new Stock(
+//                                ((String) data.get("Name")),
+//                                ((String) data.get("Symbol")),
+//                                (Category.getValue((String) data.get("Category"))),
+//                                ((String) data.get("Subindustry")),
+//                                ((String) data.get("location")),
+//                                tmpHistoricalPrice);
+//                        stockList.add(tmpStock);
+//                    }
+//
+//                    System.out.println("============================");
+//                    System.out.println(stockList.size());
+//                    for (IStock i : stockList) {
+//                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
+//                    }
+//                    System.out.println("============================");
+//
+//                    if (stockList.size() > 0) {
+//                        Log.i("Getting colors", "Success");
+//
+//                        _adaptor.addData(stockList);
+//                        // Once the task is successful and data is fetched, propagate the adaptor
+//                        //  propagateAdaptor(stockList);
+//
+//                        // Hide the ProgressBar
+////                        vh.progressBar.setVisibility(View.GONE);
+//                    } else {
+////                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
+//                    }
+//                } else {
+////                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//    }
+//
+//    //        =======================--------------------=============================
 
     private void fetchCategoryStocks(Category category) {
         List<IStock> stockList = new LinkedList<>();
