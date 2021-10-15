@@ -30,10 +30,15 @@ public class TestStock {
         ));
         _historicalPrice = new HistoricalPrice(prices);
 
+        List<String> imagelinks = new ArrayList<>(Arrays.asList(
+               "ImageLink1", "ImageLink2","ImageLink3"
+                ));
         _stock = new Stock("Apple", "AAPL",
                 Category.InformationTechnology,
                 "Technology Hardware, Storage & Peripherals",
                 "Cupertino, California",
+                "This is some long description",
+                imagelinks,
                 _historicalPrice);
     }
 
