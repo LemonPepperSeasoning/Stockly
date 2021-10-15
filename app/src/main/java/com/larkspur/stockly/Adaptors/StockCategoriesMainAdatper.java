@@ -2,6 +2,7 @@ package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,15 +76,17 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         IStock stock = _stockList.get(position);
         holder._stockSymbol.setText(stock.getSymbol());
-        holder._stockPercent.setText("RANDOM PERCENT");
-
-        //cut price to two decimal places
-        DecimalFormat df = new DecimalFormat("#.##");
-        String formattedPrice = df.format(stock.getPrice());
-        holder._stockPrice.setText(formattedPrice);
+        holder._stockPrice.setText("$" + String.format("%.2f", stock.getPrice()));
+        holder._stockPercent.setText(String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange())+"%");
+        if (stock.getHistoricalPrice().getLast24HourChange() > 0 ){
+            holder._stockPrice.setTextColor(Color.GREEN);
+            holder._stockPercent.setTextColor(Color.GREEN);
+        }else{
+            holder._stockPrice.setTextColor(Color.RED);
+            holder._stockPercent.setTextColor(Color.RED);
+        }
     }
 
     @Override
