@@ -7,12 +7,12 @@ import android.widget.ImageButton;
 import androidx.cardview.widget.CardView;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.larkspur.stockly.R;
 
-public class HelpActivity extends AppCompatActivity{
+public class HelpActivity extends CoreActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +82,9 @@ public class HelpActivity extends AppCompatActivity{
             System.out.println("watch list stock is");
             System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
-            MainActivity.redirectActivity(this,activity,bundle);
+            redirectActivity(this,activity,bundle);
         }else {
-            MainActivity.redirectActivity(this, activity);
+            redirectActivity(this, activity);
         }
     }
 

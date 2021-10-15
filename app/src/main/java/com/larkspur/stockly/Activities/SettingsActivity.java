@@ -1,9 +1,6 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +11,11 @@ import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.R;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends CoreActivity {
 
     private class ViewHolder {
         EditText _usernameTextField;
@@ -103,9 +99,9 @@ public class SettingsActivity extends AppCompatActivity {
             System.out.println("watch list stock is");
             System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
-            MainActivity.redirectActivity(this,activity,bundle);
+            redirectActivity(this,activity,bundle);
         }else {
-            MainActivity.redirectActivity(this, activity);
+            redirectActivity(this, activity);
         }
     }
 
