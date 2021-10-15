@@ -10,287 +10,292 @@
     android:background="@drawable/gradient"
     tools:context=".Activities.MainActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/main_toolbar" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="5dp"
-            android:text="Most Viewed"
-            android:textColor="@color/white"
-            android:textSize="34sp" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/most_popular_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:orientation="horizontal" />
-        <!--        <ListView-->
-        <!--            android:id="@+id/categories_view"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:layout_weight="3"-->
-        <!--            android:layout_margin="5dp"-->
-
-        <!--            />-->
         <LinearLayout
-            android:id="@+id/categories_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            android:layout_weight="4"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:text="Most Viewed"
+                android:textColor="@color/white"
+                android:textSize="34sp" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/most_popular_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:orientation="horizontal" />
+            <!--        <ListView-->
+            <!--            android:id="@+id/categories_view"-->
+            <!--            android:layout_width="match_parent"-->
+            <!--            android:layout_height="0dp"-->
+            <!--            android:layout_weight="3"-->
+            <!--            android:layout_margin="5dp"-->
+
+            <!--            />-->
+            <LinearLayout
+                android:id="@+id/categories_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_weight="4"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="10"
-                        android:text="Technology"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/technology_browse_all_view"
-                        android:tag="technology"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:onClick="browseAll">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_gravity="bottom"
-                            android:layout_weight="0"
-                            android:text="browse all"
+                            android:layout_alignParentLeft="true"
+                            android:layout_weight="10"
+                            android:text="Technology"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
 
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginBottom="2dp"
-                            android:src="@drawable/back_arrow" />
+                        <LinearLayout
+                            android:id="@+id/technology_browse_all_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="browseAll"
+                            android:orientation="horizontal"
+                            android:tag="technology">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="0"
+                                android:text="browse all"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/back_arrow" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/technology_recycle_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
                 </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/technology_recycle_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="10"
-                        android:text="Finance"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:tag="finance"
-                        android:id="@+id/finance_browse_all_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:onClick="browseAll">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_gravity="bottom"
-                            android:layout_weight="0"
-                            android:text="browse all"
+                            android:layout_alignParentLeft="true"
+                            android:layout_weight="10"
+                            android:text="Finance"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
 
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginBottom="2dp"
-                            android:src="@drawable/back_arrow" />
+                        <LinearLayout
+                            android:id="@+id/finance_browse_all_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="browseAll"
+                            android:orientation="horizontal"
+                            android:tag="finance">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="0"
+                                android:text="browse all"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/back_arrow" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/finance_recycle_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
                 </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/finance_recycle_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="10"
-                        android:text="Industrial"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/industrial_browse_all_view"
-                        android:tag="industrials"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:onClick="browseAll">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_gravity="bottom"
-                            android:layout_weight="0"
-                            android:text="browse all"
+                            android:layout_alignParentLeft="true"
+                            android:layout_weight="10"
+                            android:text="Industrial"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
 
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginBottom="2dp"
-                            android:src="@drawable/back_arrow" />
+                        <LinearLayout
+                            android:id="@+id/industrial_browse_all_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="browseAll"
+                            android:orientation="horizontal"
+                            android:tag="industrials">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="0"
+                                android:text="browse all"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/back_arrow" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/industrial_recycle_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
                 </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/industrial_recycle_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_weight="10"
-                        android:text="Health Care"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/healthcare_browse_all_view"
-                        android:tag="health care"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:onClick="browseAll">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:orientation="horizontal">
+
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentBottom="true"
-                            android:layout_gravity="bottom"
-                            android:layout_weight="0"
-                            android:text="browse all"
+                            android:layout_alignParentLeft="true"
+                            android:layout_weight="10"
+                            android:text="Health Care"
                             android:textColor="@color/white"
-                            android:textSize="14sp" />
+                            android:textSize="20sp" />
 
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="4dp"
-                            android:layout_marginBottom="2dp"
-                            android:src="@drawable/back_arrow" />
+                        <LinearLayout
+                            android:id="@+id/healthcare_browse_all_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:onClick="browseAll"
+                            android:orientation="horizontal"
+                            android:tag="health care">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_gravity="bottom"
+                                android:layout_weight="0"
+                                android:text="browse all"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="bottom"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/back_arrow" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/health_recycle_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/health_recycle_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
             </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <include layout="@layout/search_bar_component" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="300dp"

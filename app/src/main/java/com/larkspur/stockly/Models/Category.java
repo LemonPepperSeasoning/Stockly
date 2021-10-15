@@ -11,7 +11,8 @@ public enum Category {
     Materials("Materials"),
     RealEstate("RealEstate"),
     ConsumerStaples("ConsumerStaples"),
-    Energy("Energy");
+    Energy("Energy"),
+    Financials("Financials");
 
     //private static Category _category;
     private final String _categoryName;
