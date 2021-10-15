@@ -43,6 +43,7 @@ import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -94,22 +95,27 @@ public class PorfolioAdapter extends ArrayAdapter {
         System.out.println("stock list size is " + _stocks.size());
 
         ViewHolder vh = new ViewHolder(currentListView);
+        DecimalFormat df = new DecimalFormat("#.##");
 
 //        int i = _context.getResources().getIdentifier(currentItem.getCompName(),"drawable",_context.getPackageName());
 
         vh._stockName.setText(currentStock.getCompName());
         vh._stockSymbol.setText(currentStock.getSymbol());
-        vh._stockPrice.setText(currentStock.getPrice().toString());
+
+
+        String formattedPrice = df.format(currentStock.getPrice());
+        vh._stockPrice.setText(formattedPrice);
 
         IPortfolio portfolio = Portfolio.getInstance();
         int quantity = portfolio.getQuantity(currentStock.getSymbol());
         Double totalPrice = currentStock.getPrice() * quantity;
-        vh._stockTotalPrice.setText(totalPrice.toString());
+        String formattedTotalPrice = df.format(totalPrice);
+        vh._stockTotalPrice.setText(formattedTotalPrice);
         vh._quantityStock.setText(String.valueOf(quantity));
 
-        vh._stockSide.setOnClickListener(new View.OnClickListener(){
+        vh._stockSide.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), StockActivity.class);
                 intent.putExtra("Screen", "Watchlist");
                 intent.putExtra("Class", _context.getClass());
@@ -190,10 +196,9 @@ public class PorfolioAdapter extends ArrayAdapter {
                         System.out.println(numberOfStocks.getText().toString());
                         if (numberOfStocks.getText().toString().equals("")) {
                             numberOfStocks.setText("1");
-                        }else if(Integer.parseInt(numberOfStocks.getText().toString()) == currentNumStocks){
+                        } else if (Integer.parseInt(numberOfStocks.getText().toString()) == currentNumStocks) {
                             numberOfStocks.setText(Integer.toString(currentNumStocks));
-                        }
-                        else {
+                        } else {
                             int newNumStocks = Integer.parseInt(numberOfStocks.getText().toString()) + 1;
                             numberOfStocks.setText(Integer.toString(newNumStocks));
                         }

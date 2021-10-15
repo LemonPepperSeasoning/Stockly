@@ -3,6 +3,7 @@ package com.larkspur.stockly.Models;
 import android.os.Parcel;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Stock implements IStock {

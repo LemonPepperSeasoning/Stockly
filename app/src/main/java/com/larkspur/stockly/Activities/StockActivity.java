@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -65,10 +66,11 @@ import com.larkspur.stockly.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
- SearchView.OnQueryTextListener{
+        SearchView.OnQueryTextListener {
 
     private LineChart chart;
     //    private SeekBar seekBarX, seekBarY;
@@ -77,9 +79,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
 
 
     private class ViewHolder {
-        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen;
+        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen, _description;
         LinearLayout _return;
-        ImageView _stockImage;
+        ImageView _stockImage, _addWatchList, _addPortfolio;
+
         public ViewHolder() {
             _stockName = findViewById(R.id.stock_name);
             _stockNameAndSymbol = findViewById(R.id.stock_name_and_symbol);
@@ -89,6 +92,9 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             _previousScreen = findViewById(R.id.previous_screen_text_view);
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             _stockImage = findViewById(R.id.stock_image_view);
+            _addWatchList = findViewById(R.id.watchlist_image_view);
+            _addPortfolio = findViewById(R.id.portfolio_image_view);
+            _description = findViewById(R.id.stock_description_view);
         }
     }
 
@@ -126,12 +132,21 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
 
             _watchlist = Watchlist.getInstance();
             _watchlisted = _watchlist.hasStock(_stock);
+            if (_watchlisted == false) {
+                _vh._addWatchList.setImageResource(R.drawable.grey_watchlist_button);
+            } else {
+                _vh._addWatchList.setImageResource(R.drawable.red_watchlist_button);
+            }
+
+
             System.out.println("STOCK STARTS HERE");
             System.out.println(intent.getStringExtra("Screen"));
             System.out.println("previous class: " + intent.getExtras().getSerializable("Class"));
             String previousScreen = intent.getStringExtra("Screen");
             _vh._previousScreen.setText("Return to " + previousScreen);
 
+            _vh._description.setText(_stock.getDesc());
+            System.out.println(_stock.getDesc());
             setupStockView();
             setupGraph();
 
@@ -158,19 +173,24 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         _editSearch.clearFocus();
         _editSearch.requestFocusFromTouch();
 
+        if (Portfolio.getInstance().getQuantity(_stock.getSymbol()) >= 1) {
+            _vh._addPortfolio.setImageResource(R.drawable.blue_portfolio_button);
+        } else {
+            _vh._addPortfolio.setImageResource(R.drawable.grey_portfolio_button);
+        }
+
         //        =======================--------------------=============================
     }
 
 
-
-    private void downloadImage(String referenceLink){
+    private void downloadImage(String referenceLink) {
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
 //        StorageReference httpsReference = storage.getReferenceFromUrl("https://storage.googleapis.com/stockstats-39c48.appspot.com//Users/Goyard/Downloads/FIRE-min.jpg%22);
 //        StorageReference httpsReference = storage.getReferenceFromUrl("gs://stockstats-39c48.appspot.com/SOFTENG306P2_5\\AAPL\\2.jpg");
 
 //        StorageReference x = httpsReference.child("/").child("Users").child("Goyard").child("Downloads").child("apple.png");
-        try{
+        try {
             StorageReference httpsReference = storage.getReferenceFromUrl(referenceLink);
             File localFile = File.createTempFile("images", "jpg");
             httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -184,22 +204,25 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    Log.e("NO IMAGE=",referenceLink);
+                    Log.e("NO IMAGE=", referenceLink);
                 }
             });
-        }catch(IOException e) {
+        } catch (IOException e) {
             //TODO : When image download fails, maybe we will just set it to default image or something.
-            Log.e("NO IMAGE:",referenceLink);
+            Log.e("NO IMAGE:", referenceLink);
         }
     }
 
     //        =======================Search functionality=============================
 
- 
+
     private void setupStockView() {
         _vh._stockName.setText(_stock.getCompName());
         _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
-        _vh._stockPrice.setText(_stock.getPrice().toString());
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formattedPrice = df.format(_stock.getPrice());
+        _vh._stockPrice.setText(formattedPrice);
     }
 
     private void setupGraph() {
@@ -319,7 +342,6 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
     }
 
 
-
 //    public void clickMenu(View view) {
 //        openDrawer(_drawerLayout);
 //    }
@@ -386,18 +408,19 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
     public void clickAddWatchlist(View view) {
         if (_watchlisted == false) {
             _watchlist.addStock(_stock);
+            _vh._addWatchList.setImageResource(R.drawable.red_watchlist_button);
             Toast.makeText(this, "added " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = true;
 
         } else {
             _watchlist.removeStock(_stock);
+            _vh._addWatchList.setImageResource(R.drawable.grey_watchlist_button);
             Toast.makeText(this, "removed " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = false;
         }
     }
 
     public void clickAddPortfolio(View view) {
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.add_portfolio_popup, null);
         PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
@@ -416,9 +439,17 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
                 System.out.println(numberOfStocks.getText().toString());
                 if (!numberOfStocks.getText().toString().equals("")) {
                     int numStocks = Integer.parseInt(numberOfStocks.getText().toString());
-                    portfolio.addStock(_stock, numStocks);
+                    if (numStocks != 0) {
+                        portfolio.addStock(_stock, numStocks);
+                    }
                 } else {
                     Toast.makeText(view.getContext(), "A number needs to be input", Toast.LENGTH_SHORT).show();
+                }
+
+                if (portfolio.getQuantity(_stock.getSymbol()) > 0) {
+                    _vh._addPortfolio.setImageResource(R.drawable.blue_portfolio_button);
+                } else {
+                    _vh._addPortfolio.setImageResource(R.drawable.grey_portfolio_button);
                 }
 
                 popupWindow.dismiss();
@@ -441,9 +472,9 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             @Override
             public void onClick(View v) {
                 System.out.println(numberOfStocks.getText().toString());
-                if(numberOfStocks.getText().toString().equals("")){
+                if (numberOfStocks.getText().toString().equals("")) {
                     numberOfStocks.setText("1");
-                }else{
+                } else {
                     int newNumStocks = Integer.parseInt(numberOfStocks.getText().toString()) + 1;
                     numberOfStocks.setText(Integer.toString(newNumStocks));
                 }
@@ -455,11 +486,11 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
 
     public void clickNextImageLeft(View view) {
         _currentImageIndex += 2; //same as -1
-        downloadImage(_stock.getImageLink().get(_currentImageIndex%3));
+        downloadImage(_stock.getImageLink().get(_currentImageIndex % 3));
     }
 
     public void clickNextImageRight(View view) {
         _currentImageIndex += 1;
-        downloadImage(_stock.getImageLink().get(_currentImageIndex%3));
+        downloadImage(_stock.getImageLink().get(_currentImageIndex % 3));
     }
 }

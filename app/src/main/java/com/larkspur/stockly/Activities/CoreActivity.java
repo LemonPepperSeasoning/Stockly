@@ -153,7 +153,7 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
+        db.collection("company")
                 .whereEqualTo("Category", Category.InformationTechnology.toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -20,6 +20,7 @@ import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ListViewAdapter extends ArrayAdapter {
@@ -68,7 +69,10 @@ public class ListViewAdapter extends ArrayAdapter {
 
         vh._stockName.setText(currentStock.getCompName());
         vh._stockSymbol.setText(currentStock.getSymbol());
-        vh._stockPrice.setText(currentStock.getPrice().toString());
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formattedPrice = df.format(currentStock.getPrice());
+        vh._stockPrice.setText(formattedPrice);
 
         vh._stockView.setOnClickListener(new View.OnClickListener() {
             @Override

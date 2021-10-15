@@ -18,6 +18,7 @@ import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCategoriesMainAdatper.ViewHolder> {
@@ -85,7 +86,11 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
 
         holder._stockSymbol.setText(stock.getSymbol());
         holder._stockPercent.setText("RANDOM PERCENT");
-        holder._stockPrice.setText((stock.getPrice().toString()));
+
+        //cut price to two decimal places
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formattedPrice = df.format(stock.getPrice());
+        holder._stockPrice.setText(formattedPrice);
 
     }
 
