@@ -98,11 +98,8 @@ public class PorfolioAdapter extends ArrayAdapter {
         ViewHolder vh = new ViewHolder(currentListView);
         DecimalFormat df = new DecimalFormat("#.##");
 
-//        int i = _context.getResources().getIdentifier(currentItem.getCompName(),"drawable",_context.getPackageName());
-
         vh._stockName.setText(currentStock.getCompName());
         vh._stockSymbol.setText(currentStock.getSymbol());
-
 
         String formattedPrice = df.format(currentStock.getPrice());
         vh._stockPrice.setText(formattedPrice);
@@ -138,7 +135,6 @@ public class PorfolioAdapter extends ArrayAdapter {
         vh._removeStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 LayoutInflater inflater = (LayoutInflater) _context.getSystemService(LAYOUT_INFLATER_SERVICE);
                 View popupView = inflater.inflate(R.layout.add_portfolio_popup, null);
                 PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
@@ -174,7 +170,6 @@ public class PorfolioAdapter extends ArrayAdapter {
                         } else {
                             Toast.makeText(v.getContext(), "A number needs to be input", Toast.LENGTH_SHORT).show();
                         }
-
                         popupWindow.dismiss();
                     }
                 });
@@ -222,7 +217,6 @@ public class PorfolioAdapter extends ArrayAdapter {
         List<IStock> sortedPortfolio = new ArrayList<>();
         sortedPortfolio.addAll(portfolio.keySet());
 
-        int index = 0;
         for (IStock s : sortedPortfolio) {
             Double x = s.getPrice() * portfolio.get(s);
             entries.add(new PieEntry(x.floatValue(), s.getSymbol()));
@@ -231,14 +225,12 @@ public class PorfolioAdapter extends ArrayAdapter {
         PieDataSet dataSet = new PieDataSet(entries, "Portfolio");
 
         dataSet.setDrawIcons(false);
-
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
 
         // add a lot of colors
         ArrayList<Integer> colors = new ArrayList<>();
-
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
 

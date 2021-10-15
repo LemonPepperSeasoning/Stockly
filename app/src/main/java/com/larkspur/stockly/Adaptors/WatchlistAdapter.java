@@ -30,7 +30,6 @@ public class WatchlistAdapter extends ArrayAdapter {
         TextView _stockName, _stockSymbol, _stockPrice;
         LinearLayout _removeStock,_stockStats;
 
-
         public ViewHolder(View currentListViewItem) {
             _stockName = currentListViewItem.findViewById(R.id.stock_name_view);
             _stockSymbol = currentListViewItem.findViewById(R.id.stock_symbol_view);
@@ -58,10 +57,7 @@ public class WatchlistAdapter extends ArrayAdapter {
         if (currentListViewItem == null) {
             currentListViewItem = LayoutInflater.from(getContext()).inflate(_layoutID, parent, false);
         }
-
         IStock currentStock = _stocks.get(position);
-
-
 
         return populateWatchList(currentStock, currentListViewItem);
     }
@@ -70,8 +66,6 @@ public class WatchlistAdapter extends ArrayAdapter {
         System.out.println("stock list size is " + _stocks.size());
 
         ViewHolder vh = new ViewHolder(currentListView);
-
-//        int i = _context.getResources().getIdentifier(currentItem.getCompName(),"drawable",_context.getPackageName());
 
         vh._stockName.setText(currentStock.getCompName());
         vh._stockSymbol.setText(currentStock.getSymbol());
@@ -96,13 +90,9 @@ public class WatchlistAdapter extends ArrayAdapter {
                 Intent intent = new Intent(v.getContext(), StockActivity.class);
                 intent.putExtra("Screen", "Watchlist");
                 intent.putExtra("Class", _context.getClass());
-                System.out.println("serializing stock");
-                System.out.println(_context.getClass());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("stock", currentStock);
-                System.out.println(bundle.getSerializable("stock"));
                 IStock test = (IStock) bundle.getSerializable("stock");
-                System.out.println(test.getCompName());
 
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -110,8 +100,6 @@ public class WatchlistAdapter extends ArrayAdapter {
                 Toast.makeText(_context, currentStock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
         return currentListView;
     }

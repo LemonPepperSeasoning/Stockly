@@ -42,7 +42,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
     private class ViewHolder {
         ListView _stockList;
-        TextView _previousScreen;
+        TextView _previousScreen,_usernameText;
         LinearLayout _return;
 
         public ViewHolder() {
@@ -51,7 +51,8 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+            _usernameText = (TextView) findViewById(R.id.username);
+            _usernameText.setText("Hi " + _user.getUsername());
         }
     }
 
@@ -77,7 +78,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_portfolio);
         _vh = new ViewHolder();
       
-        _portfolio = User.getInstance().getPortfolio();
+        _portfolio = _user.getPortfolio();
 
         if (getIntent().getExtras() != null) {
             Intent intent = this.getIntent();

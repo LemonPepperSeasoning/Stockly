@@ -18,7 +18,7 @@ public class TestPortfolio {
 
     @Before
     public void setupPortfolio(){
-        portfolio = Portfolio.getInstance();
+        portfolio = new Portfolio();
         portfolio.removeAllStocks();
     }
 

@@ -15,20 +15,20 @@ import com.larkspur.stockly.Models.IStock;
  */
 @Ignore
 public class TestStockHandler {
-    private final StockHandler _stockHandler = new StockHandler();
+//    private final StockHandler _stockHandler = new StockHandler();
 
     @Before
     public void setup() {
 
     }
 
-    @Test
-    public void getSingleStock() {
-        IStock resultStock;
-        String stockName = "Visa";
-        resultStock = _stockHandler.getStock(stockName);
-        assertEquals(stockName, resultStock.getCompName());
-    }
+//    @Test
+//    public void getSingleStock() {
+//        IStock resultStock;
+//        String stockName = "Visa";
+//        resultStock = _stockHandler.getStock(stockName);
+//        assertEquals(stockName, resultStock.getCompName());
+//    }
 
     @Test
     public void addition_isCorrect() {
