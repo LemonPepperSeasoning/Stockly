@@ -4,24 +4,34 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
+import android.util.Log;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+
+import android.widget.ListView;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+
+
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -34,17 +44,31 @@ import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
+import com.larkspur.stockly.Models.Category;
+import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Portfolio;
+import com.larkspur.stockly.Models.Stock;
+import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
-public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
+public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener,
+ SearchView.OnQueryTextListener{
 
     private LineChart chart;
     //    private SeekBar seekBarX, seekBarY;
@@ -70,6 +94,16 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     private IStock _stock;
     private boolean _watchlisted;
     private IWatchlist _watchlist;
+
+    //        =======================Search functionality=============================
+
+    ListView list;
+    SearchListViewAdaptor _adaptor;
+    SearchView editsearch;
+    String[] stockNameList;
+    private UserInfo _userInfo;
+
+    //        =======================--------------------=============================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +134,133 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             throw new RuntimeException("Stock not found!");
         }
 
+        //        =======================Search functionality=============================
+
+        // Locate the ListView in listview_main.xml
+        list = (ListView) findViewById(R.id.searchList);
+
+        _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
+
+        // Binds the Adapter to the ListView
+        list.setAdapter(_adaptor);
+
+        // Locate the EditText in listview_main.xml
+        editsearch = (SearchView) findViewById(R.id.search);
+        editsearch.setOnQueryTextListener(this);
+
+        // Set up the searchbar settings
+        editsearch.clearFocus();
+        editsearch.requestFocusFromTouch();
+
+        //        =======================--------------------=============================
     }
+
+    //        =======================Search functionality=============================
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String text = newText;
+        _adaptor.filter(text);
+        return false;
+    }
+
+    public void clickSearch(View view) {
+        ListView listview = findViewById(R.id.searchList);
+        listview.setVisibility(View.VISIBLE);
+
+        // Show the keyboard
+        editsearch.setFocusable(true);
+        editsearch.setIconified(false);
+        editsearch.requestFocusFromTouch();
+
+        // Show text
+        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setCursorVisible(true);
+
+        // Fetch the stock data for suggestions
+        fetchAllStocks();
+    }
+
+    public void closeSearch(View view) {
+        // Collapse searchList
+        ListView listview = findViewById(R.id.searchList);
+        listview.setVisibility(View.GONE);
+
+        //Hide keyboard
+        editsearch.clearFocus();
+        editsearch.requestFocusFromTouch();
+
+        //Stop blinking in searchbar
+        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setCursorVisible(false);
+
+        //Clear text in searchbar
+        searchEditText.setText("");
+    }
+
+    //        =======================--------------------=============================
+
+    //        =======================Search functionality=============================
+
+    private void fetchAllStocks() {
+        List<IStock> stockList = new LinkedList<>();
+
+        // Getting numbers collection from Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("company_v2")
+                .whereEqualTo("Category", Category.InformationTechnology.toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    QuerySnapshot results = task.getResult();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        Log.d("+++++", document.getId() + " => " + document.getData());
+                        Map<String, Object> data = document.getData();
+                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
+                        IStock tmpStock = new Stock(
+                                ((String) data.get("Name")),
+                                ((String) data.get("Symbol")),
+                                (Category.getValue((String) data.get("Category"))),
+                                ((String) data.get("Subindustry")),
+                                ((String) data.get("location")),
+                                tmpHistoricalPrice);
+                        stockList.add(tmpStock);
+                    }
+
+                    System.out.println("============================");
+                    System.out.println(stockList.size());
+                    for (IStock i : stockList) {
+                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
+                    }
+                    System.out.println("============================");
+
+                    if (stockList.size() > 0) {
+                        Log.i("Getting colors", "Success");
+
+                        _adaptor.addData(stockList);
+                        // Once the task is successful and data is fetched, propagate the adaptor
+                        //  propagateAdaptor(stockList);
+
+                        // Hide the ProgressBar
+//                        vh.progressBar.setVisibility(View.GONE);
+                    } else {
+//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    //        =======================--------------------=============================
+
 
     private void setupStockView() {
         _vh._stockName.setText(_stock.getCompName());
