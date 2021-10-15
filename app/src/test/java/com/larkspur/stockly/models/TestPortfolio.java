@@ -18,7 +18,8 @@ public class TestPortfolio {
 
     @Before
     public void setupPortfolio(){
-        portfolio = new Portfolio();
+        portfolio = Portfolio.getInstance();
+        portfolio.removeAllStocks();
     }
 
     @Test
@@ -46,7 +47,7 @@ public class TestPortfolio {
 
         portfolio.removeStock(x,10);
         Hashtable hashtableP2 = portfolio.getPortfolio();
-        assertEquals(0, hashtableP2.get(x));
+        assertEquals(null, hashtableP2.get(x));
     }
 
     @Test

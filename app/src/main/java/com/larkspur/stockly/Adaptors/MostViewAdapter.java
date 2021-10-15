@@ -6,12 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.view.ViewParent;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.larkspur.stockly.Activities.StockActivity;
@@ -20,21 +19,21 @@ import com.larkspur.stockly.R;
 
 import java.util.List;
 
-public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCategoriesMainAdatper.ViewHolder> {
+public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHolder>{
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView _stockSymbol, _stockPrice, _stockPercent;
+        public TextView _stockSymbol, _stockPrice;
+
         private Class _parent;
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            view.setOnClickListener(this);
             _parent = view.getContext().getClass();
-            _stockSymbol = (TextView) view.findViewById(R.id.stock_symbol);
-            _stockPrice = (TextView) view.findViewById(R.id.stock_price);
-            _stockPercent = (TextView) view.findViewById(R.id.stock_percent);
 
+            view.setOnClickListener(this);
+            _stockSymbol = (TextView) view.findViewById(R.id.stock_name_view);
+            _stockPrice = (TextView) view.findViewById(R.id.stock_price);
         }
 
         @Override
@@ -48,7 +47,10 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
             bundle.putSerializable("stock", stock);
             System.out.println(bundle.getSerializable("stock"));
             IStock test = (IStock) bundle.getSerializable("stock");
-            System.out.println(test.getCompName());
+//            System.out.println(
+//
+//
+//            .getCompName());
 
             intent.putExtras(bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -60,8 +62,9 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
 
     private List<IStock> _stockList;
     private Context _context;
+    private ViewGroup _parent;
 
-    public StockCategoriesMainAdatper(List<IStock> stockList){
+    public MostViewAdapter(List<IStock> stockList){
         _stockList = stockList;
     }
 
@@ -69,12 +72,14 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        _parent = parent;
         _context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(_context);
 
-        View stockView = inflater.inflate(R.layout.main_category_card, parent, false);
+        View stockView = inflater.inflate(R.layout.stock_most_viewed_recycler_view, parent, false);
 
         ViewHolder holder = new ViewHolder(stockView);
+        System.out.println("===== MOSTVIEWADAPTER ======");
         return holder;
     }
 
@@ -84,7 +89,6 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
         IStock stock = _stockList.get(position);
 
         holder._stockSymbol.setText(stock.getSymbol());
-        holder._stockPercent.setText("RANDOM PERCENT");
         holder._stockPrice.setText((stock.getPrice().toString()));
 
     }
@@ -95,3 +99,4 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
     }
 
 }
+

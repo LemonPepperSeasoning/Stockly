@@ -1,8 +1,11 @@
 package com.larkspur.stockly.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,10 +13,14 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -24,26 +31,53 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.larkspur.stockly.Adaptors.PorfolioAdapter;
+import com.larkspur.stockly.Adaptors.StockAdaptor;
+import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
+import com.larkspur.stockly.Adaptors.WatchlistAdapter;
+import com.larkspur.stockly.Models.Category;
+import com.larkspur.stockly.Models.HistoricalPrice;
+import com.larkspur.stockly.Models.IPortfolio;
+import com.larkspur.stockly.Models.IStock;
+import com.larkspur.stockly.Models.Portfolio;
+import com.larkspur.stockly.Models.Stock;
+import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class PortfolioActivity extends AppCompatActivity {
 
-    DrawerLayout _drawerLayout;
+    private class ViewHolder {
+        ListView _stockList;
+        DrawerLayout _drawerLayout;
+        TextView _previousScreen;
+        LinearLayout _return;
+
+
+
+        public ViewHolder() {
+            _stockList = findViewById(R.id.portfolio_stocklist);
+            _drawerLayout = findViewById(R.id.drawer_layout);
+            _return = findViewById(R.id.return_view);
+            _previousScreen = findViewById(R.id.previous_screen_text_view);
+        }
+    }
+
+    private ViewHolder _vh;
     private PieChart chart;
-    private Typeface tf;
-    private TextView tvX, tvY;
-    private SeekBar seekBarX, seekBarY;
     protected Typeface tfRegular;
     protected Typeface tfLight;
-
-    protected final String[] parties = new String[] {
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
-            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
-            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
-            "Party Y", "Party Z"
-    };
+    private IPortfolio _portfolio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,23 +85,42 @@ public class PortfolioActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_portfolio);
-        _drawerLayout = findViewById(R.id.drawer_layout);
+        _vh = new ViewHolder();
+      
+        _portfolio = Portfolio.getInstance();
 
-        setTitle("PieChartActivity");
+        if (getIntent().getExtras() != null) {
+            Intent intent = this.getIntent();
+            String previousScreen = intent.getStringExtra("Screen");
+            _vh._previousScreen.setText("Return to " + previousScreen);
+        }else{
+            throw new RuntimeException("Something went wrong : previous screen not found");
+        }
 
-//        tvX = findViewById(R.id.tvXMax);
-//        tvY = findViewById(R.id.tvYMax);
+        setPiechart();
+        displayData();
+    }
+    private void displayData(){
+        setData(_portfolio.getPortfolio());
+        Toast.makeText(this,"watchlist size is " + _portfolio.getPortfolio().size(), Toast.LENGTH_SHORT).show();;
+        if(_portfolio.getPortfolio().size()>0){
+            List<IStock> data = new ArrayList<>();
+            data.addAll( _portfolio.getPortfolio().keySet() );
+            propagateAadapter(data);
+        }
+    }
 
-//        seekBarX = findViewById(R.id.seekBar1);
-//        seekBarY = findViewById(R.id.seekBar2);
-//
-//        seekBarX.setOnSeekBarChangeListener(this);
-//        seekBarY.setOnSeekBarChangeListener(this);
+    private void propagateAadapter(List<IStock> data){
+        PorfolioAdapter stockAdapter = new PorfolioAdapter(this, R.layout.portfolio_card,data,chart);
+        _vh._stockList.setAdapter(stockAdapter);
+        _vh._stockList.setVisibility(View.VISIBLE);
+    }
 
+    private void setPiechart(){
         chart = findViewById(R.id.doughnut_chart);
         chart.setUsePercentValues(true);
         chart.getDescription().setEnabled(false);
-        chart.setExtraOffsets(5, 10, 5, 5);
+        chart.setExtraOffsets(0, 0, 0, 0);
 
         chart.setDragDecelerationFrictionCoef(0.95f);
 
@@ -75,12 +128,14 @@ public class PortfolioActivity extends AppCompatActivity {
         chart.setCenterText(generateCenterSpannableText());
 
         chart.setDrawHoleEnabled(true);
-        chart.setHoleColor(Color.WHITE);
+        //Transparent
+//        chart.setHoleColor(Color.parseColor("#00ff0000"));
+        chart.setHoleColor(Color.BLACK);
 
-        chart.setTransparentCircleColor(Color.WHITE);
-        chart.setTransparentCircleAlpha(110);
+        chart.setTransparentCircleColor(Color.parseColor("#00ff0000"));
+        chart.setTransparentCircleAlpha(0);
 
-        chart.setHoleRadius(58f);
+        chart.setHoleRadius(68f);
         chart.setTransparentCircleRadius(61f);
 
         chart.setDrawCenterText(true);
@@ -90,46 +145,31 @@ public class PortfolioActivity extends AppCompatActivity {
         chart.setRotationEnabled(true);
         chart.setHighlightPerTapEnabled(true);
 
-        // chart.setUnit(" €");
-        // chart.setDrawUnitsInChart(true);
-
-//        // add a selection listener
-//        chart.setOnChartValueSelectedListener(this);
-
-//        seekBarX.setProgress(4);
-//        seekBarY.setProgress(10);
-
         chart.animateY(1400, Easing.EaseInOutQuad);
-        // chart.spin(2000, 0, 360);
-
-//        Legend l = chart.getLegend();
-//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        l.setDrawInside(false);
-//        l.setXEntrySpace(7f);
-//        l.setYEntrySpace(0f);
-//        l.setYOffset(0f);
+        chart.getLegend().setEnabled(false);
 
         // entry label styling
         chart.setEntryLabelColor(Color.WHITE);
         chart.setEntryLabelTypeface(tfRegular);
         chart.setEntryLabelTextSize(12f);
-
-        setData(45, new Float(100));
     }
 
-    private void setData(int count, float range) {
+    private void setData(Hashtable<IStock, Integer> portfolio) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        for (int i = 0; i < count ; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * range) + range / 5),
-                    parties[i % parties.length]));
+        //TODO : Sort portfolio by total price
+        List<IStock> sortedPortfolio = new ArrayList<>();
+        sortedPortfolio.addAll(portfolio.keySet());
+
+        int index = 0;
+        for (IStock s : sortedPortfolio) {
+            Double x = s.getPrice()*portfolio.get(s);
+            entries.add(new PieEntry( x.floatValue(),s.getSymbol()));
         }
 
-        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+        PieDataSet dataSet = new PieDataSet(entries, "Portfolio");
 
         dataSet.setDrawIcons(false);
 
@@ -138,7 +178,6 @@ public class PortfolioActivity extends AppCompatActivity {
         dataSet.setSelectionShift(5f);
 
         // add a lot of colors
-
         ArrayList<Integer> colors = new ArrayList<>();
 
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
@@ -175,23 +214,37 @@ public class PortfolioActivity extends AppCompatActivity {
     }
 
     private SpannableString generateCenterSpannableText() {
+        Double totalValue = _portfolio.getTotalValue();
+        Double percentageChange =_portfolio.getTotal24HrChange();
 
-        SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
-        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
-        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
-        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
-        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
+        String topLine = "Total value:\n";
+        String middleLine = "$"+String.format("%.2f",totalValue) +"\n";
+        String percentage = String.format("%.2f",percentageChange)+"%";
+        String bottomLine  = "Today:"+percentage;
+
+        SpannableString s = new SpannableString(topLine+middleLine+bottomLine);
+
+        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2.2f), 0, topLine.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), topLine.length(), s.length() - bottomLine.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2.0f), topLine.length(), s.length() - bottomLine.length(), 0);
+
+        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length()-bottomLine.length(), s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(1.8f), s.length()-bottomLine.length(), s.length(), 0);
+        if (percentageChange >= 0){
+            s.setSpan(new ForegroundColorSpan(Color.GREEN), s.length()-percentage.length(), s.length(), 0);
+        }else{
+            s.setSpan(new ForegroundColorSpan(Color.RED), s.length()-percentage.length(), s.length(), 0);
+        }
         return s;
     }
 
     public void clickMenu(View view){
-        MainActivity.openDrawer(_drawerLayout);
+        MainActivity.openDrawer(_vh._drawerLayout);
     }
 
     public void clickCloseSideMenu(View view){
-        MainActivity.closeDrawer(_drawerLayout);
+        MainActivity.closeDrawer(_vh._drawerLayout);
     }
 
     public void clickHome(View view){
@@ -217,6 +270,17 @@ public class PortfolioActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        MainActivity.closeDrawer(_drawerLayout);
+        MainActivity.closeDrawer(_vh._drawerLayout);
+    }
+    public void clickReturn(View view){
+        Intent intent = this.getIntent();
+        Class activity = (Class) intent.getExtras().getSerializable("Class");
+        if(activity == StockActivity.class){
+            Bundle bundle = intent.getExtras();
+            intent.putExtras(bundle);
+            MainActivity.redirectActivity(this,activity,bundle);
+        }else {
+            MainActivity.redirectActivity(this, activity);
+        }
     }
 }

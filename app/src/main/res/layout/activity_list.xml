@@ -15,31 +15,45 @@
         <include layout="@layout/main_toolbar" />
 
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:orientation="horizontal">
 
+            <LinearLayout
+                android:id="@+id/return_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:onClick="clickReturn"
+                >
             <ImageView
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_marginLeft="10dp"
-                android:paddingBottom="2dp"
-                android:src="@drawable/back_arrow" />
+                android:paddingBottom="4dp"
+                android:src="@drawable/back_arrow"
+                android:layout_gravity="center_vertical"/>
 
             <TextView
-                android:layout_width="70dp"
+                android:id="@+id/previous_screen_text_view"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Return to Main"
                 android:textColor="@color/white"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/category_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
             android:text="Category"
             android:textColor="@color/white"
             android:textSize="25sp"
@@ -49,7 +63,9 @@
             android:id="@+id/list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:dividerHeight="5dp"
+            android:padding="5dp">
 
         </ListView>
 

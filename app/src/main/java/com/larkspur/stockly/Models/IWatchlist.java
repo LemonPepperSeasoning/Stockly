@@ -10,4 +10,8 @@ public interface IWatchlist {
 
     List<IStock> getWatchlist();
 
+    void removeAllStocks();
+
+    boolean hasStock(IStock stock);
+
 }

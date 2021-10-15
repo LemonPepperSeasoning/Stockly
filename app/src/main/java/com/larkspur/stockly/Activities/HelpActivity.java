@@ -1,5 +1,6 @@
 package com.larkspur.stockly.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -69,8 +70,22 @@ public class HelpActivity extends AppCompatActivity{
     }
 
 
-    public void clickBack(View view){
-        MainActivity.redirectActivity(this,MainActivity.class);
+//    public void clickBack(View view){
+//        MainActivity.redirectActivity(this,MainActivity.class);
+//    }
+    public void clickReturn(View view){
+        Intent intent = this.getIntent();
+        Class activity = (Class) intent.getExtras().getSerializable("Class");
+        if(activity == StockActivity.class){
+            Bundle bundle = intent.getExtras();
+            System.out.println(bundle);
+            System.out.println("watch list stock is");
+            System.out.println(bundle.getSerializable("stock"));
+            intent.putExtras(bundle);
+            MainActivity.redirectActivity(this,activity,bundle);
+        }else {
+            MainActivity.redirectActivity(this, activity);
+        }
     }
 
 }

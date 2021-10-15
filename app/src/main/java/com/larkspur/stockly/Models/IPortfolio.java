@@ -10,4 +10,12 @@ public interface IPortfolio {
     void removeStock(IStock stock, int quantity);
 
     Hashtable<IStock,Integer> getPortfolio();
+
+    void removeAllStocks();
+
+    int getQuantity(String stockSymbol);
+
+    Double getTotalValue();
+
+    Double getTotal24HrChange();
 }
