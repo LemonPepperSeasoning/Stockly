@@ -52,21 +52,13 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
 
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Portfolio;
-import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
@@ -74,9 +66,6 @@ import com.larkspur.stockly.R;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
  SearchView.OnQueryTextListener{
@@ -162,12 +151,12 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         list.setAdapter(_adaptor);
 
         // Locate the EditText in listview_main.xml
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        _editSearch = (SearchView) findViewById(R.id.search);
+        _editSearch.setOnQueryTextListener(this);
 
         // Set up the searchbar settings
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
 
         //        =======================--------------------=============================
     }
