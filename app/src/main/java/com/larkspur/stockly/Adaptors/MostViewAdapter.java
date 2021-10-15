@@ -30,6 +30,7 @@ import com.larkspur.stockly.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHolder>{
@@ -104,6 +105,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
         IStock stock = _stockList.get(position);
 
         holder._stockSymbol.setText(stock.getSymbol());
+
         holder._stockPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
                 + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
 
