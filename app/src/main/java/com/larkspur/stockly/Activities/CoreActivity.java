@@ -30,56 +30,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class CoreActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+/**
+ * This class is an abstract class which defines the implementation of the drawer layout for the
+ * side menu and the search bar (removes duplicate code).
+ * Author: Jonathon, Alan
+ */
+
+public abstract class CoreActivity extends AppCompatActivity implements
+        SearchView.OnQueryTextListener{
 
     protected DrawerLayout _drawerLayout;
     protected SearchListViewAdaptor _adaptor;
     protected SearchView editsearch;
 
+    /**
+     * Default constructor
+     */
     public CoreActivity(){
     }
 
-    public void clickMenu(View view) {
-        openDrawer(_drawerLayout);
-    }
-
-    public void openDrawer(DrawerLayout drawerLayout) {
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
-
-    public void clickCloseSideMenu(View view) {
-        closeDrawer(_drawerLayout);
-    }
-
-    public void closeDrawer(DrawerLayout drawerLayout) {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            //When drawer is open, close drawer
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-    }
-
-    public void clickHome(View view){
-       redirectActivity(this,MainActivity.class);
-    }
-
-    public void clickPortfolio(View view) {
-        redirectActivity(this, PortfolioActivity.class);
-    }
-
-    public void clickWatchlist(View view) {
-        redirectActivity(this, WatchlistActivity.class);
-    }
-
-    public void clickSettings(View view) {
-        redirectActivity(this, SettingsActivity.class);
-    }
-
-    public void clickHelp(View view) {
-        redirectActivity(this, HelpActivity.class);
-    }
-
-
-
+    /**
+     * Changes the screen without retaining the stock bundle
+     * @param activity the activity screen which the user wishes to change to
+     * @param aClass class for the screen
+     */
     public void redirectActivity(Activity activity, Class aClass) {
         Intent intent = new Intent(activity, aClass);
         String screenName = activity.getTitle().toString();
@@ -90,6 +64,12 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
         activity.startActivity(intent);
     }
 
+    /**
+     * Changes the screen while retaining the stock bundle (in case stock information
+     * must be retained while switching screens)
+     * @param activity the activity screen which the user wishes to change to
+     * @param aClass class for the screen
+     */
     public void redirectActivity(Activity activity, Class aClass, Bundle stock){
         Intent intent = new Intent(activity, aClass);
         String screenName = activity.getTitle().toString();
@@ -100,13 +80,100 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
         activity.startActivity(intent);
     }
 
+    //        =======================Side Menu functionality=============================
+
+    /**
+     * Click functionality for opening side menu
+     * @param view menu button from main_toolbar.xml
+     */
+    public void clickMenu(View view) {
+        openDrawer(_drawerLayout);
+    }
+
+    /**
+     * Method for opening side menu
+     * @param drawerLayout container for side menu
+     */
+    public void openDrawer(DrawerLayout drawerLayout) {
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
+
+    /**
+     * Click functionality for closing side menu
+     * @param view close_button from main_nav_drawer.xml
+     */
+    public void clickCloseSideMenu(View view) {
+        closeDrawer(_drawerLayout);
+    }
+
+    /**
+     * Method for closing side menu
+     * @param drawerLayout container for side menu
+     */
+    public void closeDrawer(DrawerLayout drawerLayout) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            //When drawer is open, close drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    /**
+     * Click functionality for opening main page from side menu
+     * @param view home_button from main_nav_drawer.xml
+     */
+    public void clickHome(View view){
+       redirectActivity(this,MainActivity.class);
+    }
+
+    /**
+     * Click functionality for opening portfolio screen from side menu
+     * @param view portfolio_button from main_nav_drawer.xml
+     */
+    public void clickPortfolio(View view) {
+        redirectActivity(this, PortfolioActivity.class);
+    }
+
+    /**
+     * Click functionality for opening watchlist screen from side menu
+     * @param view watchlist_button from main_nav_drawer.xml
+     */
+    public void clickWatchlist(View view) {
+        redirectActivity(this, WatchlistActivity.class);
+    }
+
+    /**
+     * Click functionality for opening settings screen from side menu
+     * @param view settings_button from main_nav_drawer.xml
+     */
+    public void clickSettings(View view) {
+        redirectActivity(this, SettingsActivity.class);
+    }
+
+    /**
+     * Click functionality for opening help screen from side menu
+     * @param view help_button from main_nav_drawer.xml
+     */
+    public void clickHelp(View view) {
+        redirectActivity(this, HelpActivity.class);
+    }
+
     //        =======================Search functionality=============================
 
+    /**
+     * Handles callbacks for changes to the text in the search bar.
+     * @param query any changes in text
+     * @return boolean of false to searchView to perform default actions (filter)
+     */
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
+    /**
+     * Called when the user changes the text and calls the filter function for suggestions
+     * @param newText the text input from the user in the search bar
+     * @return boolean of false to searchView to perform default actions (filter)
+     */
     @Override
     public boolean onQueryTextChange(String newText) {
         String text = newText;
@@ -114,6 +181,11 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
         return false;
     }
 
+    /**
+     * Handles click functionality for search bar and display changes such as opening
+     * keyboard and text cursor and fetches stock data for filtering.
+     * @param view SearchView
+     */
     public void clickSearch(View view) {
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.VISIBLE);
@@ -124,13 +196,19 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
         editsearch.requestFocusFromTouch();
 
         // Show text
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat
+                .R.id.search_src_text);
         searchEditText.setCursorVisible(true);
 
         // Fetch the stock data for suggestions
         fetchAllStocks();
     }
 
+    /**
+     * Handles click functionality for search bar and display changes such as collapsing
+     * keyboard and text cursor. Also removes any input text.
+     * @param view SearchView
+     */
     public void closeSearch(View view) {
         // Collapse searchList
         ListView listview = findViewById(R.id.searchList);
@@ -141,20 +219,28 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
         editsearch.requestFocusFromTouch();
 
         //Stop blinking in searchbar
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        EditText searchEditText = (EditText) editsearch.findViewById(androidx.
+                appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(false);
 
         //Clear text in searchbar
         searchEditText.setText("");
     }
 
+    /**
+     * Makes a query to Firestore database for stock information on one thread while
+     * another thread executes the java functions (creating stock items using onComplete
+     * function). Stock items are created and put inside a list for use. All stock items are
+     * called.
+     */
     private void fetchAllStocks() {
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("company_v2")
-                .whereEqualTo("Category", Category.InformationTechnology.toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("Category", Category.InformationTechnology.toString())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -163,7 +249,8 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
                     for (QueryDocumentSnapshot document : task.getResult()) {
 //                        Log.d("+++++", document.getId() + " => " + document.getData());
                         Map<String, Object> data = document.getData();
-                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
+                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data
+                                .get("Price"));
                         IStock tmpStock = new Stock(
                                 ((String) data.get("Name")),
                                 ((String) data.get("Symbol")),
@@ -179,7 +266,8 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
                     System.out.println("============================");
                     System.out.println(stockList.size());
                     for (IStock i : stockList) {
-                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
+                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " "
+                                + i.getSymbol() + " == ");
                     }
                     System.out.println("============================");
 
@@ -201,7 +289,4 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
             }
         });
     }
-
-    //        =======================--------------------=============================
-
 }

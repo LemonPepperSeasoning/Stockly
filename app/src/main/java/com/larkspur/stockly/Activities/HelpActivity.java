@@ -12,6 +12,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.larkspur.stockly.R;
 
+/**
+ * This class
+ */
+
 public class HelpActivity extends CoreActivity {
 
     @Override
