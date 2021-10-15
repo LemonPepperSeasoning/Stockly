@@ -44,24 +44,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
 
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
 
-        DrawerLayout _drawerLayout;
+//        DrawerLayout _drawerLayout;
         // StockAdaptor _stockAdaptor;
         RecyclerView _mostPopular;
         TextView _usernameText;
 
         public ViewHolder() {
+            _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             _techView = (RecyclerView) findViewById(R.id.technology_recycle_view);
             _financeView = (RecyclerView) findViewById(R.id.finance_recycle_view);
             _industryView = (RecyclerView) findViewById(R.id.industrial_recycle_view);
             _healthView = (RecyclerView) findViewById(R.id.health_recycle_view);
             _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
             _usernameText = (TextView) findViewById(R.id.username);
-            _drawerLayout = findViewById(R.id.drawer_layout);
         }
     }
     
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_main);
         _vh = new ViewHolder();
         //   _categories = (ListView) findViewById(R.id.categories_view);
-
         _userInfo = UserInfo.getInstance();
         _vh._usernameText.setText("Hi " + _userInfo.getUsername());
 
@@ -171,69 +170,50 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     //        =======================--------------------=============================
 
-    public void clickMenu(View view) {
-        openDrawer(_vh._drawerLayout);
-    }
+//    public void clickMenu(View view) {
+//        openDrawer(_vh._drawerLayout);
+//    }
+//
+//    public static void openDrawer(DrawerLayout drawerLayout) {
+//        drawerLayout.openDrawer(GravityCompat.START);
+//    }
+//
+//    public void clickCloseSideMenu(View view) {
+//        closeDrawer(_vh._drawerLayout);
+//    }
+//
+//    public static void closeDrawer(DrawerLayout drawerLayout) {
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            //When drawer is open, close drawer
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        }
+//    }
+//
+//    public void clickHome(View view) {
+//        closeDrawer(_vh._drawerLayout);
+//    }
+//
+//    public void clickPortfolio(View view) {
+//        redirectActivity(this, PortfolioActivity.class);
+//    }
+//
+//    public void clickWatchlist(View view) {
+//        redirectActivity(this, WatchlistActivity.class);
+//    }
+//
+//    public void clickSettings(View view) {
+//        redirectActivity(this, SettingsActivity.class);
+//    }
+//
+//    public void clickHelp(View view) {
+//        redirectActivity(this, HelpActivity.class);
+//    }
 
-    public static void openDrawer(DrawerLayout drawerLayout) {
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
-
-    public void clickCloseSideMenu(View view) {
-        closeDrawer(_vh._drawerLayout);
-    }
-
-    public static void closeDrawer(DrawerLayout drawerLayout) {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            //When drawer is open, close drawer
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }
-    }
-
-    public void clickHome(View view) {
-        closeDrawer(_vh._drawerLayout);
-    }
-
-    public void clickPortfolio(View view) {
-        redirectActivity(this, PortfolioActivity.class);
-    }
-
-    public void clickWatchlist(View view) {
-        redirectActivity(this, WatchlistActivity.class);
-    }
-
-    public void clickSettings(View view) {
-        redirectActivity(this, SettingsActivity.class);
-    }
-
-    public void clickHelp(View view) {
-        redirectActivity(this, HelpActivity.class);
-    }
-
-    public static void redirectActivity(Activity activity, Class aClass) {
-        Intent intent = new Intent(activity, aClass);
-        String screenName = activity.getTitle().toString();
-        System.out.println("this is the screen "+ screenName);
-        intent.putExtra("Screen", screenName);
-        intent.putExtra("Class",activity.getClass());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
-    }
-
-    public static void redirectActivity(Activity activity, Class aClass, Bundle stock){
-        Intent intent = new Intent(activity, aClass);
-        String screenName = activity.getTitle().toString();
-        intent.putExtra("Screen", screenName);
-        intent.putExtra("Class",activity.getClass());
-        intent.putExtras(stock);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        closeDrawer(_vh._drawerLayout);
+        closeDrawer(_drawerLayout);
     }
 
     //        =======================Search functionality=============================

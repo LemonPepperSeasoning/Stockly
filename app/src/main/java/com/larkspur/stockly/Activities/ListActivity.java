@@ -38,15 +38,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class ListActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
 
-    private class ViewHolder{
-        DrawerLayout _drawerLayout;
+    private class ViewHolder {
         ListView _listView;
-        TextView _categoryText,_previousScreen;
+        TextView _categoryText, _previousScreen;
         LinearLayout _return;
 
-        public ViewHolder(){
+        public ViewHolder() {
             _drawerLayout = findViewById(R.id.drawer_layout);
             _listView = findViewById(R.id.list_view);
             _categoryText = findViewById(R.id.category_text_view);
@@ -81,7 +80,7 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
             _vh._categoryText.setText(stringCategory);
             Category category = Category.getValue(stringCategory);
             fetchCategoryStocks(category);
-        }else{
+        } else {
             throw new RuntimeException("Stock not found!");
         }
 
@@ -212,7 +211,7 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
 
     //        =======================--------------------=============================
 
-    private void fetchCategoryStocks(Category category){
+    private void fetchCategoryStocks(Category category) {
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
@@ -266,48 +265,49 @@ public class ListActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void propogateCatAdapter(List<IStock> data) {
-        ListViewAdapter adapter = new ListViewAdapter(this, R.layout.list_item,data);
+        ListViewAdapter adapter = new ListViewAdapter(this, R.layout.list_item, data);
         _vh._listView.setAdapter(adapter);
         _vh._listView.setVisibility(View.VISIBLE);
     }
 
-    public void clickMenu(View view){
-        MainActivity.openDrawer(_vh._drawerLayout);
-    }
-
-    public void clickCloseSideMenu(View view){
-        MainActivity.closeDrawer(_vh._drawerLayout);
-    }
-
-    public void clickHome(View view){
-        MainActivity.redirectActivity(this,MainActivity.class);
-    }
-
-    public void clickPortfolio(View view){
-        recreate();
-    }
-
-    public void clickWatchlist(View view){
-        MainActivity.redirectActivity(this,WatchlistActivity.class);
-    }
-
-    public void clickSettings(View view){
-        MainActivity.redirectActivity(this,SettingsActivity.class);
-    }
-
-    public void clickHelp(View view) {
-        MainActivity.redirectActivity(this,HelpActivity.class);
-    }
-
-    public void clickReturn(View view){
-        Intent intent = this.getIntent();
-     Class activity = (Class) intent.getExtras().getSerializable("Class");
-        MainActivity.redirectActivity(this, activity);
-    }
-
+    //    public void clickMenu(View view){
+//        MainActivity.openDrawer(_vh._drawerLayout);
+//    }
+//
+//    public void clickCloseSideMenu(View view){
+//        MainActivity.closeDrawer(_vh._drawerLayout);
+//    }
+//
+//    public void clickHome(View view){
+//        MainActivity.redirectActivity(this,MainActivity.class);
+//    }
+//
+//    public void clickPortfolio(View view){
+//        recreate();
+//    }
+//
+//    public void clickWatchlist(View view){
+//        MainActivity.redirectActivity(this,WatchlistActivity.class);
+//    }
+//
+//    public void clickSettings(View view){
+//        MainActivity.redirectActivity(this,SettingsActivity.class);
+//    }
+//
+//    public void clickHelp(View view) {
+//        MainActivity.redirectActivity(this,HelpActivity.class);
+//    }
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
-        MainActivity.closeDrawer(_vh._drawerLayout);
+        closeDrawer(_drawerLayout);
     }
+
+
+    public void clickReturn(View view) {
+        Intent intent = this.getIntent();
+        Class activity = (Class) intent.getExtras().getSerializable("Class");
+        redirectActivity(this, activity);
+    }
+
 }

@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.R;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends DrawerActivity {
 
     private class ViewHolder {
         EditText _usernameTextField;
@@ -103,9 +103,9 @@ public class SettingsActivity extends AppCompatActivity {
             System.out.println("watch list stock is");
             System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
-            MainActivity.redirectActivity(this,activity,bundle);
+            redirectActivity(this,activity,bundle);
         }else {
-            MainActivity.redirectActivity(this, activity);
+            redirectActivity(this, activity);
         }
     }
 

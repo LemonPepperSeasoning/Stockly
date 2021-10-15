@@ -67,14 +67,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener,
+public class StockActivity extends DrawerActivity implements SeekBar.OnSeekBarChangeListener,
  SearchView.OnQueryTextListener{
 
     private LineChart chart;
     //    private SeekBar seekBarX, seekBarY;
 //    private TextView tvX, tvY;
     private Typeface tfLight;
-    private DrawerLayout _drawerLayout;
 
     private class ViewHolder {
         TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen;
@@ -87,6 +86,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _stockPercent = findViewById(R.id.stock_percent);
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
+            _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         }
     }
 
@@ -109,7 +109,6 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock);
-        _drawerLayout = findViewById(R.id.drawer_layout);
         _vh = new ViewHolder();
 
         if (getIntent().getExtras() != null) {
@@ -385,48 +384,54 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     }
 
 
-    public void clickMenu(View view) {
-        MainActivity.openDrawer(_drawerLayout);
-    }
 
-    public void clickCloseSideMenu(View view) {
-        MainActivity.closeDrawer(_drawerLayout);
-    }
+//    public void clickMenu(View view) {
+//        openDrawer(_drawerLayout);
+//    }
+//
+//    public void clickCloseSideMenu(View view) {
+//        closeDrawer(_drawerLayout);
+//    }
 
+    @Override
     public void clickHome(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, MainActivity.class, bundle);
+        redirectActivity(this, MainActivity.class, bundle);
     }
 
+    @Override
     public void clickPortfolio(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, PortfolioActivity.class, bundle);
+        redirectActivity(this, PortfolioActivity.class, bundle);
     }
 
+    @Override
     public void clickWatchlist(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, WatchlistActivity.class, bundle);
+        redirectActivity(this, WatchlistActivity.class, bundle);
     }
 
+    @Override
     public void clickSettings(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, SettingsActivity.class, bundle);
+        redirectActivity(this, SettingsActivity.class, bundle);
     }
 
+    @Override
     public void clickHelp(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, HelpActivity.class, bundle);
+        redirectActivity(this, HelpActivity.class, bundle);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MainActivity.closeDrawer(_drawerLayout);
+        closeDrawer(_drawerLayout);
     }
 
     public void clickReturn(View view) {
@@ -439,7 +444,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         System.out.println(test.getCompName());
 
         intent.putExtras(bundle);
-        MainActivity.redirectActivity(this, activity, bundle);
+        redirectActivity(this, activity, bundle);
     }
 
 

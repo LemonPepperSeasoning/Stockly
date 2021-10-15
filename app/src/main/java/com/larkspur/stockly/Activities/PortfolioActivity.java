@@ -59,11 +59,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class PortfolioActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class PortfolioActivity extends DrawerActivity implements SearchView.OnQueryTextListener {
 
     private class ViewHolder {
         ListView _stockList;
-        DrawerLayout _drawerLayout;
         TextView _previousScreen;
         LinearLayout _return;
 
@@ -72,6 +71,8 @@ public class PortfolioActivity extends AppCompatActivity implements SearchView.O
             _drawerLayout = findViewById(R.id.drawer_layout);
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
+            _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         }
     }
 
@@ -378,38 +379,38 @@ public class PortfolioActivity extends AppCompatActivity implements SearchView.O
         return s;
     }
 
-    public void clickMenu(View view){
-        MainActivity.openDrawer(_vh._drawerLayout);
-    }
-
-    public void clickCloseSideMenu(View view){
-        MainActivity.closeDrawer(_vh._drawerLayout);
-    }
-
-    public void clickHome(View view){
-        MainActivity.redirectActivity(this,MainActivity.class);
-    }
-
-    public void clickPortfolio(View view){
-        recreate();
-    }
-
-    public void clickWatchlist(View view){
-        MainActivity.redirectActivity(this,WatchlistActivity.class);
-    }
-
-    public void clickSettings(View view){
-        MainActivity.redirectActivity(this,SettingsActivity.class);
-    }
-
-    public void clickHelp(View view) {
-        MainActivity.redirectActivity(this,HelpActivity.class);
-    }
-
+//    public void clickMenu(View view){
+//        MainActivity.openDrawer(_vh._drawerLayout);
+//    }
+//
+//    public void clickCloseSideMenu(View view){
+//        MainActivity.closeDrawer(_vh._drawerLayout);
+//    }
+//
+//    public void clickHome(View view){
+//        MainActivity.redirectActivity(this,MainActivity.class);
+//    }
+//
+//    public void clickPortfolio(View view){
+//        recreate();
+//    }
+//
+//    public void clickWatchlist(View view){
+//        MainActivity.redirectActivity(this,WatchlistActivity.class);
+//    }
+//
+//    public void clickSettings(View view){
+//        MainActivity.redirectActivity(this,SettingsActivity.class);
+//    }
+//
+//    public void clickHelp(View view) {
+//        MainActivity.redirectActivity(this,HelpActivity.class);
+//    }
+//
     @Override
     protected void onPause(){
         super.onPause();
-        MainActivity.closeDrawer(_vh._drawerLayout);
+        closeDrawer(_drawerLayout);
     }
     public void clickReturn(View view){
         Intent intent = this.getIntent();
@@ -417,9 +418,9 @@ public class PortfolioActivity extends AppCompatActivity implements SearchView.O
         if(activity == StockActivity.class){
             Bundle bundle = intent.getExtras();
             intent.putExtras(bundle);
-            MainActivity.redirectActivity(this,activity,bundle);
+            redirectActivity(this,activity,bundle);
         }else {
-            MainActivity.redirectActivity(this, activity);
+            redirectActivity(this, activity);
         }
     }
 }

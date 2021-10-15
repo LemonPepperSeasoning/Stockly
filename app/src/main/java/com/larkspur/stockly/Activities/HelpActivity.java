@@ -12,7 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.larkspur.stockly.R;
 
-public class HelpActivity extends AppCompatActivity{
+public class HelpActivity extends DrawerActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +82,9 @@ public class HelpActivity extends AppCompatActivity{
             System.out.println("watch list stock is");
             System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
-            MainActivity.redirectActivity(this,activity,bundle);
+            redirectActivity(this,activity,bundle);
         }else {
-            MainActivity.redirectActivity(this, activity);
+            redirectActivity(this, activity);
         }
     }
 
