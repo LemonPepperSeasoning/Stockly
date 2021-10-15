@@ -3,8 +3,10 @@ package com.larkspur.stockly.Adaptors;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -33,6 +35,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
@@ -48,7 +51,7 @@ public class PorfolioAdapter extends ArrayAdapter {
 
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice, _stockTotalPrice, _quantityStock;
-        LinearLayout _removeStock;
+        LinearLayout _removeStock, _stockSide;
 
         public ViewHolder(View currentListViewItem) {
             _stockName = currentListViewItem.findViewById(R.id.stock_name);
@@ -57,6 +60,7 @@ public class PorfolioAdapter extends ArrayAdapter {
             _stockTotalPrice = currentListViewItem.findViewById(R.id.stock_total_price);
             _quantityStock = currentListViewItem.findViewById(R.id.stock_quantity);
             _removeStock = currentListViewItem.findViewById(R.id.remove_stock);
+            _stockSide = currentListViewItem.findViewById(R.id.stock_view);
         }
     }
 
@@ -102,6 +106,27 @@ public class PorfolioAdapter extends ArrayAdapter {
         Double totalPrice = currentStock.getPrice() * quantity;
         vh._stockTotalPrice.setText(totalPrice.toString());
         vh._quantityStock.setText(String.valueOf(quantity));
+
+        vh._stockSide.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(v.getContext(), StockActivity.class);
+                intent.putExtra("Screen", "Watchlist");
+                intent.putExtra("Class", _context.getClass());
+                System.out.println("serializing stock");
+                System.out.println(_context.getClass());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("stock", currentStock);
+                System.out.println(bundle.getSerializable("stock"));
+                IStock test = (IStock) bundle.getSerializable("stock");
+                System.out.println(test.getCompName());
+
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+                Toast.makeText(_context, currentStock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         vh._removeStock.setOnClickListener(new View.OnClickListener() {
             @Override
