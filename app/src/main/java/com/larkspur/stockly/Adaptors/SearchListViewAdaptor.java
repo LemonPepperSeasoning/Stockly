@@ -110,7 +110,6 @@ public class SearchListViewAdaptor extends ArrayAdapter {
         return currentListView;
     }
 
-
     public void addData(List<IStock> data){
         _stockNamesList = data;
         _arraylist = new ArrayList<IStock>(); // create new object to avoid pointing to same object
@@ -119,37 +118,21 @@ public class SearchListViewAdaptor extends ArrayAdapter {
 
     }
 
-//    @Override
-//    public int getCount() {
-//        return _stockNamesList.size();
-//    }
-//
-//    @Override
-//    public IStock getItem(int position) {
-//        return _stockNamesList.get(position);
-//    }
+    @Override
+    public int getCount() {
+        return _stockNamesList.size();
+    }
+
+    @Override
+    public IStock getItem(int position) {
+        return _stockNamesList.get(position);
+    }
 
     @Override
     public long getItemId(int position) {
         return position;
     }
-
-//    public View getView(final int position, View view, ViewGroup parent) {
-//        final ViewHolder holder;
-//        if (view == null) {
-//            holder = new ViewHolder();
-//            view = inflater.inflate(R.layout.search_list_item, null);
-//            // Locate the TextViews in listview_item.xml
-//            holder.name = (TextView) view.findViewById(R.id.stock_symbol_view);
-//            view.setTag(holder);
-//        } else {
-//            holder = (ViewHolder) view.getTag();
-//        }
-//        // Set the results into TextViews
-//        holder.name.setText(_stockNamesList.get(position).getCompName());
-//        return view;
-//    }
-
+    
     // Filter Class
     public void filter(String charText) {
         // change to lower case
@@ -168,15 +151,6 @@ public class SearchListViewAdaptor extends ArrayAdapter {
             }
         }
         notifyDataSetChanged();
-    }
-
-    /**
-     * for testing
-     */
-    public void printData(){
-        for (IStock stock : _stockNamesList) {
-            Log.d("", stock.getCompName());
-        }
     }
 
 }

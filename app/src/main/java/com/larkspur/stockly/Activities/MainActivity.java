@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 //        Log.d("fail","did not register ===========================================");
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.VISIBLE);
-        _adaptor.printData();
+//        _adaptor.printData();
 
         // Show the keyboard
         editsearch.setFocusable(true);
