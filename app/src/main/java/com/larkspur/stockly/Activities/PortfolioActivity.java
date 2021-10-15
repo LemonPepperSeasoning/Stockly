@@ -1,6 +1,5 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -12,10 +11,8 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,27 +26,17 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.PorfolioAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Portfolio;
-import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class PortfolioActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
@@ -114,12 +101,12 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         list.setAdapter(_adaptor);
 
         // Locate the EditText in listview_main.xml
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        _editSearch = (SearchView) findViewById(R.id.search);
+        _editSearch.setOnQueryTextListener(this);
 
         // Set up the searchbar settings
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
 
         //        =======================--------------------=============================
     }

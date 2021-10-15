@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -86,12 +85,12 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         list.setAdapter(_adaptor);
 
         // Locate the EditText in listview_main.xml
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        _editSearch = (SearchView) findViewById(R.id.search);
+        _editSearch.setOnQueryTextListener(this);
 
         // Set up the searchbar settings
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
 
         //        =======================--------------------=============================
     }

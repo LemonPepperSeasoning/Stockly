@@ -34,7 +34,7 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
 
     protected DrawerLayout _drawerLayout;
     protected SearchListViewAdaptor _adaptor;
-    protected SearchView editsearch;
+    protected SearchView _editSearch;
 
     public CoreActivity(){
     }
@@ -119,12 +119,12 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
         listview.setVisibility(View.VISIBLE);
 
         // Show the keyboard
-        editsearch.setFocusable(true);
-        editsearch.setIconified(false);
-        editsearch.requestFocusFromTouch();
+        _editSearch.setFocusable(true);
+        _editSearch.setIconified(false);
+        _editSearch.requestFocusFromTouch();
 
         // Show text
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(true);
 
         // Fetch the stock data for suggestions
@@ -137,11 +137,11 @@ public abstract class CoreActivity extends AppCompatActivity implements SearchVi
         listview.setVisibility(View.GONE);
 
         //Hide keyboard
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
 
         //Stop blinking in searchbar
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(false);
 
         //Clear text in searchbar
