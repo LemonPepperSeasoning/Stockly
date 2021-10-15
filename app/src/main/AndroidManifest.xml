@@ -35,7 +35,7 @@
             android:exported="true" />
         <activity
             android:name=".Activities.MainActivity"
-            android:label="Home"
+            android:label="Stockly"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         _vh = new ViewHolder();
-        //   _categories = (ListView) findViewById(R.id.categories_view);
-
+        this.setTitle("Home");
         _userInfo = UserInfo.getInstance();
         _vh._usernameText.setText("Hi " + _userInfo.getUsername());
 
