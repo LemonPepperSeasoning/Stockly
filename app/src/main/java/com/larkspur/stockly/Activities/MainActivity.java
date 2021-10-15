@@ -46,11 +46,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    private ViewHolder _vh;
-    ListView list;
-    SearchListViewAdaptor _adaptor;
-    SearchView editsearch;
-    String[] stockNameList;
 
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
@@ -70,8 +65,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             _drawerLayout = findViewById(R.id.drawer_layout);
         }
     }
-
+    
     private ViewHolder _vh;
+    ListView list;
+    SearchListViewAdaptor _adaptor;
+    SearchView editsearch;
+    String[] stockNameList;
     private UserInfo _userInfo;
 
     @Override
