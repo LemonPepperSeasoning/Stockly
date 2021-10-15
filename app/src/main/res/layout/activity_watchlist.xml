@@ -8,65 +8,66 @@
     android:id="@+id/drawer_layout"
     android:background="@drawable/gradient">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
-
-
-
-        <include
-            layout="@layout/main_toolbar" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="55dp">
+
             <LinearLayout
-                android:id="@+id/return_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:onClick="clickReturn"
                 >
-
-
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:src="@drawable/back_arrow"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="bottom"
-                    android:paddingBottom="2dp" />
-                <TextView
-                    android:id="@+id/previous_screen_text_view"
+                <LinearLayout
+                    android:id="@+id/return_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Return to Category"
-                    android:textSize="10sp"
-                    android:gravity="bottom"
-                    android:textColor="@color/white" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:onClick="clickReturn"
+                    >
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:src="@drawable/back_arrow"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="bottom"
+                        android:paddingBottom="2dp" />
+                    <TextView
+                        android:id="@+id/previous_screen_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Return to Category"
+                        android:textSize="10sp"
+                        android:gravity="bottom"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Watchlist"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"/>
+            <ListView
+                android:id="@+id/watchlist_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                ></ListView>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Watchlist"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"/>
-        <ListView
-            android:id="@+id/watchlist_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            ></ListView>
-    </LinearLayout>
+        <include layout="@layout/search_bar_component" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
         android:layout_width="300dp"
