@@ -31,8 +31,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class handles the screen for the list of items in each category, once directed
+ * from the main screen.
+ * Author: Jonathon
+ */
+
 public class ListActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
+    private ViewHolder _vh;
+    ListView list;
+    String[] stockNameList;
+    private UserInfo _userInfo;
+
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         ListView _listView;
         TextView _categoryText, _previousScreen;
@@ -47,16 +61,10 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         }
     }
 
-    private ViewHolder _vh;
-
-    //        =======================Search functionality=============================
-
-    ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
-
-    //        =======================--------------------=============================
-
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +104,12 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
-
-   
+    /**
+     * Makes a query to Firestore database for stock information on one thread while
+     * another thread executes the java functions (creating stock items using onComplete
+     * function). Stock items are created and put inside a list for use. All stock items are
+     * called for one specific category.
+     */
     private void fetchCategoryStocks(Category category){
         List<IStock> stockList = new LinkedList<>();
 
@@ -153,19 +165,31 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         });
     }
 
+    /**
+     * Creates adaptor for the list of items and makes them visible using the adaptor
+     * @param data Stock information list
+     */
     private void propogateCatAdapter(List<IStock> data) {
         ListViewAdapter adapter = new ListViewAdapter(this, R.layout.list_item, data);
         _vh._listView.setAdapter(adapter);
         _vh._listView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Default method for committing any user interaction with screen when the screen is
+     * closed or the user switches to another screen. This allows the screen to "resume" once
+     * the user returns to the screen.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         closeDrawer(_drawerLayout);
     }
 
-
+    /**
+     * Handles click functionality for return text
+     * @param view TextView
+     */
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
