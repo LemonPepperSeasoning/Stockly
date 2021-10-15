@@ -178,6 +178,8 @@ public class WatchlistActivity extends AppCompatActivity implements SearchView.O
                                 (Category.getValue((String) data.get("Category"))),
                                 ((String) data.get("Subindustry")),
                                 ((String) data.get("location")),
+                                ((String) data.get("Description")),
+                                ((List<String>) data.get("ImageLink")),
                                 tmpHistoricalPrice);
                         stockList.add(tmpStock);
                     }
