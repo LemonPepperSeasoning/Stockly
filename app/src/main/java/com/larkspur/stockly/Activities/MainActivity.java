@@ -46,7 +46,6 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
 
@@ -67,11 +66,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
     
     private ViewHolder _vh;
+
+    //        =======================Search functionality=============================
+
     ListView list;
     SearchListViewAdaptor _adaptor;
     SearchView editsearch;
     String[] stockNameList;
     private UserInfo _userInfo;
+
+    //        =======================--------------------=============================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,22 +95,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         //        =======================Search functionality=============================
 
-        // Generate sample data
-
-//        stockNameList = new String[]{"Amazon", "Apple", "Microsoft",
-//                "Facebook", "Google", "Alphabet", "Tesla", "NVIDIA",
-//                "Berkshire","JPMorgan","VISA"};
-//
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.searchList);
-
-//        for (int i = 0; i < stockNameList.length; i++) {
-//            StockNames stockNames = new StockNames(stockNameList[i]);
-//            // Binds all strings into an array
-//            arraylist.add(stockNames);
-//        }
-//
-//        // Pass results to SearchListViewAdapter Class
 
         _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
 
@@ -121,21 +111,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         editsearch.clearFocus();
         editsearch.requestFocusFromTouch();
 
-
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        _adaptor.filter(text);
-        return false;
-
+        //        =======================--------------------=============================
     }
 
     private void setupCategoryViews(){
@@ -145,11 +121,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         fetchStockByCategory(Category.Industrials);
     }
 
+    //        =======================Search functionality=============================
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        String text = newText;
+        _adaptor.filter(text);
+        return false;
+    }
+
     public void clickSearch(View view) {
-//        Log.d("fail","did not register ===========================================");
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.VISIBLE);
-//        _adaptor.printData();
 
         // Show the keyboard
         editsearch.setFocusable(true);
@@ -165,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public void closeSearch(View view) {
-        Log.d("pass","registered ===========================================");
         // Collapse searchList
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.GONE);
@@ -178,19 +165,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(false);
 
-//        searchEditText.setTextColor(Color.TRANSPARENT);
-//        searchEditText.setHintTextColor(Color.TRANSPARENT);
-
         //Clear text in searchbar
         searchEditText.setText("");
     }
 
-//    public void getData(){
-//        System.out.println("===========HER=============");
-//        StockHandler x = new StockHandler();
-//        IStock y = x.getStock2("FedEx");
-//
-//    }
+    //        =======================--------------------=============================
 
     public void clickMenu(View view) {
         openDrawer(_vh._drawerLayout);
@@ -231,7 +210,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         redirectActivity(this, HelpActivity.class);
     }
 
-
     public static void redirectActivity(Activity activity, Class aClass) {
         Intent intent = new Intent(activity, aClass);
         String screenName = activity.getTitle().toString();
@@ -258,8 +236,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         closeDrawer(_vh._drawerLayout);
     }
 
-    private void fetchAllStocks() {
+    //        =======================Search functionality=============================
 
+    private void fetchAllStocks() {
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
@@ -313,8 +292,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         });
     }
 
-    private void fetchStockByCategory(Category category) {
+    //        =======================--------------------=============================
 
+    private void fetchStockByCategory(Category category) {
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
@@ -375,7 +355,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
         List<DocumentReference> stockRef = new ArrayList<>();
         db.collection("viewcount")
                 .orderBy("viewcount", Query.Direction.DESCENDING)
@@ -431,8 +410,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
     }
-
-
 
     private void propagateAdaptor(List<IStock> data) {
         StockAdaptor stockAdapter = new StockAdaptor(this, R.layout.stock_most_viewed_recycler_view,
