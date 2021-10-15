@@ -122,15 +122,7 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
     public void clickWatchlist(View view) {
         closeDrawer(_drawerLayout);
     }
-//
-//    public void clickSettings(View view) {
-//        MainActivity.redirectActivity(this, SettingsActivity.class);
-//    }
-//
-//    public void clickHelp(View view) {
-//        MainActivity.redirectActivity(this, HelpActivity.class);
-//    }
-//
+
     @Override
     protected void onPause() {
         super.onPause();

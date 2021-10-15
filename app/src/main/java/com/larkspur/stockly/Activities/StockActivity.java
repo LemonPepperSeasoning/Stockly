@@ -1,23 +1,28 @@
 package com.larkspur.stockly.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
-import android.util.Log;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+
 import android.widget.ListView;
 
 import android.widget.Button;
 import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -41,6 +46,12 @@ import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,6 +60,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
+
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
@@ -59,6 +71,8 @@ import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,10 +86,11 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
 //    private TextView tvX, tvY;
     private Typeface tfLight;
 
+
     private class ViewHolder {
         TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen;
         LinearLayout _return;
-
+        ImageView _stockImage;
         public ViewHolder() {
             _stockName = findViewById(R.id.stock_name);
             _stockNameAndSymbol = findViewById(R.id.stock_name_and_symbol);
@@ -84,6 +99,7 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            _stockImage = findViewById(R.id.stock_image_view);
         }
     }
 
@@ -91,6 +107,8 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
     private IStock _stock;
     private boolean _watchlisted;
     private IWatchlist _watchlist;
+    private int _currentImageIndex;
+
 
     //        =======================Search functionality=============================
 
@@ -99,6 +117,7 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
     private UserInfo _userInfo;
 
     //        =======================--------------------=============================
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +131,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             Bundle bundle = intent.getExtras();
             System.out.println(bundle.getSerializable("stock"));
             _stock = (IStock) bundle.getSerializable("stock");
+
+            _currentImageIndex = 0;
+            downloadImage(_stock.getImageLink().get(_currentImageIndex));
+
             _watchlist = Watchlist.getInstance();
             _watchlisted = _watchlist.hasStock(_stock);
             System.out.println("STOCK STARTS HERE");
@@ -149,6 +172,41 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         //        =======================--------------------=============================
     }
 
+
+
+    private void downloadImage(String referenceLink){
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference httpsReference = storage.getReferenceFromUrl("https://storage.googleapis.com/stockstats-39c48.appspot.com//Users/Goyard/Downloads/FIRE-min.jpg%22);
+//        StorageReference httpsReference = storage.getReferenceFromUrl("gs://stockstats-39c48.appspot.com/SOFTENG306P2_5\\AAPL\\2.jpg");
+
+//        StorageReference x = httpsReference.child("/").child("Users").child("Goyard").child("Downloads").child("apple.png");
+        try{
+            StorageReference httpsReference = storage.getReferenceFromUrl(referenceLink);
+            File localFile = File.createTempFile("images", "jpg");
+            httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    Bitmap myBitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    _vh._stockImage.setImageBitmap(myBitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    Log.e("NO IMAGE=",referenceLink);
+                }
+            });
+        }catch(IOException e) {
+            //TODO : When image download fails, maybe we will just set it to default image or something.
+            Log.e("NO IMAGE:",referenceLink);
+        }
+    }
+
+    //        =======================Search functionality=============================
+
+ 
     private void setupStockView() {
         _vh._stockName.setText(_stock.getCompName());
         _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
@@ -404,5 +462,15 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             }
         });
 
+    }
+
+    public void clickNextImageLeft(View view) {
+        _currentImageIndex += 2; //same as -1
+        downloadImage(_stock.getImageLink().get(_currentImageIndex%3));
+    }
+
+    public void clickNextImageRight(View view) {
+        _currentImageIndex += 1;
+        downloadImage(_stock.getImageLink().get(_currentImageIndex%3));
     }
 }

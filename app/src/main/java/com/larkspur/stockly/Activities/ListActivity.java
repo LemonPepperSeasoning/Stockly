@@ -96,7 +96,9 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
-    private void fetchCategoryStocks(Category category) {
+
+   
+    private void fetchCategoryStocks(Category category){
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
@@ -119,6 +121,8 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
                                 (Category.getValue((String) data.get("Category"))),
                                 ((String) data.get("Subindustry")),
                                 ((String) data.get("location")),
+                                ((String) data.get("Description")),
+                                ((List<String>) data.get("ImageLink")),
                                 tmpHistoricalPrice);
                         stockList.add(tmpStock);
                     }

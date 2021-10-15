@@ -13,8 +13,7 @@ public class Stock implements IStock {
     private String _description;
     private Category _category;
     private IHistoricalPrice _historicalPrice;
-
-    private List<Double> price;
+    private List<String> _imageLink;
 
     //Extra field
     private String _subindustry;
@@ -36,6 +35,8 @@ public class Stock implements IStock {
                  Category category,
                  String subIndustry,
                  String location,
+                 String description,
+                 List<String> imageLink,
                  IHistoricalPrice historicalPrice) {
         _companyName = companyName;
         _symbol = symbol;
@@ -43,6 +44,8 @@ public class Stock implements IStock {
         _subindustry = subIndustry;
         _location = location;
         _historicalPrice = historicalPrice;
+        _description = description;
+        _imageLink = imageLink;
     }
 
     @Override
@@ -67,7 +70,16 @@ public class Stock implements IStock {
     @Override
     public void setSymbol(String symbol) {
         _symbol = symbol;
+    }
 
+    @Override
+    public void setImageLink(List<String> links) {
+        _imageLink = links;
+    }
+
+    @Override
+    public List<String> getImageLink() {
+        return this._imageLink;
     }
 
     @Override
@@ -78,7 +90,6 @@ public class Stock implements IStock {
     @Override
     public void setDesc(String desc) {
         _description = desc;
-
     }
 
     @Override
@@ -89,7 +100,6 @@ public class Stock implements IStock {
     @Override
     public void setCategory(Category category) {
         _category = category;
-
     }
 
 
@@ -135,6 +145,5 @@ public class Stock implements IStock {
     @Override
     public void setLocation(String location) {
         _location = location;
-
     }
 }

@@ -124,6 +124,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         //        =======================--------------------=============================
     }
 
+
     private void displayData(){
         setData(_portfolio.getPortfolio());
         Toast.makeText(this,"watchlist size is " + _portfolio.getPortfolio().size(), Toast.LENGTH_SHORT).show();;

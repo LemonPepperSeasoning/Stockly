@@ -71,7 +71,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         _vh = new ViewHolder();
-        //   _categories = (ListView) findViewById(R.id.categories_view);
+        this.setTitle("Home");
         _userInfo = UserInfo.getInstance();
         _vh._usernameText.setText("Hi " + _userInfo.getUsername());
 
@@ -120,12 +120,13 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         closeDrawer(_drawerLayout);
     }
 
+
     private void fetchStockByCategory(Category category) {
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
+        db.collection("company")
                 .whereEqualTo("Category", category.toString())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -143,6 +144,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
                                 (Category.getValue((String) data.get("Category"))),
                                 ((String) data.get("Subindustry")),
                                 ((String) data.get("location")),
+                                ((String) data.get("Description")),
+                                ((List<String>) data.get("ImageLink")),
                                 tmpHistoricalPrice);
                         stockList.add(tmpStock);
                     }
@@ -211,6 +214,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
                                             (Category.getValue((String) data.get("Category"))),
                                             ((String) data.get("Subindustry")),
                                             ((String) data.get("location")),
+                                            ((String) data.get("Description")),
+                                            ((List<String>) data.get("ImageLink")),
                                             tmpHistoricalPrice);
                                     stockList.add(tmpStock);
                                     Log.i("?????", String.valueOf(stockList.size()) );
