@@ -1,12 +1,16 @@
 package com.larkspur.stockly.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,6 +30,11 @@ import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
@@ -34,6 +43,8 @@ import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
@@ -44,10 +55,11 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     private Typeface tfLight;
     private DrawerLayout _drawerLayout;
 
+
     private class ViewHolder {
         TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen;
         LinearLayout _return;
-
+        ImageView _stockImage;
         public ViewHolder() {
             _stockName = findViewById(R.id.stock_name);
             _stockNameAndSymbol = findViewById(R.id.stock_name_and_symbol);
@@ -55,12 +67,15 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _stockPercent = findViewById(R.id.stock_percent);
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
+            _stockImage = findViewById(R.id.stock_image_view);
         }
     }
     private ViewHolder _vh;
     private IStock _stock;
     private boolean _watchlisted;
     private IWatchlist _watchlist;
+    private int _currentImageIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +89,10 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             Bundle bundle = intent.getExtras();
             System.out.println(bundle.getSerializable("stock"));
             _stock = (IStock) bundle.getSerializable("stock");
+
+            _currentImageIndex = 0;
+            downloadImage(_stock.getImageLink().get(_currentImageIndex));
+
             _watchlist = Watchlist.getInstance();
             _watchlisted = _watchlist.hasStock(_stock);
             System.out.println("STOCK STARTS HERE");
@@ -90,6 +109,36 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             throw new RuntimeException("Stock not found!");
         }
 
+    }
+
+    private void downloadImage(String referenceLink){
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference httpsReference = storage.getReferenceFromUrl("https://storage.googleapis.com/stockstats-39c48.appspot.com//Users/Goyard/Downloads/FIRE-min.jpg%22);
+//        StorageReference httpsReference = storage.getReferenceFromUrl("gs://stockstats-39c48.appspot.com/SOFTENG306P2_5\\AAPL\\2.jpg");
+
+//        StorageReference x = httpsReference.child("/").child("Users").child("Goyard").child("Downloads").child("apple.png");
+        try{
+            StorageReference httpsReference = storage.getReferenceFromUrl(referenceLink);
+            File localFile = File.createTempFile("images", "jpg");
+            httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                    Bitmap myBitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    _vh._stockImage.setImageBitmap(myBitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    Log.e("NO IMAGE=",referenceLink);
+                }
+            });
+        }catch(IOException e) {
+            //TODO : When image download fails, maybe we will just set it to default image or something.
+            Log.e("NO IMAGE:",referenceLink);
+        }
     }
 
     private void setupStockView(){
@@ -292,5 +341,15 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             portfolio.addStock(_stock,1);
             Toast.makeText(this,"added " + _stock.getCompName() + " to portfolio", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void clickNextImageLeft(View view) {
+        _currentImageIndex += 2; //same as -1
+        downloadImage(_stock.getImageLink().get(_currentImageIndex%3));
+    }
+
+    public void clickNextImageRight(View view) {
+        _currentImageIndex += 1;
+        downloadImage(_stock.getImageLink().get(_currentImageIndex%3));
     }
 }

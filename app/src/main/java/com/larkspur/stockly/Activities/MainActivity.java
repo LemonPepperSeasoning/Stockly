@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
+        db.collection("company")
                 .whereEqualTo("Category", Category.InformationTechnology.toString()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -281,6 +281,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 (Category.getValue((String) data.get("Category"))),
                                 ((String) data.get("Subindustry")),
                                 ((String) data.get("location")),
+                                ((String) data.get("Description")),
+                                ((List<String>) data.get("ImageLink")),
                                 tmpHistoricalPrice);
                         stockList.add(tmpStock);
                     }
@@ -317,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
+        db.collection("company")
                 .whereEqualTo("Category", category.toString())
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -335,6 +337,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                 (Category.getValue((String) data.get("Category"))),
                                 ((String) data.get("Subindustry")),
                                 ((String) data.get("location")),
+                                ((String) data.get("Description")),
+                                ((List<String>) data.get("ImageLink")),
                                 tmpHistoricalPrice);
                         stockList.add(tmpStock);
                     }
@@ -404,6 +408,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                             (Category.getValue((String) data.get("Category"))),
                                             ((String) data.get("Subindustry")),
                                             ((String) data.get("location")),
+                                            ((String) data.get("Description")),
+                                            ((List<String>) data.get("ImageLink")),
                                             tmpHistoricalPrice);
                                     stockList.add(tmpStock);
                                     Log.i("?????", String.valueOf(stockList.size()) );

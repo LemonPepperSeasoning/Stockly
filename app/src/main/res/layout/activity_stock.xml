@@ -167,7 +167,8 @@
                 android:src="@drawable/backarrow_icon_48"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageView>
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="clickNextImageLeft"></ImageView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="250dp"
@@ -185,9 +186,9 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView2">
 
                 <ImageView
+                    android:id="@+id/stock_image_view"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/apple"></ImageView>
+                    android:layout_height="match_parent"></ImageView>
             </androidx.cardview.widget.CardView>
 
             <ImageView
@@ -198,7 +199,8 @@
                 android:src="@drawable/fowardarrow_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageView>
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="clickNextImageRight"></ImageView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
