@@ -4,13 +4,27 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import android.util.Log;
+
+import android.view.Gravity;
+import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+
 import android.widget.ListView;
+
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
+
+
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -75,6 +89,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _previousScreen = findViewById(R.id.previous_screen_text_view);
         }
     }
+
     private ViewHolder _vh;
     private IStock _stock;
     private boolean _watchlisted;
@@ -107,7 +122,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             _watchlisted = _watchlist.hasStock(_stock);
             System.out.println("STOCK STARTS HERE");
             System.out.println(intent.getStringExtra("Screen"));
-            System.out.println("previous class: "+ intent.getExtras().getSerializable("Class"));
+            System.out.println("previous class: " + intent.getExtras().getSerializable("Class"));
             String previousScreen = intent.getStringExtra("Screen");
             _vh._previousScreen.setText("Return to " + previousScreen);
 
@@ -115,7 +130,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
             setupGraph();
 
             Toast.makeText(this, _stock.getSymbol() + " was Launched!", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             throw new RuntimeException("Stock not found!");
         }
 
@@ -246,13 +261,14 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
 
     //        =======================--------------------=============================
 
-    private void setupStockView(){
+
+    private void setupStockView() {
         _vh._stockName.setText(_stock.getCompName());
         _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
         _vh._stockPrice.setText(_stock.getPrice().toString());
     }
 
-    private void setupGraph(){
+    private void setupGraph() {
         chart = findViewById(R.id.chart1);
         chart.setViewPortOffsets(0, 0, 0, 0);
         chart.setBackgroundColor(Color.rgb(46, 46, 51));
@@ -294,7 +310,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         chart.invalidate();
     }
 
-    private void setData(@NonNull IHistoricalPrice prices){
+    private void setData(@NonNull IHistoricalPrice prices) {
         ArrayList<Entry> values = new ArrayList<>();
 
         int index = 0;
@@ -380,25 +396,25 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
     public void clickHome(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, MainActivity.class,bundle);
+        MainActivity.redirectActivity(this, MainActivity.class, bundle);
     }
 
     public void clickPortfolio(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, PortfolioActivity.class,bundle);
+        MainActivity.redirectActivity(this, PortfolioActivity.class, bundle);
     }
 
     public void clickWatchlist(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, WatchlistActivity.class,bundle);
+        MainActivity.redirectActivity(this, WatchlistActivity.class, bundle);
     }
 
     public void clickSettings(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
-        MainActivity.redirectActivity(this, SettingsActivity.class,bundle);
+        MainActivity.redirectActivity(this, SettingsActivity.class, bundle);
     }
 
     public void clickHelp(View view) {
@@ -413,7 +429,7 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         MainActivity.closeDrawer(_drawerLayout);
     }
 
-    public void clickReturn(View view){
+    public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
         Bundle bundle = new Bundle();
@@ -423,28 +439,77 @@ public class StockActivity extends AppCompatActivity implements SeekBar.OnSeekBa
         System.out.println(test.getCompName());
 
         intent.putExtras(bundle);
-        MainActivity.redirectActivity(this, activity,bundle);
+        MainActivity.redirectActivity(this, activity, bundle);
     }
 
 
-    public void clickAddWatchlist(View view){
-        if(_watchlisted == false){
+    public void clickAddWatchlist(View view) {
+        if (_watchlisted == false) {
             _watchlist.addStock(_stock);
-            Toast.makeText(this,"added " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "added " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = true;
 
-        }else{
+        } else {
             _watchlist.removeStock(_stock);
-            Toast.makeText(this,"removed " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "removed " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = false;
         }
     }
 
-    public void clickAddPortfolio(View view){
-        if(_watchlisted == false){
-            IPortfolio portfolio = Portfolio.getInstance();
-            portfolio.addStock(_stock,1);
-            Toast.makeText(this,"added " + _stock.getCompName() + " to portfolio", Toast.LENGTH_SHORT).show();
-        }
+    public void clickAddPortfolio(View view) {
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.add_portfolio_popup, null);
+        PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        IPortfolio portfolio = Portfolio.getInstance();
+        Button closePopup = (Button) popupView.findViewById(R.id.add_to_portfolio_confirmbutton);
+        EditText numberOfStocks = (EditText) popupView.findViewById(R.id.add_to_portfolio_edittext);
+        ImageView plus = (ImageView) popupView.findViewById(R.id.plus_view);
+        ImageView minus = (ImageView) popupView.findViewById(R.id.minus_view);
+        numberOfStocks.setText("0");
+
+        Toast.makeText(this, "added " + _stock.getCompName() + " to portfolio", Toast.LENGTH_SHORT).show();
+        closePopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(numberOfStocks.getText().toString());
+                if (!numberOfStocks.getText().toString().equals("")) {
+                    int numStocks = Integer.parseInt(numberOfStocks.getText().toString());
+                    portfolio.addStock(_stock, numStocks);
+                } else {
+                    Toast.makeText(view.getContext(), "A number needs to be input", Toast.LENGTH_SHORT).show();
+                }
+
+                popupWindow.dismiss();
+            }
+        });
+
+        minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(numberOfStocks.getText().toString());
+                if (numberOfStocks.getText().toString().equals("") || numberOfStocks.getText().toString().equals("0")) {
+                } else {
+                    int newNumStocks = Integer.parseInt(numberOfStocks.getText().toString()) - 1;
+                    numberOfStocks.setText(Integer.toString(newNumStocks));
+                }
+            }
+        });
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(numberOfStocks.getText().toString());
+                if(numberOfStocks.getText().toString().equals("")){
+                    numberOfStocks.setText("1");
+                }else{
+                    int newNumStocks = Integer.parseInt(numberOfStocks.getText().toString()) + 1;
+                    numberOfStocks.setText(Integer.toString(newNumStocks));
+                }
+
+            }
+        });
+
     }
 }
