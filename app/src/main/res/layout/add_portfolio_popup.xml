@@ -20,8 +20,9 @@
         android:layout_height="wrap_content"
         >
         <ImageView
+            android:id="@+id/minus_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_weight="1"
             android:src="@drawable/back_arrow"
             />
@@ -35,10 +36,11 @@
             android:inputType="number"
             />
         <ImageView
+            android:id="@+id/plus_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_weight="1"
-            android:src="@drawable/back_arrow"
+            android:src="@drawable/fowardarrow_icon"
             />
     </LinearLayout>
 
