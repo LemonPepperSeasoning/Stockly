@@ -117,7 +117,8 @@ public class PorfolioAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), StockActivity.class);
-                intent.putExtra("Screen", "Watchlist");
+                System.out.println(v.getContext());
+                intent.putExtra("Screen", "Portfolio");
                 intent.putExtra("Class", _context.getClass());
                 System.out.println("serializing stock");
                 System.out.println(_context.getClass());
