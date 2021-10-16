@@ -259,6 +259,10 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         chart.invalidate();
     }
 
+    /**
+     * Handles center text generation
+     * @return Spannable String
+     */
     private SpannableString generateCenterSpannableText() {
         Double totalValue = _portfolio.getTotalValue();
         Double percentageChange =_portfolio.getTotal24HrChange();
