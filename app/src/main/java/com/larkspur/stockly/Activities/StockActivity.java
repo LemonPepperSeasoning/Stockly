@@ -139,7 +139,11 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             System.out.println(intent.getStringExtra("Screen"));
             System.out.println("previous class: " + intent.getExtras().getSerializable("Class"));
             String previousScreen = intent.getStringExtra("Screen");
-            _vh._previousScreen.setText("Return to " + previousScreen);
+            if (previousScreen != null) {
+                _vh._previousScreen.setText("Return to " + previousScreen);
+            }else{
+                _vh._previousScreen.setText("Return to Home");
+            }
 
             _vh._description.setText(_stock.getDesc());
             System.out.println(_stock.getDesc());
@@ -443,6 +447,9 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
+        if (activity == null){
+            activity = MainActivity.class;
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
         IStock test = (IStock) bundle.getSerializable("stock");

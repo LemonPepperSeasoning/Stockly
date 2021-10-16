@@ -64,8 +64,8 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
         _vh = new ViewHolder();
         if (getIntent().getExtras() != null) {
             Intent intent = this.getIntent();
-            String previousScreen = intent.getStringExtra("Screen");
-            _vh._previousScreen.setText("Return to " + previousScreen);
+//            String previousScreen = intent.getStringExtra("Screen");
+            _vh._previousScreen.setText("Return to Home");
         } else {
             throw new RuntimeException("Stock not found!");
         }
@@ -140,16 +140,14 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
      */
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
-        Class activity = (Class) intent.getExtras().getSerializable("Class");
-        if (activity == StockActivity.class) {
-            Bundle bundle = intent.getExtras();
-            intent.putExtras(bundle);
-            redirectActivity(this, activity, bundle);
+//        Class activity = (Class) intent.getExtras().getSerializable("Class");
+//        if (activity == StockActivity.class) {
+//            Bundle bundle = intent.getExtras();
+//            intent.putExtras(bundle);
+//            redirectActivity(this, activity, bundle);
+//        } else {
+            redirectActivity(this, MainActivity.class);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
-        } else {
-            redirectActivity(this, activity);
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        }
+//        }
     }
 }
