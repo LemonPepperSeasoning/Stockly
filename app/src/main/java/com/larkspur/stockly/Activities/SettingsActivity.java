@@ -15,6 +15,9 @@ import android.widget.ImageButton;
 import com.larkspur.stockly.Models.UserInfo;
 import com.larkspur.stockly.R;
 
+/**
+ *
+ */
 public class SettingsActivity extends CoreActivity {
 
     private class ViewHolder {
