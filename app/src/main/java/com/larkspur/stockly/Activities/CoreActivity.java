@@ -1,6 +1,7 @@
 package com.larkspur.stockly.Activities;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,10 +68,12 @@ public abstract class CoreActivity extends AppCompatActivity implements
         Intent intent = new Intent(activity, aClass);
         String screenName = activity.getTitle().toString();
         System.out.println("this is the screen "+ screenName);
+//        Bundle options = ActivityOptions.makeCustomAnimation(activity, R.anim.slide_in_right,R.anim.slide_out_left).toBundle();
         intent.putExtra("Screen", screenName);
         intent.putExtra("Class",activity.getClass());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     /**
@@ -87,6 +90,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
         intent.putExtras(stock);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
+//        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
     }
 
     //        =======================Side Menu functionality=============================

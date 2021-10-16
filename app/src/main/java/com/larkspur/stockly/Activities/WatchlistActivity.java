@@ -5,6 +5,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Transition;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -143,8 +145,11 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
             Bundle bundle = intent.getExtras();
             intent.putExtras(bundle);
             redirectActivity(this, activity, bundle);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         } else {
             redirectActivity(this, activity);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
     }
 }
