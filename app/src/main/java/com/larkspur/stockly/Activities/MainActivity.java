@@ -192,6 +192,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
     private void fetchTopChange(Query.Direction direction) {
         final IStock[] stock = new IStock[1];
+    }
 
     /**
      * Click functionality for opening main page from side menu
