@@ -33,6 +33,8 @@ public class StockHandler extends DataHandler {
     private List<IStock> _stockCollection;
     private List<IStock> _mostViewCollection;
     private Hashtable<Category,List<IStock>> _categoricalCollection;
+    private IStock _topGainer;
+    private IStock _topLoser;
 
     private StockHandler() {
         _stockCollection = new ArrayList<>();
@@ -78,5 +80,21 @@ public class StockHandler extends DataHandler {
             return null;
         }
         return _categoricalCollection.get(category);
+    }
+
+    public IStock getTopGainer(){
+        return _topGainer;
+    }
+
+    public IStock getTopLoser(){
+        return _topLoser;
+    }
+
+    public void addTopGainer(IStock stock){
+        _topGainer = stock;
+    }
+
+    public void addTopLoser(IStock stock){
+        _topLoser = stock;
     }
 }
