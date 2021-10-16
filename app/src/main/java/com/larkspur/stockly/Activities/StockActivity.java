@@ -79,10 +79,7 @@ import java.util.ArrayList;
  */
 public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
         SearchView.OnQueryTextListener {
-
-    private LineChart chart;
-    private Typeface tfLight;
-
+                
     private class ViewHolder {
         TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen, _description;
         LinearLayout _return;
