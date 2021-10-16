@@ -2,12 +2,16 @@ package com.larkspur.stockly.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -21,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.larkspur.stockly.Adaptors.CategoryAdapter;
+import com.larkspur.stockly.Adaptors.CategoryItemDecoration;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
@@ -43,13 +49,15 @@ import java.util.Map;
 public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
     private class ViewHolder {
-        RecyclerView _techView, _financeView, _industryView, _healthView;
         RecyclerView _mostPopular;
+        RecyclerView _categories;
+
         TextView _usernameText;
 
         public ViewHolder() {
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-       
+            _categories = (RecyclerView) findViewById(R.id.category_recycler_view);
+
             _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
             _usernameText = (TextView) findViewById(R.id.username);
             _usernameText.setText("Hi " + _user.getUsername());
@@ -67,9 +75,13 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         _vh = new ViewHolder();
+
         this.setTitle("Home");
 
+
         getStockMostView();
+        setUpCategoryButtons();
+
 
         //        =======================Search functionality=============================
         // Locate the ListView in listview_main.xml
@@ -90,6 +102,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
+    private void setUpCategoryButtons(){
+        propogateCategoryAdapter();
+    }
+
     private void getStockMostView(){
         List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
         if (stockList == null){
@@ -99,14 +115,14 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }
     }
 
-    private void getCategoryStock(Category category){
-        List<IStock> stockList = _stockHandler.getCategoryStock(category);
-        if (stockList == null){
-            fetchStockByCategory(category);
-        }else{
-            propogateCatAdapter(stockList, category);
-        }
-    }
+//    private void getCategoryStock(Category category){
+//        List<IStock> stockList = _stockHandler.getCategoryStock(category);
+//        if (stockList == null){
+//            fetchStockByCategory(category);
+//        }else{
+//            propogateCatAdapter(stockList, category);
+//        }
+//    }
 
     @Override
     public void clickHome(View view) {
@@ -119,34 +135,34 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         closeDrawer(_drawerLayout);
     }
 
-
-    private void fetchStockByCategory(Category category) {
-        List<IStock> stockList = new LinkedList<>();
-
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company")
-                .whereEqualTo("Category", category.toString())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        stockList.add(StockMapper.toStock(document.getData()));
-                    }
-
-                    if (stockList.size() > 0) {
-                        propogateCatAdapter(stockList, category);
-                        _stockHandler.addCategoryStock(category,stockList);
-                    } else {
-                        Log.d("Fetch Failed", "return value was empty");
-                    }
-                } else {
-                    Log.e("Fetch Error", "failed to fetch stocks by category");
-                }
-            }
-        });
-    }
+//    private void fetchStockByCategory(Category category) {
+//        List<IStock> stockList = new LinkedList<>();
+//
+//        // Getting numbers collection from Firestore
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        db.collection("company")
+//                .whereEqualTo("Category", category.toString())
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        stockList.add(StockMapper.toStock(document.getData()));
+//                    }
+//
+//                    if (stockList.size() > 0) {
+//                        propogateCatAdapter(stockList, category);
+//                        _stockHandler.addCategoryStock(category,stockList);
+//                    } else {
+//                        Log.d("Fetch Failed", "return value was empty");
+//                    }
+//                } else {
+//                    Log.e("Fetch Error", "failed to fetch stocks by category");
+//                }
+//            }
+//        });
+//    }
+//
 
     private void fetchStockMostView(){
         List<IStock> stockList = new LinkedList<>();
@@ -186,6 +202,13 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             }
         });
     }
+    private void propogateCategoryAdapter(){
+        CategoryAdapter adapter = new CategoryAdapter();
+        _vh._categories.setAdapter(adapter);
+//        _vh._categories.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
+        _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
+    }
 
     private void propogateMostViewAdapter(List<IStock> data){
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
@@ -194,30 +217,30 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh._mostPopular.setLayoutManager(lm);
     }
 
-    private void propogateCatAdapter(List<IStock> data, Category category) {
-        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
-        switch (category) {
-            case InformationTechnology:
-                _vh._techView.setAdapter(adapter);
-                _vh._techView.setLayoutManager(lm);
-                break;
-            case HealthCare:
-                _vh._healthView.setAdapter(adapter);
-                _vh._healthView.setLayoutManager(lm);
-                break;
-            case Industrials:
-                _vh._industryView.setAdapter(adapter);
-                _vh._industryView.setLayoutManager(lm);
-                break;
-            case ConsumerDiscretionary:
-                _vh._financeView.setAdapter(adapter);
-                _vh._financeView.setLayoutManager(lm);
-                break;
-            default:
-                throw new IllegalArgumentException("Category not supported at the moment");
-        }
-    }
+//    private void propogateCatAdapter(List<IStock> data, Category category) {
+//        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+//        StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
+//        switch (category) {
+//            case InformationTechnology:
+//                _vh._techView.setAdapter(adapter);
+//                _vh._techView.setLayoutManager(lm);
+//                break;
+//            case HealthCare:
+//                _vh._healthView.setAdapter(adapter);
+//                _vh._healthView.setLayoutManager(lm);
+//                break;
+//            case Industrials:
+//                _vh._industryView.setAdapter(adapter);
+//                _vh._industryView.setLayoutManager(lm);
+//                break;
+//            case ConsumerDiscretionary:
+//                _vh._financeView.setAdapter(adapter);
+//                _vh._financeView.setLayoutManager(lm);
+//                break;
+//            default:
+//                throw new IllegalArgumentException("Category not supported at the moment");
+//        }
+//    }
 
     public void browseAll(View view){
         System.out.println(view.getResources().getResourceName(view.getId()));
