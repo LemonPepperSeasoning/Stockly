@@ -31,7 +31,7 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Portfolio;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
     private class ViewHolder {
         ListView _stockList;
-        TextView _previousScreen;
+        TextView _previousScreen,_usernameText;
         LinearLayout _return;
 
         public ViewHolder() {
@@ -51,7 +51,8 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+            _usernameText = (TextView) findViewById(R.id.username);
+            _usernameText.setText("Hi " + _user.getUsername());
         }
     }
 
@@ -65,7 +66,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
     ListView list;
     String[] stockNameList;
-    private UserInfo _userInfo;
+    private User _userInfo;
 
     //        =======================--------------------=============================
 
@@ -77,7 +78,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_portfolio);
         _vh = new ViewHolder();
       
-        _portfolio = Portfolio.getInstance();
+        _portfolio = _user.getPortfolio();
 
         if (getIntent().getExtras() != null) {
             Intent intent = this.getIntent();
@@ -149,8 +150,9 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
         chart.setHoleRadius(68f);
         chart.setTransparentCircleRadius(61f);
-
         chart.setDrawCenterText(true);
+
+        chart.setDrawEntryLabels(false);
 
         chart.setRotationAngle(0);
         // enable rotation of the chart by touch
@@ -175,7 +177,6 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         List<IStock> sortedPortfolio = new ArrayList<>();
         sortedPortfolio.addAll(portfolio.keySet());
 
-        int index = 0;
         for (IStock s : sortedPortfolio) {
             Double x = s.getPrice()*portfolio.get(s);
             entries.add(new PieEntry( x.floatValue(),s.getSymbol()));
@@ -191,21 +192,20 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
         // add a lot of colors
         ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
+//        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+//            colors.add(c);
+//
         for (int c : ColorTemplate.JOYFUL_COLORS)
             colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
+//
+//        for (int c : ColorTemplate.COLORFUL_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.LIBERTY_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.PASTEL_COLORS)
+//            colors.add(c);
 
         colors.add(ColorTemplate.getHoloBlue());
 
@@ -214,7 +214,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
+        data.setValueTextSize(0f);
         data.setValueTextColor(Color.WHITE);
         data.setValueTypeface(tfLight);
         chart.setData(data);

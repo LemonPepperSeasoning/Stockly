@@ -6,21 +6,12 @@ import java.util.List;
 
 public class Portfolio implements IPortfolio{
 
-    private static Portfolio single_instance = null;
-
     private Hashtable<String,IStock> _stocks;
     private Hashtable<String,Integer> _quantity;
 
-    private Portfolio() {
+    public Portfolio() {
         _quantity = new Hashtable<>();
         _stocks = new Hashtable<>();
-    }
-
-    public static Portfolio getInstance() {
-        if (single_instance == null) {
-            single_instance = new Portfolio();
-        }
-        return single_instance;
     }
 
     @Override

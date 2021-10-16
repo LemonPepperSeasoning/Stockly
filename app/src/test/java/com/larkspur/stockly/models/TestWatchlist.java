@@ -16,7 +16,7 @@ public class TestWatchlist {
 
     @Before
     public void setupPortfolio(){
-        watchlist = Watchlist.getInstance();
+        watchlist = new Watchlist();
         watchlist.removeAllStocks();
     }
 

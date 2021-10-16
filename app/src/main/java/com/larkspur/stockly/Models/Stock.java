@@ -124,7 +124,6 @@ public class Stock implements IStock {
     @Override
     public void setHistoricalPrice(HistoricalPrice historicalPrice) {
         _historicalPrice = historicalPrice;
-
     }
 
     @Override
@@ -135,7 +134,6 @@ public class Stock implements IStock {
     @Override
     public void setSubindustry(String subindustry) {
         _subindustry = subindustry;
-
     }
 
     @Override

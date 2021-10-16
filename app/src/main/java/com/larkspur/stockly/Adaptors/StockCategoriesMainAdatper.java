@@ -2,6 +2,7 @@ package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,18 +45,14 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
             Intent intent = new Intent(view.getContext(), StockActivity.class);
             intent.putExtra("Screen", "Home");
             intent.putExtra("Class", _parent);
-            System.out.println("serializing stock");
             Bundle bundle = new Bundle();
             bundle.putSerializable("stock", stock);
-            System.out.println(bundle.getSerializable("stock"));
             IStock test = (IStock) bundle.getSerializable("stock");
-            System.out.println(test.getCompName());
 
             intent.putExtras(bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             view.getContext().startActivity(intent);
             Toast.makeText(_context, stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -72,26 +69,24 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         _context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(_context);
-
         View stockView = inflater.inflate(R.layout.main_category_card, parent, false);
-
         ViewHolder holder = new ViewHolder(stockView);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         IStock stock = _stockList.get(position);
-
         holder._stockSymbol.setText(stock.getSymbol());
-        holder._stockPercent.setText("RANDOM PERCENT");
-
-        //cut price to two decimal places
-        DecimalFormat df = new DecimalFormat("#.##");
-        String formattedPrice = df.format(stock.getPrice());
-        holder._stockPrice.setText(formattedPrice);
-
+        holder._stockPrice.setText("$" + String.format("%.2f", stock.getPrice()));
+        holder._stockPercent.setText(String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange())+"%");
+        if (stock.getHistoricalPrice().getLast24HourChange() > 0 ){
+            holder._stockPrice.setTextColor(Color.GREEN);
+            holder._stockPercent.setTextColor(Color.GREEN);
+        }else{
+            holder._stockPrice.setTextColor(Color.RED);
+            holder._stockPercent.setTextColor(Color.RED);
+        }
     }
 
     @Override
