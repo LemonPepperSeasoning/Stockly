@@ -36,7 +36,6 @@ import java.util.Map;
  * from the main screen.
  * Author: Jonathon
  */
-
 public class ListActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
     /**

@@ -22,7 +22,6 @@ import com.larkspur.stockly.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * This activity handles the WatchList Screen. The watchlist holds the stocks in which the
  * user may be interested in, but has not put inside their portfolio. The user has the option
