@@ -1,5 +1,6 @@
 package com.larkspur.stockly.Adaptors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,8 +29,7 @@ import java.util.Locale;
 /**
  * This class is the adaptor for the search list.
  * Author: Jonathon
- * Source: https://abhiandroid.com/ui/searchview
- *
+ * Reference: https://abhiandroid.com/ui/searchview
  */
 
 public class SearchListViewAdaptor extends ArrayAdapter {
@@ -105,6 +105,8 @@ public class SearchListViewAdaptor extends ArrayAdapter {
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(intent);
+                Activity activity =(Activity) v.getContext();
+                activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 Toast.makeText(_context, currentStock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
 
             }
