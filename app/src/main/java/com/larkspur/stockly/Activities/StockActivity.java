@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimatedImageDrawable;
+import android.graphics.drawable.AnimatedStateListDrawable;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 
 
@@ -130,10 +133,14 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             _watchlist = User.getInstance().getWatchlist();
             _watchlisted = _watchlist.hasStock(_stock);
             if (_watchlisted == false) {
-                _vh._addWatchList.setImageResource(R.drawable.grey_watchlist_button);
+                _vh._addWatchList.setEnabled(false);
             } else {
-                _vh._addWatchList.setImageResource(R.drawable.red_watchlist_button);
+                _vh._addWatchList.setEnabled(true);
             }
+
+
+
+
 
             System.out.println("STOCK STARTS HERE");
             System.out.println(intent.getStringExtra("Screen"));
@@ -467,15 +474,17 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
     public void clickAddWatchlist(View view) {
         if (_watchlisted == false) {
             _watchlist.addStock(_stock);
-            _vh._addWatchList.setImageResource(R.drawable.red_watchlist_button);
+//            _vh._addWatchList.setImageResource(R.drawable.red_watchlist_button);
             Toast.makeText(this, "added " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = true;
+            _vh._addWatchList.setEnabled(false);
 
         } else {
             _watchlist.removeStock(_stock);
-            _vh._addWatchList.setImageResource(R.drawable.grey_watchlist_button);
+//            _vh._addWatchList.setImageResource(R.drawable.grey_watchlist_button);
             Toast.makeText(this, "removed " + _stock.getCompName() + " to watchlist", Toast.LENGTH_SHORT).show();
             _watchlisted = false;
+            _vh._addWatchList.setEnabled(true);
         }
     }
 
