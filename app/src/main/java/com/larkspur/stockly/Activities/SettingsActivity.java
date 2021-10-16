@@ -16,8 +16,16 @@ import com.larkspur.stockly.Models.IUser;
 import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
+/**
+ * This activity handles the Settings screen. This screen allows users to change their name, change
+ * the time zone, currency and etc.
+ * Author: Takahiro
+ */
 public class SettingsActivity extends CoreActivity {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         EditText _usernameTextField;
 
@@ -28,6 +36,10 @@ public class SettingsActivity extends CoreActivity {
 
     private ViewHolder _vh;
 
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input (Any saved stock or user information)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +94,10 @@ public class SettingsActivity extends CoreActivity {
         });
     }
 
+    /**
+     * Handles click functionality for return text
+     * @param view TextView
+     */
     public void clickReturn(View view){
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
@@ -93,4 +109,14 @@ public class SettingsActivity extends CoreActivity {
             redirectActivity(this, activity);
         }
     }
+
+    public void clearPortfolio(){
+    }
+
+    public void clearWatchlist(){
+    }
+
+    public void setName(){
+    }
+
 }
