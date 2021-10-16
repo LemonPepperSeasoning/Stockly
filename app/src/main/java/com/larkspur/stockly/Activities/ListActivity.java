@@ -172,6 +172,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
         redirectActivity(this, activity);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
 }

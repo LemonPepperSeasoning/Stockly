@@ -105,8 +105,12 @@ public class SettingsActivity extends CoreActivity {
             Bundle bundle = intent.getExtras();
             intent.putExtras(bundle);
             redirectActivity(this,activity,bundle);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         }else {
             redirectActivity(this, activity);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         }
     }
 
