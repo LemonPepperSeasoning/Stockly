@@ -59,8 +59,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class handles the main home screen. It has a most viewed RecyclerView for "Most Viewed",
+ * a list of categories to choose from and a sidebar menu.
+ * Author: Takahiro, Alan, Jonathon
+ */
+
 public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         RecyclerView _mostPopular;
         RecyclerView _categories;
@@ -91,6 +100,11 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _loserChart = (LineChart) topLoser.findViewById(R.id.chart1);
         }
     }
+  
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input (Any saved stock or user information)
+     */
     
     private ViewHolder _vh;
     private Typeface tfLight;
@@ -136,6 +150,18 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
+
+    /**
+     * Initialises all categories
+     */
+    private void setupCategoryViews(){
+        getCategoryStock(Category.HealthCare);
+        getCategoryStock(Category.InformationTechnology);
+        getCategoryStock(Category.ConsumerDiscretionary);
+        getCategoryStock(Category.Industrials);
+    }
+
+
     private void getStockMostView(){
         List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
         if (stockList == null){
@@ -154,6 +180,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }
     }
 
+
     private void getLoser(){
         IStock stock = _stockHandler.getTopLoser();
         if (stock == null){
@@ -165,6 +192,37 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
     private void fetchTopChange(Query.Direction direction) {
         final IStock[] stock = new IStock[1];
+
+    /**
+     * Click functionality for opening main page from side menu
+     * @param view home_button from main_nav_drawer.xml
+     */
+    @Override
+    public void clickHome(View view) {
+        closeDrawer(_drawerLayout);
+    }
+
+    /**
+     * Default method for committing any user interaction with screen when the screen is
+     * closed or the user switches to another screen. This allows the screen to "resume" once
+     * the user returns to the screen.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        closeDrawer(_drawerLayout);
+    }
+
+    /**
+     *  Makes a query to Firestore database for stock information on one thread while
+     *  another thread executes the java functions (creating stock items using onComplete
+     *  function). Stock items are created and put inside a list for use. All stock items are
+     *  called for the specified category.
+     * @param category Category options in the main screen.
+     */
+    private void fetchStockByCategory(Category category) {
+        List<IStock> stockList = new LinkedList<>();
+
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("company")
@@ -197,6 +255,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             }
         });
     }
+
 
     public void setData(Boolean isGainer, IStock stock){
         if (isGainer){
@@ -255,6 +314,13 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 //    }
 //
 
+
+    /**
+     *  Makes a query to Firestore database for stock information on one thread while
+     *  another thread executes the java functions (creating stock items using onComplete
+     *  function). Stock items are created and put inside a list for use. All stock items are
+     *  called in order
+     */
     private void fetchStockMostView(){
         List<IStock> stockList = new LinkedList<>();
         // Getting numbers collection from Firestore
@@ -301,6 +367,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
     }
 
+    /**
+     * Creates adaptor for ListViews which displays stocks in the RecyclerView for most viewed.
+     * @param data Stock information list
+     */
     private void propogateMostViewAdapter(List<IStock> data){
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         MostViewAdapter adapter = new MostViewAdapter(data);
@@ -308,31 +378,43 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh._mostPopular.setLayoutManager(lm);
     }
 
-//    private void propogateCatAdapter(List<IStock> data, Category category) {
-//        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-//        StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
-//        switch (category) {
-//            case InformationTechnology:
-//                _vh._techView.setAdapter(adapter);
-//                _vh._techView.setLayoutManager(lm);
-//                break;
-//            case HealthCare:
-//                _vh._healthView.setAdapter(adapter);
-//                _vh._healthView.setLayoutManager(lm);
-//                break;
-//            case Industrials:
-//                _vh._industryView.setAdapter(adapter);
-//                _vh._industryView.setLayoutManager(lm);
-//                break;
-//            case ConsumerDiscretionary:
-//                _vh._financeView.setAdapter(adapter);
-//                _vh._financeView.setLayoutManager(lm);
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Category not supported at the moment");
-//        }
-//    }
 
+
+    /**
+     * Creates adaptor for the LinearLayout which displays the category views
+     * @param data stock information for each category
+     * @param category category
+     */
+    private void propogateCatAdapter(List<IStock> data, Category category) {
+        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
+        switch (category) {
+            case InformationTechnology:
+                _vh._techView.setAdapter(adapter);
+                _vh._techView.setLayoutManager(lm);
+                break;
+            case HealthCare:
+                _vh._healthView.setAdapter(adapter);
+                _vh._healthView.setLayoutManager(lm);
+                break;
+            case Industrials:
+                _vh._industryView.setAdapter(adapter);
+                _vh._industryView.setLayoutManager(lm);
+                break;
+            case ConsumerDiscretionary:
+                _vh._financeView.setAdapter(adapter);
+                _vh._financeView.setLayoutManager(lm);
+                break;
+            default:
+                throw new IllegalArgumentException("Category not supported at the moment");
+        }
+    }
+
+
+    /**
+     * This method browses every category.
+     * @param view
+     */
     public void browseAll(View view){
         System.out.println(view.getResources().getResourceName(view.getId()));
         System.out.println(view.getTag());

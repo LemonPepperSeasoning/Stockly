@@ -69,13 +69,17 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+/**
+ * This class handles the Stock Screen which holds the information on a specific stock. This screen
+ * can be accessed in multiple ways: from watchlist, portfolio, main screen, the searchList and the
+ * list screen. This screen displays the stock symbol, name, description, category as well as a
+ * historical data table. The user also has the option to add/remove stocks from the watchlist
+ * and portfolio.
+ * Author: Takahiro, Alin, Jonathon
+ */
 public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
         SearchView.OnQueryTextListener {
-
-    private LineChart chart;
-    private Typeface tfLight;
-
-
+                
     private class ViewHolder {
         TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen, _description;
         LinearLayout _return;
@@ -96,20 +100,19 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         }
     }
 
+    private LineChart chart;
+    private Typeface tfLight;
     private ViewHolder _vh;
     private IStock _stock;
     private boolean _watchlisted;
     private IWatchlist _watchlist;
     private int _currentImageIndex;
-
-
-    //        =======================Search functionality=============================
-
     ListView list;
 
-    //        =======================--------------------=============================
-
-
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input (Any saved stock or user information)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,7 +139,11 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             System.out.println(intent.getStringExtra("Screen"));
             System.out.println("previous class: " + intent.getExtras().getSerializable("Class"));
             String previousScreen = intent.getStringExtra("Screen");
-            _vh._previousScreen.setText("Return to " + previousScreen);
+            if (previousScreen != null) {
+                _vh._previousScreen.setText("Return to " + previousScreen);
+            }else{
+                _vh._previousScreen.setText("Return to Home");
+            }
 
             _vh._description.setText(_stock.getDesc());
             System.out.println(_stock.getDesc());
@@ -176,6 +183,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
     }
 
 
+    /**
+     * Fetches image from firebase storage.
+     * @param referenceLink URL link for image in firebase.
+     */
     private void downloadImage(String referenceLink) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         try {
@@ -201,9 +212,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         }
     }
 
+    /**
+     * Initialises the stock view (contains the company name, symbol and price of stock)
+     */
     //        =======================Search functionality=============================
-
-
     private void setupStockView() {
         _vh._stockName.setText(_stock.getCompName());
         _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
@@ -213,6 +225,9 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         _vh._stockPrice.setText(formattedPrice);
     }
 
+    /**
+     * Initialises the historical data graph.
+     */
     private void setupGraph() {
         chart = findViewById(R.id.chart1);
         chart.setViewPortOffsets(0, 0, 0, 0);
@@ -255,6 +270,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         chart.invalidate();
     }
 
+    /**
+     * Fetches historical data for the graph.
+     * @param prices Historical data for a stock from the last month (25 days)
+     */
     private void setData(@NonNull IHistoricalPrice prices) {
         ArrayList<Entry> values = new ArrayList<>();
 
@@ -305,30 +324,60 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         }
     }
 
+    /**
+     * Initialises the contents of the activity's stnadard options menu.
+     * @param menu the option menu where you place your items.
+     * @return true if menu is displayed, false if it is not shown.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.line, menu);
         return true;
     }
 
+    /**
+     * Called whenever the items in the menu is selected by a user
+     * @param item the menu item which was selected.
+     * @return true if intiate action, false to resume processes and ignore.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return true;
     }
 
+    /**
+     * Called when process is changed.
+     * @param seekBar
+     * @param progress
+     * @param fromUser
+     */
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         return;
     }
 
+    /**
+     *
+     * @param seekBar
+     */
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
     }
 
+    /**
+     *
+     * @param seekBar
+     */
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
     }
 
+
+
+    /**
+     * Click functionality for home button in side menu
+     * @param view home_button from main_nav_drawer.xml
+     */
     @Override
     public void clickHome(View view) {
         Bundle bundle = new Bundle();
@@ -336,6 +385,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         redirectActivity(this, MainActivity.class, bundle);
     }
 
+    /**
+     * Click functionality for portfolio button in side menu
+     * @param view portfolio_button from main_nav_drawer.xml
+     */
     @Override
     public void clickPortfolio(View view) {
         Bundle bundle = new Bundle();
@@ -343,6 +396,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         redirectActivity(this, PortfolioActivity.class, bundle);
     }
 
+    /**
+     * Click functionality for watchlist button in side menu
+     * @param view watchlist_button from main_nav_drawer.xml
+     */
     @Override
     public void clickWatchlist(View view) {
         Bundle bundle = new Bundle();
@@ -350,6 +407,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         redirectActivity(this, WatchlistActivity.class, bundle);
     }
 
+    /**
+     * Click functionality for settings button in side menu
+     * @param view settings_button from main_nav_drawer.xml
+     */
     @Override
     public void clickSettings(View view) {
         Bundle bundle = new Bundle();
@@ -357,6 +418,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         redirectActivity(this, SettingsActivity.class, bundle);
     }
 
+    /**
+     * Click functionality for help button in side menu
+     * @param view help_button from main_nav_drawer.xml
+     */
     @Override
     public void clickHelp(View view) {
         Bundle bundle = new Bundle();
@@ -364,24 +429,41 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         redirectActivity(this, HelpActivity.class, bundle);
     }
 
+    /**
+     * Default method for committing any user interaction with screen when the screen is
+     * closed or the user switches to another screen. This allows the screen to "resume" once
+     * the user returns to the screen.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         closeDrawer(_drawerLayout);
     }
 
+    /**
+     * Handles click functionality for return text
+     * @param view TextView
+     */
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
+        if (activity == null){
+            activity = MainActivity.class;
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable("stock", _stock);
         IStock test = (IStock) bundle.getSerializable("stock");
 
         intent.putExtras(bundle);
         redirectActivity(this, activity, bundle);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
     }
 
-
+    /**
+     * Handles click functionality for adding and removing stocks from the watchlist
+     * @param view LinearLayout with ImageView and TextView
+     */
     public void clickAddWatchlist(View view) {
         if (_watchlisted == false) {
             _watchlist.addStock(_stock);
@@ -397,6 +479,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         }
     }
 
+    /**
+     * Handles click functionality for adding and removing stocks from the portfolio
+     * @param view LinearLayout with ImageView and TextView
+     */
     public void clickAddPortfolio(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.add_portfolio_popup, null);
@@ -459,11 +545,19 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         });
     }
 
+    /**
+     * Allows the user to navigate to the image on the left
+     * @param view ImageView
+     */
     public void clickNextImageLeft(View view) {
         _currentImageIndex += 2; //same as -1
         downloadImage(_stock.getImageLink().get(_currentImageIndex % 3));
     }
 
+    /**
+     * Allows the user to navigate to the image on the right
+     * @param view ImageView
+     */
     public void clickNextImageRight(View view) {
         _currentImageIndex += 1;
         downloadImage(_stock.getImageLink().get(_currentImageIndex % 3));

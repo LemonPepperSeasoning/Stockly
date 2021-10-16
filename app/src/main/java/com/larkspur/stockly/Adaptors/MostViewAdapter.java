@@ -1,5 +1,6 @@
 package com.larkspur.stockly.Adaptors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,9 +32,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * This adaptor loads the cardViews in the listView in the "Most Viewed" Recycler View
+ * inside the main screen.
+ * Author: Alan Lin
+ */
 public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHolder>{
 
-
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _stockSymbol, _stockPrice;
         CardView _statusView;
@@ -63,6 +71,8 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
             intent.putExtras(bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             view.getContext().startActivity(intent);
+            Activity activity =(Activity) view.getContext();
+            activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             Toast.makeText(_context, stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -71,10 +81,21 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
     private Context _context;
     private ViewGroup _parent;
 
+    /**
+     * Default constructor
+     * @param stockList list of stock objects
+     */
     public MostViewAdapter(List<IStock> stockList){
         _stockList = stockList;
     }
 
+    /**
+     * Creates a ViewHolder for the CardViews inside recyclerView once the main screen
+     * is launched
+     * @param parent layout in which recyclerView is held
+     * @param viewType view type
+     * @return ViewHolder containing the cardView inside the RecyclerView
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -85,6 +106,11 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
         return holder;
     }
 
+    /**
+     * Updates the ViewHolder contents for recyclerview
+     * @param holder ViewHolder for recyclerView
+     * @param position position in stock list
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IStock stock = _stockList.get(position);
@@ -101,11 +127,21 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
         }
     }
 
+    /**
+     * Returns the stock list size
+     * @return number of stocks in stocklist
+     */
     @Override
     public int getItemCount() {
         return _stockList.size();
     }
 
+    /**
+     * Fetches image from Firestore database loads it into the imageView in the CardView
+     * inside the recyclerView "Most Viewed"
+     * @param referenceLink the URL for the image in Firestore Storage
+     * @param imageView the imageView in the CardView inside the RecyclerView
+     */
     private void downloadImage(String referenceLink, ImageView imageView){
         FirebaseStorage storage = FirebaseStorage.getInstance();
         try{
