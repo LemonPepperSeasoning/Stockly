@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,11 +18,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.ListViewAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
+import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Stock;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -58,8 +58,6 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
 
     private ViewHolder _vh;
     ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.
@@ -78,7 +76,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             String stringCategory = intent.getStringExtra("Category");
             _vh._categoryText.setText(stringCategory);
             Category category = Category.getValue(stringCategory);
-            fetchCategoryStocks(category);
+            getCategoryStocks(category);
         } else {
             throw new RuntimeException("Stock not found!");
         }
@@ -87,20 +85,18 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
 
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.searchList);
-
         _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
 
         // Binds the Adapter to the ListView
         list.setAdapter(_adaptor);
 
         // Locate the EditText in listview_main.xml
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        _editSearch = (SearchView) findViewById(R.id.search);
+        _editSearch.setOnQueryTextListener(this);
 
         // Set up the searchbar settings
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
-
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
         //        =======================--------------------=============================
     }
 
@@ -110,9 +106,18 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
      * function). Stock items are created and put inside a list for use. All stock items are
      * called for one specific category.
      */
+
+    public void getCategoryStocks(Category category){
+        List<IStock> stockList= _stockHandler.getCategoryStock(category);
+        if (stockList == null){
+            fetchCategoryStocks(category);
+        }else{
+            propogateCatAdapter(stockList);
+        }
+    }
+   
     private void fetchCategoryStocks(Category category){
         List<IStock> stockList = new LinkedList<>();
-
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("company_v2")
@@ -121,45 +126,18 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-
-                    QuerySnapshot results = task.getResult();
                     for (QueryDocumentSnapshot document : task.getResult()) {
 //                        Log.d("+++++", document.getId() + " => " + document.getData());
-                        Map<String, Object> data = document.getData();
-                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
-                        IStock tmpStock = new Stock(
-                                ((String) data.get("Name")),
-                                ((String) data.get("Symbol")),
-                                (Category.getValue((String) data.get("Category"))),
-                                ((String) data.get("Subindustry")),
-                                ((String) data.get("location")),
-                                ((String) data.get("Description")),
-                                ((List<String>) data.get("ImageLink")),
-                                tmpHistoricalPrice);
-                        stockList.add(tmpStock);
+                        stockList.add(StockMapper.toStock(document.getData()));
                     }
-
-                    System.out.println("============================");
-                    System.out.println(stockList.size());
-                    for (IStock i : stockList) {
-                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
-                    }
-                    System.out.println("============================");
-
                     if (stockList.size() > 0) {
-                        Log.i("Getting colors", "Success");
-
                         propogateCatAdapter(stockList);
-                        // Once the task is successful and data is fetched, propagate the adaptor
-                        //  propagateAdaptor(stockList);
-
-                        // Hide the ProgressBar
-//                        vh.progressBar.setVisibility(View.GONE);
+                        _stockHandler.addCategoryStock(category,stockList);
                     } else {
-//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
+                        Log.d("Fetch Failed", "return value was empty");
                     }
                 } else {
-//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                    Log.e("Fetch Error", "failed to fetch stocks by category");
                 }
             }
         });

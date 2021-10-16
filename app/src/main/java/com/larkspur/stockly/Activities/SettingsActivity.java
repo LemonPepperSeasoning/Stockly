@@ -12,7 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.IUser;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 /**
@@ -34,7 +35,6 @@ public class SettingsActivity extends CoreActivity {
     }
 
     private ViewHolder _vh;
-    private UserInfo _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.
@@ -45,10 +45,9 @@ public class SettingsActivity extends CoreActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        _userInfo = UserInfo.getInstance();
 
         _vh =  new ViewHolder();
-        _vh._usernameTextField.setText(_userInfo.getUsername());
+        _vh._usernameTextField.setText(_user.getUsername());
         _vh._usernameTextField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -57,7 +56,7 @@ public class SettingsActivity extends CoreActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 String username = _vh._usernameTextField.getText().toString();
-                _userInfo.setUsername(username);
+                _user.setUsername(username);
             }
 
             @Override
@@ -76,8 +75,6 @@ public class SettingsActivity extends CoreActivity {
                 // If the CardView is already expanded, set its visibility
                 //  to gone and change the expand less icon to expand more.
                 if (hiddenLayout.getVisibility() == View.VISIBLE) {
-
-
                     //TODO: Fix this transition. This transition works but its glitchy.
 //                    TransitionManager.beginDelayedTransition(card,
 //                            new AutoTransition());
@@ -106,9 +103,6 @@ public class SettingsActivity extends CoreActivity {
         Class activity = (Class) intent.getExtras().getSerializable("Class");
         if(activity == StockActivity.class){
             Bundle bundle = intent.getExtras();
-            System.out.println(bundle);
-            System.out.println("watch list stock is");
-            System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
             redirectActivity(this,activity,bundle);
         }else {
@@ -124,4 +118,5 @@ public class SettingsActivity extends CoreActivity {
 
     public void setName(){
     }
+
 }

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -25,10 +23,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_margin="5dp"
-                android:text="Most Viewed"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="Popular Stocks"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif"
                 android:textColor="@color/white"
-                android:textSize="34sp" />
+                android:textSize="25sp" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -50,7 +51,7 @@
                 android:id="@+id/categories_view"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="5dp"
+                android:layout_margin="2dp"
                 android:layout_weight="4"
                 android:orientation="vertical">
 
@@ -63,7 +64,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="2dp"
                         android:orientation="horizontal">
 
@@ -73,8 +74,9 @@
                             android:layout_alignParentLeft="true"
                             android:layout_weight="10"
                             android:text="Technology"
+                            android:fontFamily="sans-serif"
                             android:textColor="@color/white"
-                            android:textSize="20sp" />
+                            android:textSize="18sp" />
 
                         <LinearLayout
                             android:id="@+id/technology_browse_all_view"
@@ -110,7 +112,8 @@
                         android:id="@+id/technology_recycle_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:layout_marginTop="5dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -122,7 +125,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="2dp"
                         android:orientation="horizontal">
 
@@ -133,7 +136,8 @@
                             android:layout_weight="10"
                             android:text="Finance"
                             android:textColor="@color/white"
-                            android:textSize="20sp" />
+                            android:fontFamily="sans-serif"
+                            android:textSize="18sp"/>
 
                         <LinearLayout
                             android:id="@+id/finance_browse_all_view"
@@ -169,7 +173,8 @@
                         android:id="@+id/finance_recycle_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:layout_marginTop="5dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -181,7 +186,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="2dp"
                         android:orientation="horizontal">
 
@@ -192,7 +197,8 @@
                             android:layout_weight="10"
                             android:text="Industrial"
                             android:textColor="@color/white"
-                            android:textSize="20sp" />
+                            android:fontFamily="sans-serif"
+                            android:textSize="18sp" />
 
                         <LinearLayout
                             android:id="@+id/industrial_browse_all_view"
@@ -228,7 +234,8 @@
                         android:id="@+id/industrial_recycle_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:layout_marginTop="5dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -240,7 +247,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="2dp"
                         android:orientation="horizontal">
 
@@ -252,7 +259,8 @@
                             android:layout_weight="10"
                             android:text="Health Care"
                             android:textColor="@color/white"
-                            android:textSize="20sp" />
+                            android:fontFamily="sans-serif"
+                            android:textSize="18sp" />
 
                         <LinearLayout
                             android:id="@+id/healthcare_browse_all_view"
@@ -288,7 +296,8 @@
                         android:id="@+id/health_recycle_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:layout_marginTop="5dp"/>
                 </LinearLayout>
 
             </LinearLayout>

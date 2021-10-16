@@ -1,6 +1,5 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -12,10 +11,8 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,27 +26,17 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.PorfolioAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Portfolio;
-import com.larkspur.stockly.Models.Stock;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class handles the Portfolio screen which contains the stock in a user's portfolio. The
@@ -68,7 +55,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
      */
     private class ViewHolder {
         ListView _stockList;
-        TextView _previousScreen;
+        TextView _previousScreen,_usernameText;
         LinearLayout _return;
 
         public ViewHolder() {
@@ -77,6 +64,8 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            _usernameText = (TextView) findViewById(R.id.username);
+            _usernameText.setText("Hi " + _user.getUsername());
         }
     }
 
@@ -87,7 +76,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
     private IPortfolio _portfolio;
     ListView list;
     String[] stockNameList;
-    private UserInfo _userInfo;
+    private User _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.
@@ -101,7 +90,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_portfolio);
         _vh = new ViewHolder();
       
-        _portfolio = Portfolio.getInstance();
+        _portfolio = _user.getPortfolio();
 
         if (getIntent().getExtras() != null) {
             Intent intent = this.getIntent();
@@ -125,12 +114,12 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         list.setAdapter(_adaptor);
 
         // Locate the EditText in listview_main.xml
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        _editSearch = (SearchView) findViewById(R.id.search);
+        _editSearch.setOnQueryTextListener(this);
 
         // Set up the searchbar settings
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
 
         //        =======================--------------------=============================
     }
@@ -182,8 +171,9 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
         chart.setHoleRadius(68f);
         chart.setTransparentCircleRadius(61f);
-
         chart.setDrawCenterText(true);
+
+        chart.setDrawEntryLabels(false);
 
         chart.setRotationAngle(0);
         // enable rotation of the chart by touch
@@ -212,7 +202,6 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         List<IStock> sortedPortfolio = new ArrayList<>();
         sortedPortfolio.addAll(portfolio.keySet());
 
-        int index = 0;
         for (IStock s : sortedPortfolio) {
             Double x = s.getPrice()*portfolio.get(s);
             entries.add(new PieEntry( x.floatValue(),s.getSymbol()));
@@ -228,21 +217,20 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
         // add a lot of colors
         ArrayList<Integer> colors = new ArrayList<>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-            colors.add(c);
-
+//        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+//            colors.add(c);
+//
         for (int c : ColorTemplate.JOYFUL_COLORS)
             colors.add(c);
-
-        for (int c : ColorTemplate.COLORFUL_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.LIBERTY_COLORS)
-            colors.add(c);
-
-        for (int c : ColorTemplate.PASTEL_COLORS)
-            colors.add(c);
+//
+//        for (int c : ColorTemplate.COLORFUL_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.LIBERTY_COLORS)
+//            colors.add(c);
+//
+//        for (int c : ColorTemplate.PASTEL_COLORS)
+//            colors.add(c);
 
         colors.add(ColorTemplate.getHoloBlue());
 
@@ -251,7 +239,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
+        data.setValueTextSize(0f);
         data.setValueTextColor(Color.WHITE);
         data.setValueTypeface(tfLight);
         chart.setData(data);

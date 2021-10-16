@@ -9,19 +9,10 @@ import java.util.stream.Collectors;
 public class Watchlist implements IWatchlist {
 
     private Map<String,IStock> _watchlist;
-    private static Watchlist single_instance = null;
 
-    private Watchlist() {
+    public Watchlist() {
         _watchlist = new HashMap<>();
     }
-
-    public static Watchlist getInstance() {
-        if (single_instance == null) {
-            single_instance = new Watchlist();
-        }
-        return single_instance;
-    }
-
 
     @Override
     public void addStock(IStock stock) {

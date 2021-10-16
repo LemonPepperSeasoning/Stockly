@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,10 +21,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
+import com.larkspur.stockly.Data.StockHandler;
+import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
+import com.larkspur.stockly.Models.IUser;
 import com.larkspur.stockly.Models.Stock;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.LinkedList;
@@ -41,12 +46,16 @@ public abstract class CoreActivity extends AppCompatActivity implements
 
     protected DrawerLayout _drawerLayout;
     protected SearchListViewAdaptor _adaptor;
-    protected SearchView editsearch;
+    protected SearchView _editSearch;
+    protected IUser _user;
+    protected StockHandler _stockHandler;
 
     /**
      * Default constructor
      */
     public CoreActivity(){
+        _stockHandler = StockHandler.getInstance();
+        _user = User.getInstance();
     }
 
     /**
@@ -157,6 +166,26 @@ public abstract class CoreActivity extends AppCompatActivity implements
         redirectActivity(this, HelpActivity.class);
     }
 
+    public void redirectActivity(Activity activity, Class aClass) {
+        Intent intent = new Intent(activity, aClass);
+        String screenName = activity.getTitle().toString();
+        System.out.println("this is the screen "+ screenName);
+        intent.putExtra("Screen", screenName);
+        intent.putExtra("Class",activity.getClass());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
+
+    public void redirectActivity(Activity activity, Class aClass, Bundle stock){
+        Intent intent = new Intent(activity, aClass);
+        String screenName = activity.getTitle().toString();
+        intent.putExtra("Screen", screenName);
+        intent.putExtra("Class",activity.getClass());
+        intent.putExtras(stock);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity(intent);
+    }
+
     //        =======================Search functionality=============================
 
     /**
@@ -191,13 +220,13 @@ public abstract class CoreActivity extends AppCompatActivity implements
         listview.setVisibility(View.VISIBLE);
 
         // Show the keyboard
-        editsearch.setFocusable(true);
-        editsearch.setIconified(false);
-        editsearch.requestFocusFromTouch();
+        _editSearch.setFocusable(true);
+        _editSearch.setIconified(false);
+        _editSearch.requestFocusFromTouch();
 
         // Show text
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.appcompat
-                .R.id.search_src_text);
+
+        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(true);
 
         // Fetch the stock data for suggestions
@@ -215,12 +244,12 @@ public abstract class CoreActivity extends AppCompatActivity implements
         listview.setVisibility(View.GONE);
 
         //Hide keyboard
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
 
         //Stop blinking in searchbar
-        EditText searchEditText = (EditText) editsearch.findViewById(androidx.
-                appcompat.R.id.search_src_text);
+
+        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(false);
 
         //Clear text in searchbar
@@ -237,54 +266,24 @@ public abstract class CoreActivity extends AppCompatActivity implements
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
-                .whereEqualTo("Category", Category.InformationTechnology.toString())
+
+        db.collection("company")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-
-                    QuerySnapshot results = task.getResult();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.d("+++++", document.getId() + " => " + document.getData());
-                        Map<String, Object> data = document.getData();
-                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data
-                                .get("Price"));
-                        IStock tmpStock = new Stock(
-                                ((String) data.get("Name")),
-                                ((String) data.get("Symbol")),
-                                (Category.getValue((String) data.get("Category"))),
-                                ((String) data.get("Subindustry")),
-                                ((String) data.get("location")),
-                                ((String) data.get("Description")),
-                                ((List<String>) data.get("ImageLink")),
-                                tmpHistoricalPrice);
-                        stockList.add(tmpStock);
+                        stockList.add(StockMapper.toStock(document.getData()));
                     }
-
-                    System.out.println("============================");
-                    System.out.println(stockList.size());
-                    for (IStock i : stockList) {
-                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " "
-                                + i.getSymbol() + " == ");
-                    }
-                    System.out.println("============================");
 
                     if (stockList.size() > 0) {
-                        Log.i("Getting colors", "Success");
-
                         _adaptor.addData(stockList);
-                        // Once the task is successful and data is fetched, propagate the adaptor
-                        //  propagateAdaptor(stockList);
-
-                        // Hide the ProgressBar
-//                        vh.progressBar.setVisibility(View.GONE);
+                        _stockHandler.addAllStock(stockList);
                     } else {
-//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
+                        Log.d("Fetch Failed", "return value was empty");
                     }
                 } else {
-//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                    Log.e("Fetch Error", "failed to fetch all stocks");
                 }
             }
         });

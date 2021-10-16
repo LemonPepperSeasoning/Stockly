@@ -3,6 +3,7 @@ package com.larkspur.stockly.Models;
 import android.os.Parcel;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Stock implements IStock {
@@ -123,7 +124,6 @@ public class Stock implements IStock {
     @Override
     public void setHistoricalPrice(HistoricalPrice historicalPrice) {
         _historicalPrice = historicalPrice;
-
     }
 
     @Override
@@ -134,7 +134,6 @@ public class Stock implements IStock {
     @Override
     public void setSubindustry(String subindustry) {
         _subindustry = subindustry;
-
     }
 
     @Override

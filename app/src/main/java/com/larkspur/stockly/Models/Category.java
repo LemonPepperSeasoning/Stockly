@@ -1,5 +1,7 @@
 package com.larkspur.stockly.Models;
 
+import android.util.Log;
+
 public enum Category {
 
     Industrials("Industrials"),
@@ -31,7 +33,7 @@ public enum Category {
 
     public static Category getValue(String value){
         Category category;
-        String newValue = value.replaceAll(" ", "");
+        String newValue = value.replaceAll(" ", "").replace("\n","");
         category = Category.valueOf(newValue);
         return category;
     }

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,14 +25,17 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
+import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.UserInfo;
+import com.larkspur.stockly.Models.IUser;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.Stock;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -62,35 +64,32 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _healthView = (RecyclerView) findViewById(R.id.health_recycle_view);
             _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
             _usernameText = (TextView) findViewById(R.id.username);
+            _usernameText.setText("Hi " + _user.getUsername());
         }
     }
-
-    private ViewHolder _vh;
-    ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
-
+  
     /**
      * Initialises all processes for the screen once screen is launched.
      * @param savedInstanceState default input (Any saved stock or user information)
      */
+    
+    private ViewHolder _vh;
+
+    //        =======================Search functionality=============================
+    ListView list;
+    //        =======================--------------------=============================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         _vh = new ViewHolder();
         this.setTitle("Home");
-        _userInfo = UserInfo.getInstance();
-        _vh._usernameText.setText("Hi " + _userInfo.getUsername());
 
-        //set horizontal recycler view
-        //  LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        fetchStockMostView();
-
+        getStockMostView();
         setupCategoryViews();
 
         //        =======================Search functionality=============================
-
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.searchList);
 
@@ -100,13 +99,12 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         list.setAdapter(_adaptor);
 
         // Locate the EditText in listview_main.xml
-        editsearch = (SearchView) findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        _editSearch = (SearchView) findViewById(R.id.search);
+        _editSearch.setOnQueryTextListener(this);
 
         // Set up the searchbar settings
-        editsearch.clearFocus();
-        editsearch.requestFocusFromTouch();
-
+        _editSearch.clearFocus();
+        _editSearch.requestFocusFromTouch();
         //        =======================--------------------=============================
     }
 
@@ -114,10 +112,28 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
      * Initialises all categories
      */
     private void setupCategoryViews(){
-        fetchStockByCategory(Category.HealthCare);
-        fetchStockByCategory(Category.InformationTechnology);
-        fetchStockByCategory(Category.ConsumerDiscretionary);
-        fetchStockByCategory(Category.Industrials);
+        getCategoryStock(Category.HealthCare);
+        getCategoryStock(Category.InformationTechnology);
+        getCategoryStock(Category.ConsumerDiscretionary);
+        getCategoryStock(Category.Industrials);
+    }
+
+    private void getStockMostView(){
+        List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
+        if (stockList == null){
+            fetchStockMostView();
+        }else{
+            propogateMostViewAdapter(stockList);
+        }
+    }
+
+    private void getCategoryStock(Category category){
+        List<IStock> stockList = _stockHandler.getCategoryStock(category);
+        if (stockList == null){
+            fetchStockByCategory(category);
+        }else{
+            propogateCatAdapter(stockList, category);
+        }
     }
 
     /**
@@ -158,45 +174,18 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-
-                    QuerySnapshot results = task.getResult();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.d("+++++", document.getId() + " => " + document.getData());
-                        Map<String, Object> data = document.getData();
-                        HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
-                        IStock tmpStock = new Stock(
-                                ((String) data.get("Name")),
-                                ((String) data.get("Symbol")),
-                                (Category.getValue((String) data.get("Category"))),
-                                ((String) data.get("Subindustry")),
-                                ((String) data.get("location")),
-                                ((String) data.get("Description")),
-                                ((List<String>) data.get("ImageLink")),
-                                tmpHistoricalPrice);
-                        stockList.add(tmpStock);
+                        stockList.add(StockMapper.toStock(document.getData()));
                     }
-
-//                    System.out.println("============================");
-//                    System.out.println(stockList.size());
-//                    for (IStock i : stockList) {
-//                        Log.d("== Stock : ", i.getCompName() + " " + i.getCategory() + " " + i.getSymbol() + " == ");
-//                    }
-//                    System.out.println("============================");
 
                     if (stockList.size() > 0) {
-                        Log.i("Getting colors", "Success");
-
                         propogateCatAdapter(stockList, category);
-                        // Once the task is successful and data is fetched, propagate the adaptor
-                        //  propagateAdaptor(stockList);
-
-                        // Hide the ProgressBar
-//                        vh.progressBar.setVisibility(View.GONE);
+                        _stockHandler.addCategoryStock(category,stockList);
                     } else {
-//                        Toast.makeText(getBaseContext(), "Colors Collection was empty!", Toast.LENGTH_LONG).show();
+                        Log.d("Fetch Failed", "return value was empty");
                     }
                 } else {
-//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                    Log.e("Fetch Error", "failed to fetch stocks by category");
                 }
             }
         });
@@ -210,11 +199,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
      */
     private void fetchStockMostView(){
         List<IStock> stockList = new LinkedList<>();
-
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        List<DocumentReference> stockRef = new ArrayList<>();
         db.collection("viewcount")
                 .orderBy("viewcount", Query.Direction.DESCENDING)
                 .limit(10)
@@ -225,60 +211,30 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
                     QuerySnapshot results = task.getResult();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("----------", document.getId() + " => " + document.getData());
                         Map<String, Object> data = document.getData();
 
-                        stockRef.add((DocumentReference) data.get("company"));
                         DocumentReference ref = (DocumentReference)data.get("company");
                         ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
-
-                                    DocumentSnapshot results = task.getResult();
-                                    Log.d("============", results.getId() + " => " + results.getData());
-                                    Map<String, Object> data = results.getData();
-
-                                    HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
-                                    IStock tmpStock = new Stock(
-                                            ((String) data.get("Name")),
-                                            ((String) data.get("Symbol")),
-                                            (Category.getValue((String) data.get("Category"))),
-                                            ((String) data.get("Subindustry")),
-                                            ((String) data.get("location")),
-                                            ((String) data.get("Description")),
-                                            ((List<String>) data.get("ImageLink")),
-                                            tmpHistoricalPrice);
-                                    stockList.add(tmpStock);
-                                    Log.i("?????", String.valueOf(stockList.size()) );
+                                    stockList.add(StockMapper.toStock(task.getResult().getData()));
 
                                     if(stockList.size() == 10){
                                         propogateMostViewAdapter(stockList);
+                                        _stockHandler.addMostViewStock(stockList);
                                     }
-
                                 } else {
-//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                                    Log.e("Fetch Error", "failed to fetch stocks by mostView's reference");
                                 }
                             }
                         });
                     }
-
                 } else {
-//                    Toast.makeText(getBaseContext(), "Loading colors collection failed from Firestore!", Toast.LENGTH_LONG).show();
+                    Log.e("Fetch Error", "failed to fetch most viewed");
                 }
             }
         });
-    }
-
-    /**
-     * Creates adaptor for ListViews which displays stocks in the RecyclerView.
-     * @param data Stock information list
-     */
-    private void propagateAdaptor(List<IStock> data) {
-        StockAdaptor stockAdapter = new StockAdaptor(this, R.layout.stock_most_viewed_recycler_view,
-                data);
-//        vh._mostPopular.setAdapter(stockAdapter);
-//        vh.listView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -351,17 +307,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
                 intent.putExtra("Category","Health Care");
                 view.getContext().startActivity(intent);
                     break;
-
             default:
                 throw new IllegalArgumentException("category not found");
         }
     }
-
-    public void propgateAdapter(List<IStock> data) {
-        StockCategoriesMainAdatper stockCatAdatper = new StockCategoriesMainAdatper(data);
-    }
-
-//    private void propogateCategoriesAdapter(List<IStock> data, RecyclerView view){
-//        StockCategoriesMainAdatper stockCatAdapter = new StockCategoriesMainAdatper(data);
-//    }
 }

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -40,9 +41,11 @@ import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.Portfolio;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -52,7 +55,7 @@ public class PorfolioAdapter extends ArrayAdapter {
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice, _stockTotalPrice, _quantityStock;
         LinearLayout _removeStock, _stockSide;
-
+        CardView _stockColor;
         public ViewHolder(View currentListViewItem) {
             _stockName = currentListViewItem.findViewById(R.id.stock_name);
             _stockSymbol = currentListViewItem.findViewById(R.id.stock_symbol);
@@ -61,6 +64,7 @@ public class PorfolioAdapter extends ArrayAdapter {
             _quantityStock = currentListViewItem.findViewById(R.id.stock_quantity);
             _removeStock = currentListViewItem.findViewById(R.id.remove_stock);
             _stockSide = currentListViewItem.findViewById(R.id.stock_view);
+            _stockColor = currentListViewItem.findViewById(R.id.stock_piechart_color);
         }
     }
 
@@ -86,7 +90,6 @@ public class PorfolioAdapter extends ArrayAdapter {
         }
 
         IStock currentStock = _stocks.get(position);
-
         return populatePortfolio(currentStock, currentListViewItem);
     }
 
@@ -94,22 +97,24 @@ public class PorfolioAdapter extends ArrayAdapter {
         System.out.println("stock list size is " + _stocks.size());
 
         ViewHolder vh = new ViewHolder(currentListView);
-
-//        int i = _context.getResources().getIdentifier(currentItem.getCompName(),"drawable",_context.getPackageName());
+        DecimalFormat df = new DecimalFormat("#.##");
 
         vh._stockName.setText(currentStock.getCompName());
         vh._stockSymbol.setText(currentStock.getSymbol());
-        vh._stockPrice.setText(currentStock.getPrice().toString());
 
-        IPortfolio portfolio = Portfolio.getInstance();
+        String formattedPrice = df.format(currentStock.getPrice());
+        vh._stockPrice.setText("$"+formattedPrice);
+
+        IPortfolio portfolio = User.getInstance().getPortfolio();
         int quantity = portfolio.getQuantity(currentStock.getSymbol());
         Double totalPrice = currentStock.getPrice() * quantity;
-        vh._stockTotalPrice.setText(totalPrice.toString());
+        String formattedTotalPrice = df.format(totalPrice);
+        vh._stockTotalPrice.setText(formattedTotalPrice);
         vh._quantityStock.setText(String.valueOf(quantity));
 
-        vh._stockSide.setOnClickListener(new View.OnClickListener(){
+        vh._stockSide.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), StockActivity.class);
                 intent.putExtra("Screen", "Watchlist");
                 intent.putExtra("Class", _context.getClass());
@@ -131,12 +136,11 @@ public class PorfolioAdapter extends ArrayAdapter {
         vh._removeStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 LayoutInflater inflater = (LayoutInflater) _context.getSystemService(LAYOUT_INFLATER_SERVICE);
                 View popupView = inflater.inflate(R.layout.add_portfolio_popup, null);
                 PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
                 popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-                IPortfolio portfolio = Portfolio.getInstance();
+                IPortfolio portfolio = User.getInstance().getPortfolio();
 
                 Button closePopup = (Button) popupView.findViewById(R.id.add_to_portfolio_confirmbutton);
                 EditText numberOfStocks = (EditText) popupView.findViewById(R.id.add_to_portfolio_edittext);
@@ -167,7 +171,6 @@ public class PorfolioAdapter extends ArrayAdapter {
                         } else {
                             Toast.makeText(v.getContext(), "A number needs to be input", Toast.LENGTH_SHORT).show();
                         }
-
                         popupWindow.dismiss();
                     }
                 });
@@ -190,10 +193,9 @@ public class PorfolioAdapter extends ArrayAdapter {
                         System.out.println(numberOfStocks.getText().toString());
                         if (numberOfStocks.getText().toString().equals("")) {
                             numberOfStocks.setText("1");
-                        }else if(Integer.parseInt(numberOfStocks.getText().toString()) == currentNumStocks){
+                        } else if (Integer.parseInt(numberOfStocks.getText().toString()) == currentNumStocks) {
                             numberOfStocks.setText(Integer.toString(currentNumStocks));
-                        }
-                        else {
+                        } else {
                             int newNumStocks = Integer.parseInt(numberOfStocks.getText().toString()) + 1;
                             numberOfStocks.setText(Integer.toString(newNumStocks));
                         }
@@ -216,7 +218,6 @@ public class PorfolioAdapter extends ArrayAdapter {
         List<IStock> sortedPortfolio = new ArrayList<>();
         sortedPortfolio.addAll(portfolio.keySet());
 
-        int index = 0;
         for (IStock s : sortedPortfolio) {
             Double x = s.getPrice() * portfolio.get(s);
             entries.add(new PieEntry(x.floatValue(), s.getSymbol()));
@@ -225,14 +226,12 @@ public class PorfolioAdapter extends ArrayAdapter {
         PieDataSet dataSet = new PieDataSet(entries, "Portfolio");
 
         dataSet.setDrawIcons(false);
-
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));
         dataSet.setSelectionShift(5f);
 
         // add a lot of colors
         ArrayList<Integer> colors = new ArrayList<>();
-
         for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
 

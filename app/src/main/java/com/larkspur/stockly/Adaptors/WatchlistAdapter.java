@@ -17,9 +17,11 @@ import androidx.annotation.Nullable;
 import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class WatchlistAdapter extends ArrayAdapter {
@@ -27,7 +29,6 @@ public class WatchlistAdapter extends ArrayAdapter {
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice;
         LinearLayout _removeStock,_stockStats;
-
 
         public ViewHolder(View currentListViewItem) {
             _stockName = currentListViewItem.findViewById(R.id.stock_name_view);
@@ -56,10 +57,7 @@ public class WatchlistAdapter extends ArrayAdapter {
         if (currentListViewItem == null) {
             currentListViewItem = LayoutInflater.from(getContext()).inflate(_layoutID, parent, false);
         }
-
         IStock currentStock = _stocks.get(position);
-
-
 
         return populateWatchList(currentStock, currentListViewItem);
     }
@@ -69,16 +67,17 @@ public class WatchlistAdapter extends ArrayAdapter {
 
         ViewHolder vh = new ViewHolder(currentListView);
 
-//        int i = _context.getResources().getIdentifier(currentItem.getCompName(),"drawable",_context.getPackageName());
-
         vh._stockName.setText(currentStock.getCompName());
         vh._stockSymbol.setText(currentStock.getSymbol());
-        vh._stockPrice.setText(currentStock.getPrice().toString());
+        //cut price to two decimal places
+        DecimalFormat df = new DecimalFormat("#.##");
+        String formattedPrice = df.format(currentStock.getPrice());
+        vh._stockPrice.setText(formattedPrice);
 
         vh._removeStock.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                IWatchlist watchlist = Watchlist.getInstance();
+                IWatchlist watchlist = User.getInstance().getWatchlist();
                 watchlist.removeStock(currentStock);
                 _stocks.remove(currentStock);
                 notifyDataSetChanged();
@@ -91,13 +90,9 @@ public class WatchlistAdapter extends ArrayAdapter {
                 Intent intent = new Intent(v.getContext(), StockActivity.class);
                 intent.putExtra("Screen", "Watchlist");
                 intent.putExtra("Class", _context.getClass());
-                System.out.println("serializing stock");
-                System.out.println(_context.getClass());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("stock", currentStock);
-                System.out.println(bundle.getSerializable("stock"));
                 IStock test = (IStock) bundle.getSerializable("stock");
-                System.out.println(test.getCompName());
 
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -105,8 +100,6 @@ public class WatchlistAdapter extends ArrayAdapter {
                 Toast.makeText(_context, currentStock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
             }
         });
-
-
 
         return currentListView;
     }
