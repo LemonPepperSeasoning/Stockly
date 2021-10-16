@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -54,7 +55,7 @@ public class PorfolioAdapter extends ArrayAdapter {
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice, _stockTotalPrice, _quantityStock;
         LinearLayout _removeStock, _stockSide;
-
+        CardView _stockColor;
         public ViewHolder(View currentListViewItem) {
             _stockName = currentListViewItem.findViewById(R.id.stock_name);
             _stockSymbol = currentListViewItem.findViewById(R.id.stock_symbol);
@@ -63,6 +64,7 @@ public class PorfolioAdapter extends ArrayAdapter {
             _quantityStock = currentListViewItem.findViewById(R.id.stock_quantity);
             _removeStock = currentListViewItem.findViewById(R.id.remove_stock);
             _stockSide = currentListViewItem.findViewById(R.id.stock_view);
+            _stockColor = currentListViewItem.findViewById(R.id.stock_piechart_color);
         }
     }
 
@@ -88,7 +90,6 @@ public class PorfolioAdapter extends ArrayAdapter {
         }
 
         IStock currentStock = _stocks.get(position);
-
         return populatePortfolio(currentStock, currentListViewItem);
     }
 
@@ -102,7 +103,7 @@ public class PorfolioAdapter extends ArrayAdapter {
         vh._stockSymbol.setText(currentStock.getSymbol());
 
         String formattedPrice = df.format(currentStock.getPrice());
-        vh._stockPrice.setText(formattedPrice);
+        vh._stockPrice.setText("$"+formattedPrice);
 
         IPortfolio portfolio = User.getInstance().getPortfolio();
         int quantity = portfolio.getQuantity(currentStock.getSymbol());
