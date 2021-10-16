@@ -28,8 +28,7 @@ import java.util.Locale;
 /**
  * This class is the adaptor for the search list.
  * Author: Jonathon
- * Source: https://abhiandroid.com/ui/searchview
- *
+ * Reference: https://abhiandroid.com/ui/searchview
  */
 
 public class SearchListViewAdaptor extends ArrayAdapter {
