@@ -190,7 +190,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/apple"></ImageView>
+                    android:src="@drawable/apple"
+                    android:id="@+id/stock_image_view"></ImageView>
             </androidx.cardview.widget.CardView>
 
             <ImageView

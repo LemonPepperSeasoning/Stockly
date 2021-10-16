@@ -22,9 +22,6 @@ import com.larkspur.stockly.R;
  */
 public class SettingsActivity extends CoreActivity {
 
-    private ViewHolder _vh;
-    private UserInfo _userInfo;
-
     /**
      * Represents every item in the screen and displays each one.
      */
@@ -35,6 +32,9 @@ public class SettingsActivity extends CoreActivity {
             _usernameTextField = (EditText) findViewById(R.id.usernameTextfield);
         }
     }
+
+    private ViewHolder _vh;
+    private UserInfo _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.

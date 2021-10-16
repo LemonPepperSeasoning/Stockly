@@ -35,8 +35,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This activity handles the WatchList Screen. The watchlist holds the stocks in which the
+ * user may be interested in, but has not put inside their portfolio. The user has the option
+ * to remove a
+ */
 public class WatchlistActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         ListView _watchlistView;
         LinearLayout _return;
@@ -48,21 +56,18 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
             _return = findViewById(R.id.return_view);
             _previousScreen = findViewById(R.id.previous_screen_text_view);
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         }
     }
 
     private ViewHolder _vh;
-
-    //        =======================Search functionality=============================
-
     ListView list;
     String[] stockNameList;
     private UserInfo _userInfo;
 
-    //        =======================--------------------=============================
-
-
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input (Any saved stock or user information)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +107,9 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
         //        =======================--------------------=============================
     }
 
+    /**
+     * Fetches watchlist data and displays the watchlist size.
+     */
     private void getWatchList() {
         IWatchlist watchlist = Watchlist.getInstance();
         List<IStock> stockList = watchlist.getWatchlist();
@@ -112,23 +120,41 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
         }
     }
 
+    /**
+     * Creates adaptor for ListViews which displays stocks in the RecyclerView.
+     * @param data Stock information list
+     */
     private void propagateAadapter(List<IStock> data) {
         WatchlistAdapter stockAdapter = new WatchlistAdapter(this, R.layout.watchlist_item, data);
         _vh._watchlistView.setAdapter(stockAdapter);
         _vh._watchlistView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Click functionality for watchlist button for side menu (overwritten to avoid the
+     * watchlist screen from having to reinitialise if clicked in side menu)
+     * @param view watchlist_button from main_nav_drawer.xml
+     */
     @Override
     public void clickWatchlist(View view) {
         closeDrawer(_drawerLayout);
     }
 
+    /**
+     * Default method for committing any user interaction with screen when the screen is
+     * closed or the user switches to another screen. This allows the screen to "resume" once
+     * the user returns to the screen.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         closeDrawer(_drawerLayout);
     }
 
+    /**
+     * Handles click functionality for return text
+     * @param view TextView
+     */
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");

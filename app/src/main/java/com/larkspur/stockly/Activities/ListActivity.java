@@ -39,11 +39,6 @@ import java.util.Map;
 
 public class ListActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
-    private ViewHolder _vh;
-    ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
-
     /**
      * Represents every item in the screen and displays each one.
      */
@@ -60,6 +55,11 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             _previousScreen = findViewById(R.id.previous_screen_text_view);
         }
     }
+
+    private ViewHolder _vh;
+    ListView list;
+    String[] stockNameList;
+    private UserInfo _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.

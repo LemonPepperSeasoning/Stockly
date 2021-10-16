@@ -46,11 +46,6 @@ import java.util.Map;
 
 public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
-    private ViewHolder _vh;
-    ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
-
     /**
      * Represents every item in the screen and displays each one.
      */
@@ -69,6 +64,11 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _usernameText = (TextView) findViewById(R.id.username);
         }
     }
+
+    private ViewHolder _vh;
+    ListView list;
+    String[] stockNameList;
+    private UserInfo _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.

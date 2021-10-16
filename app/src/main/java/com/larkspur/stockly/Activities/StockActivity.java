@@ -89,17 +89,6 @@ import java.util.Map;
 public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
  SearchView.OnQueryTextListener{
 
-    private LineChart chart;
-    private Typeface tfLight;
-    private ViewHolder _vh;
-    private IStock _stock;
-    private boolean _watchlisted;
-    private IWatchlist _watchlist;
-    private int _currentImageIndex;
-    ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
-
     private class ViewHolder {
         TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen;
         LinearLayout _return;
@@ -115,6 +104,17 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             _stockImage = findViewById(R.id.stock_image_view);
         }
     }
+
+    private LineChart chart;
+    private Typeface tfLight;
+    private ViewHolder _vh;
+    private IStock _stock;
+    private boolean _watchlisted;
+    private IWatchlist _watchlist;
+    private int _currentImageIndex;
+    ListView list;
+    String[] stockNameList;
+    private UserInfo _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.

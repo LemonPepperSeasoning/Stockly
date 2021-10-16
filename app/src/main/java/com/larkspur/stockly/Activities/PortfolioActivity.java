@@ -52,22 +52,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class handles the Portfolio screen which contains the stock in a user's portfolio.
- * The user has the ability to remove and got to the stock screen for the stocks in the portfolio.
+ * This class handles the Portfolio screen which contains the stock in a user's portfolio. The
+ * portfolio is essentially the stocks a user has invested in. The purpose of this screen is to
+ * show the user a holistic perspective on their investment and calculate how much of their money
+ * is invested in each specific stock. The user has the ability to also
+ * The user has the ability to remove and go to the stock screen for the stocks in the portfolio.
  * There is also a doughnut graph with an interactive legend.
  * Author: Jonathon, Alan
  * Reference: https://github.com/PhilJay/MPAndroidChart (used library for graph)
  */
 public class PortfolioActivity extends CoreActivity implements SearchView.OnQueryTextListener {
-
-    private ViewHolder _vh;
-    private PieChart chart;
-    protected Typeface tfRegular;
-    protected Typeface tfLight;
-    private IPortfolio _portfolio;
-    ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
 
     /**
      * Represents every item in the screen and displays each one.
@@ -85,6 +79,15 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         }
     }
+
+    private ViewHolder _vh;
+    private PieChart chart;
+    protected Typeface tfRegular;
+    protected Typeface tfLight;
+    private IPortfolio _portfolio;
+    ListView list;
+    String[] stockNameList;
+    private UserInfo _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.
@@ -291,7 +294,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 
     /**
      * Click functionality for portfolio button for side menu (overwritten to avoid the
-     * portfolio screen from having to reinitialise)
+     * portfolio screen from having to reinitialise if clicked in the side menu)
      * @param view portfolio_button from main_nav_drawer.xml
      */
     @Override
