@@ -63,7 +63,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
 
     /**
      * Initialises all processes for the screen once screen is launched.
-     * @param savedInstanceState default input
+     * @param savedInstanceState default input (Any saved stock or user information)
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

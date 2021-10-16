@@ -38,8 +38,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class handles the main home screen. It has a most viewed RecyclerView for "Most Viewed",
+ * a list of categories to choose from and a sidebar menu.
+ * Author: Takahiro, Alan, Jonathon
+ */
+
 public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
+    private ViewHolder _vh;
+    ListView list;
+    String[] stockNameList;
+    private UserInfo _userInfo;
+
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         RecyclerView _techView, _financeView, _industryView, _healthView;
         RecyclerView _mostPopular;
@@ -55,17 +69,11 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _usernameText = (TextView) findViewById(R.id.username);
         }
     }
-    
-    private ViewHolder _vh;
 
-    //        =======================Search functionality=============================
-
-    ListView list;
-    String[] stockNameList;
-    private UserInfo _userInfo;
-
-    //        =======================--------------------=============================
-
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input (Any saved stock or user information)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +110,9 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
+    /**
+     * Initialises all categories
+     */
     private void setupCategoryViews(){
         fetchStockByCategory(Category.HealthCare);
         fetchStockByCategory(Category.InformationTechnology);
@@ -109,18 +120,33 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         fetchStockByCategory(Category.Industrials);
     }
 
+    /**
+     * Click functionality for opening main page from side menu
+     * @param view home_button from main_nav_drawer.xml
+     */
     @Override
     public void clickHome(View view) {
         closeDrawer(_drawerLayout);
     }
 
+    /**
+     * Default method for committing any user interaction with screen when the screen is
+     * closed or the user switches to another screen. This allows the screen to "resume" once
+     * the user returns to the screen.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         closeDrawer(_drawerLayout);
     }
 
-
+    /**
+     *  Makes a query to Firestore database for stock information on one thread while
+     *  another thread executes the java functions (creating stock items using onComplete
+     *  function). Stock items are created and put inside a list for use. All stock items are
+     *  called for the specified category.
+     * @param category Category options in the main screen.
+     */
     private void fetchStockByCategory(Category category) {
         List<IStock> stockList = new LinkedList<>();
 
@@ -176,6 +202,12 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         });
     }
 
+    /**
+     *  Makes a query to Firestore database for stock information on one thread while
+     *  another thread executes the java functions (creating stock items using onComplete
+     *  function). Stock items are created and put inside a list for use. All stock items are
+     *  called in order
+     */
     private void fetchStockMostView(){
         List<IStock> stockList = new LinkedList<>();
 
@@ -238,6 +270,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         });
     }
 
+    /**
+     * Creates adaptor for ListViews which displays stocks in the RecyclerView.
+     * @param data Stock information list
+     */
     private void propagateAdaptor(List<IStock> data) {
         StockAdaptor stockAdapter = new StockAdaptor(this, R.layout.stock_most_viewed_recycler_view,
                 data);
@@ -245,6 +281,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 //        vh.listView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Creates adaptor for ListViews which displays stocks in the RecyclerView for most viewed.
+     * @param data Stock information list
+     */
     private void propogateMostViewAdapter(List<IStock> data){
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         MostViewAdapter adapter = new MostViewAdapter(data);
@@ -252,6 +292,11 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh._mostPopular.setLayoutManager(lm);
     }
 
+    /**
+     * Creates adaptor for the LinearLayout which displays the category views
+     * @param data stock information for each category
+     * @param category category
+     */
     private void propogateCatAdapter(List<IStock> data, Category category) {
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
@@ -277,6 +322,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }
     }
 
+    /**
+     * This method browses every category.
+     * @param view
+     */
     public void browseAll(View view){
         System.out.println(view.getResources().getResourceName(view.getId()));
         System.out.println(view.getTag());
