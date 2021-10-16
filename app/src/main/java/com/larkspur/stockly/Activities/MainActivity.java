@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -69,6 +70,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
                 _topLoserName, _topLoserSymbol, _topLoserPrice;
 
         LineChart _gainerChart, _loserChart;
+        View _topGainer, _topLoser;
 
         public ViewHolder() {
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -78,17 +80,19 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _usernameText = (TextView) findViewById(R.id.username);
             _usernameText.setText("Hi " + _user.getUsername());
 
-            View topGainer = findViewById(R.id.top_gainer);
-            _topGainerName = (TextView) topGainer.findViewById(R.id.stock_name);
-            _topGainerSymbol = (TextView) topGainer.findViewById(R.id.stock_symbol);
-            _topGainerPrice = (TextView) topGainer.findViewById(R.id.stock_price);
-            _gainerChart = (LineChart) topGainer.findViewById(R.id.chart1);
+            _topGainer = findViewById(R.id.top_gainer);
+            _topGainerName = (TextView) _topGainer.findViewById(R.id.stock_name);
+            _topGainerSymbol = (TextView) _topGainer.findViewById(R.id.stock_symbol);
+            _topGainerPrice = (TextView) _topGainer.findViewById(R.id.stock_price);
+            _gainerChart = (LineChart) _topGainer.findViewById(R.id.chart1);
 
-            View topLoser = findViewById(R.id.top_loser);
-            _topLoserName = (TextView) topLoser.findViewById(R.id.stock_name);
-            _topLoserSymbol = (TextView) topLoser.findViewById(R.id.stock_symbol);
-            _topLoserPrice = (TextView) topLoser.findViewById(R.id.stock_price);
-            _loserChart = (LineChart) topLoser.findViewById(R.id.chart1);
+            _topLoser = findViewById(R.id.top_loser);
+            _topLoserName = (TextView) _topLoser.findViewById(R.id.stock_name);
+            _topLoserSymbol = (TextView) _topLoser.findViewById(R.id.stock_symbol);
+            _topLoserPrice = (TextView) _topLoser.findViewById(R.id.stock_price);
+            _loserChart = (LineChart) _topLoser.findViewById(R.id.chart1);
+
+//            _categories.setNestedScrollingEnabled(false);
         }
     }
     
@@ -152,6 +156,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }else{
             setData(true,stock);
         }
+
     }
 
     private void getLoser(){
@@ -199,19 +204,38 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     }
 
     public void setData(Boolean isGainer, IStock stock){
+        View view;
         if (isGainer){
             _vh._topGainerName.setText(stock.getCompName());
             _vh._topGainerSymbol.setText(stock.getSymbol());
             _vh._topGainerPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
                     + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
             setData(stock.getHistoricalPrice(), _vh._gainerChart);
+            view = _vh._topGainer;
         }else{
             _vh._topLoserName.setText(stock.getCompName());
             _vh._topLoserSymbol.setText(stock.getSymbol());
             _vh._topLoserPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
                     + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
             setData(stock.getHistoricalPrice(), _vh._loserChart);
+            view = _vh._topLoser;
         }
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), StockActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("stock", stock);
+                Log.e("stock",stock.getCompName());
+                intent.putExtra("Screen", "Home");
+                intent.putExtra("Class", MainActivity.class);
+                IStock test = (IStock) bundle.getSerializable("stock");
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+                Toast.makeText(getBaseContext(), stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
