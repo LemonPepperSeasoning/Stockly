@@ -75,8 +75,6 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
     protected Typeface tfLight;
     private IPortfolio _portfolio;
     ListView list;
-    String[] stockNameList;
-    private User _userInfo;
 
     /**
      * Initialises all processes for the screen once screen is launched.
@@ -89,7 +87,6 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_portfolio);
         _vh = new ViewHolder();
-      
         _portfolio = _user.getPortfolio();
 
         if (getIntent().getExtras() != null) {
@@ -314,6 +311,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
 //            redirectActivity(this,activity,bundle);
 //        }else {
             redirectActivity(this, MainActivity.class);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 //        }
     }
 }

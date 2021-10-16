@@ -97,8 +97,12 @@ public class HelpActivity extends CoreActivity {
             System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
             redirectActivity(this, activity, bundle);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         }else {
             redirectActivity(this, activity);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         }
     }
 
