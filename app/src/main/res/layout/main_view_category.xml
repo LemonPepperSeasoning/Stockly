@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:id="@+id/category_card_view">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        android:background="@drawable/gradient_darker">
+
+        <ImageView
+            android:id="@+id/category_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/category_communication_service_icon"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="65dp"
+            android:layout_marginEnd="65dp"
+            android:layout_marginTop="30dp">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/category_name_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finance"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
