@@ -100,12 +100,12 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _loserChart = (LineChart) topLoser.findViewById(R.id.chart1);
         }
     }
-  
+
     /**
      * Initialises all processes for the screen once screen is launched.
      * @param savedInstanceState default input (Any saved stock or user information)
      */
-    
+
     private ViewHolder _vh;
     private Typeface tfLight;
 
@@ -125,7 +125,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         setupGraph(_vh._gainerChart);
 
         getStockMostView();
-        propogateCategoryAdapter();
 
         getGainer();
         getLoser();
@@ -155,10 +154,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
      * Initialises all categories
      */
     private void setupCategoryViews(){
-        getCategoryStock(Category.HealthCare);
-        getCategoryStock(Category.InformationTechnology);
-        getCategoryStock(Category.ConsumerDiscretionary);
-        getCategoryStock(Category.Industrials);
+//         getCategoryStock(Category.HealthCare);
+//         getCategoryStock(Category.InformationTechnology);
+//         getCategoryStock(Category.ConsumerDiscretionary);
+//         getCategoryStock(Category.Industrials);
     }
 
 
@@ -214,48 +213,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         closeDrawer(_drawerLayout);
     }
 
-    /**
-     *  Makes a query to Firestore database for stock information on one thread while
-     *  another thread executes the java functions (creating stock items using onComplete
-     *  function). Stock items are created and put inside a list for use. All stock items are
-     *  called for the specified category.
-     * @param category Category options in the main screen.
-     */
-    private void fetchStockByCategory(Category category) {
-        List<IStock> stockList = new LinkedList<>();
-
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company")
-                .orderBy("Name", direction) // TODO : Add % change to DB and query.
-                .limit(1)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        stock[0] = StockMapper.toStock(document.getData());
-                    }
-
-                    if (stock[0] != null) {
-                        if (direction.equals(Query.Direction.DESCENDING)){
-                            setData(true,stock[0]);
-                            _stockHandler.addTopGainer(stock[0]);
-                        }else if(direction.equals(Query.Direction.ASCENDING)){
-                            setData(false,stock[0]);
-                            _stockHandler.addTopLoser(stock[0]);
-                        }else{
-                            Log.d("Fetch Failed", "return value was empty");
-                        }
-                    } else {
-                        Log.d("Fetch Failed", "return value was empty");
-                    }
-                } else {
-                    Log.e("Fetch Error", "failed to fetch stocks by category");
-                }
-            }
-        });
-    }
 
 
     public void setData(Boolean isGainer, IStock stock){
@@ -274,46 +231,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }
     }
 
-
-    @Override
-    public void clickHome(View view) {
-        closeDrawer(_drawerLayout);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        closeDrawer(_drawerLayout);
-    }
-
-//    private void fetchStockByCategory(Category category) {
-//        List<IStock> stockList = new LinkedList<>();
-//
-//        // Getting numbers collection from Firestore
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("company")
-//                .whereEqualTo("Category", category.toString())
-//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        stockList.add(StockMapper.toStock(document.getData()));
-//                    }
-//
-//                    if (stockList.size() > 0) {
-//                        propogateCatAdapter(stockList, category);
-//                        _stockHandler.addCategoryStock(category,stockList);
-//                    } else {
-//                        Log.d("Fetch Failed", "return value was empty");
-//                    }
-//                } else {
-//                    Log.e("Fetch Error", "failed to fetch stocks by category");
-//                }
-//            }
-//        });
-//    }
-//
 
 
     /**
@@ -360,13 +277,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             }
         });
     }
-    private void propogateCategoryAdapter(){
-        CategoryAdapter adapter = new CategoryAdapter();
-        _vh._categories.setAdapter(adapter);
-//        _vh._categories.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
-        _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
-    }
 
     /**
      * Creates adaptor for ListViews which displays stocks in the RecyclerView for most viewed.
@@ -386,30 +296,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
      * @param data stock information for each category
      * @param category category
      */
-    private void propogateCatAdapter(List<IStock> data, Category category) {
-        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
-        switch (category) {
-            case InformationTechnology:
-                _vh._techView.setAdapter(adapter);
-                _vh._techView.setLayoutManager(lm);
-                break;
-            case HealthCare:
-                _vh._healthView.setAdapter(adapter);
-                _vh._healthView.setLayoutManager(lm);
-                break;
-            case Industrials:
-                _vh._industryView.setAdapter(adapter);
-                _vh._industryView.setLayoutManager(lm);
-                break;
-            case ConsumerDiscretionary:
-                _vh._financeView.setAdapter(adapter);
-                _vh._financeView.setLayoutManager(lm);
-                break;
-            default:
-                throw new IllegalArgumentException("Category not supported at the moment");
-        }
-    }
 
 
     /**
@@ -440,7 +326,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             case "health care":
                 intent.putExtra("Category","Health Care");
                 view.getContext().startActivity(intent);
-                    break;
+                break;
             default:
                 throw new IllegalArgumentException("category not found");
         }
