@@ -38,8 +38,21 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+ * This class handles the Portfolio screen which contains the stock in a user's portfolio. The
+ * portfolio is essentially the stocks a user has invested in. The purpose of this screen is to
+ * show the user a holistic perspective on their investment and calculate how much of their money
+ * is invested in each specific stock. The user has the ability to also
+ * The user has the ability to remove and go to the stock screen for the stocks in the portfolio.
+ * There is also a doughnut graph with an interactive legend.
+ * Author: Jonathon, Alan
+ * Reference: https://github.com/PhilJay/MPAndroidChart (used library for graph)
+ */
 public class PortfolioActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         ListView _stockList;
         TextView _previousScreen,_usernameText;
@@ -61,15 +74,12 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
     protected Typeface tfRegular;
     protected Typeface tfLight;
     private IPortfolio _portfolio;
-
-    //        =======================Search functionality=============================
-
     ListView list;
-    String[] stockNameList;
-    private User _userInfo;
 
-    //        =======================--------------------=============================
-
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input (Any saved stock or user information)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,13 +87,12 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_portfolio);
         _vh = new ViewHolder();
-      
         _portfolio = _user.getPortfolio();
 
         if (getIntent().getExtras() != null) {
             Intent intent = this.getIntent();
-            String previousScreen = intent.getStringExtra("Screen");
-            _vh._previousScreen.setText("Return to " + previousScreen);
+//            String previousScreen = intent.getStringExtra("Screen");
+            _vh._previousScreen.setText("Return to Home");
         }else{
             throw new RuntimeException("Something went wrong : previous screen not found");
         }
@@ -112,7 +121,9 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         //        =======================--------------------=============================
     }
 
-
+    /**
+     * Handles display of watchlist data (size of watchlist)
+     */
     private void displayData(){
         setData(_portfolio.getPortfolio());
         Toast.makeText(this,"watchlist size is " + _portfolio.getPortfolio().size(), Toast.LENGTH_SHORT).show();;
@@ -123,12 +134,19 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         }
     }
 
+    /**
+     * Creates adaptor for ListViews which displays stocks in the RecyclerView.
+     * @param data Stock information list
+     */
     private void propagateAadapter(List<IStock> data){
         PorfolioAdapter stockAdapter = new PorfolioAdapter(this, R.layout.portfolio_card,data,chart);
         _vh._stockList.setAdapter(stockAdapter);
         _vh._stockList.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Displays the doughnut graph displaying the percentage of the stocks
+     */
     private void setPiechart(){
         chart = findViewById(R.id.doughnut_chart);
         chart.setUsePercentValues(true);
@@ -168,6 +186,10 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         chart.setEntryLabelTextSize(12f);
     }
 
+    /**
+     * Pulls the data and populates the pie chart with data.
+     * @param portfolio Portfolio
+     */
     private void setData(Hashtable<IStock, Integer> portfolio) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
@@ -225,6 +247,10 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         chart.invalidate();
     }
 
+    /**
+     * Handles center text generation
+     * @return Spannable String
+     */
     private SpannableString generateCenterSpannableText() {
         Double totalValue = _portfolio.getTotalValue();
         Double percentageChange =_portfolio.getTotal24HrChange();
@@ -251,25 +277,41 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         return s;
     }
 
+    /**
+     * Click functionality for portfolio button for side menu (overwritten to avoid the
+     * portfolio screen from having to reinitialise if clicked in the side menu)
+     * @param view portfolio_button from main_nav_drawer.xml
+     */
     @Override
     public void clickPortfolio(View view){
         closeDrawer(_drawerLayout);
     }
 
+    /**
+     * Default method for committing any user interaction with screen when the screen is
+     * closed or the user switches to another screen. This allows the screen to "resume" once
+     * the user returns to the screen.
+     */
     @Override
     protected void onPause(){
         super.onPause();
         closeDrawer(_drawerLayout);
     }
+
+    /**
+     * Handles click functionality for return text
+     * @param view TextView
+     */
     public void clickReturn(View view){
         Intent intent = this.getIntent();
-        Class activity = (Class) intent.getExtras().getSerializable("Class");
-        if(activity == StockActivity.class){
-            Bundle bundle = intent.getExtras();
-            intent.putExtras(bundle);
-            redirectActivity(this,activity,bundle);
-        }else {
-            redirectActivity(this, activity);
-        }
+//        Class activity = (Class) intent.getExtras().getSerializable("Class");
+//        if(activity == StockActivity.class){
+//            Bundle bundle = intent.getExtras();
+//            intent.putExtras(bundle);
+//            redirectActivity(this,activity,bundle);
+//        }else {
+            redirectActivity(this, MainActivity.class);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//        }
     }
 }

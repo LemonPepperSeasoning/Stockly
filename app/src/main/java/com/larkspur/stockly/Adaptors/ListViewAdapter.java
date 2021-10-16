@@ -1,5 +1,6 @@
 package com.larkspur.stockly.Adaptors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,8 +24,15 @@ import com.larkspur.stockly.R;
 import java.text.DecimalFormat;
 import java.util.List;
 
+/**
+ * This adaptor loads the cardViews in the listView in ListScreen.
+ * Author: Alan Lin
+ */
 public class ListViewAdapter extends ArrayAdapter {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice;
         LinearLayout _stockView;
@@ -41,6 +49,12 @@ public class ListViewAdapter extends ArrayAdapter {
     Context _context;
     private List<IStock> _stocks;
 
+    /**
+     * Default constructor
+     * @param context this information require to access the xml files
+     * @param resource the resource id for a layout file containing the relevant ListView
+     * @param objects stock data objects list
+     */
     public ListViewAdapter(@NonNull Context context, int resource, @NonNull List<IStock> objects) {
         super(context, resource, objects);
         _layoutID = resource;
@@ -48,6 +62,14 @@ public class ListViewAdapter extends ArrayAdapter {
         _stocks = objects;
     }
 
+    /**
+     * Uses layoutInflater to initialise the cardView in listview and populates the card fields
+     * with stock information using populateList
+     * @param position position in list
+     * @param convertView the listView item you wish to create dynamically
+     * @param parent the layout in which the listView item is created
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -55,13 +77,18 @@ public class ListViewAdapter extends ArrayAdapter {
         if (currentListViewItem == null) {
             currentListViewItem = LayoutInflater.from(getContext()).inflate(_layoutID, parent, false);
         }
-
         IStock currentStock = _stocks.get(position);
-
 
         return populateList(currentStock, currentListViewItem);
     }
 
+    /**
+     * Populates the stock items with data and implements click functionality for the CardViews
+     * inside the listView
+     * @param currentStock current stock being populated in the CardView
+     * @param currentListView current cardView inside listView
+     * @return
+     */
     private View populateList(IStock currentStock, View currentListView) {
         System.out.println("stock list size is " + _stocks.size());
 
@@ -88,6 +115,8 @@ public class ListViewAdapter extends ArrayAdapter {
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(intent);
+                Activity activity =(Activity) v.getContext();
+                activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 Toast.makeText(_context, currentStock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
 
             }

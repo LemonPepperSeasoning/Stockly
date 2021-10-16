@@ -12,8 +12,17 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.larkspur.stockly.R;
 
+/**
+ * This class handles the screen for the help option.
+ * Author: Takahiro
+ */
+
 public class HelpActivity extends CoreActivity {
 
+    /**
+     * Initialises all processes for the screen once screen is launched.
+     * @param savedInstanceState default input
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +46,14 @@ public class HelpActivity extends CoreActivity {
         setButtonOnClick(findViewById(R.id.base_expandableCard_6),
                 findViewById(R.id.expand_button_6),
                 findViewById(R.id.hidden_layout_6));
-
     }
 
+    /**
+     * Expands the help options when clicked
+     * @param card the help buttons --> base_expandableCard.xml
+     * @param button help button --> expand_button.xml
+     * @param hiddenLayout the hidden textView
+     */
     private void setButtonOnClick(CardView card,ImageButton button,ConstraintLayout hiddenLayout){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,10 +83,10 @@ public class HelpActivity extends CoreActivity {
         });
     }
 
-
-//    public void clickBack(View view){
-//        MainActivity.redirectActivity(this,MainActivity.class);
-//    }
+    /**
+     * Returns to original screen prior to reaching help menu.
+     * @param view back_arrow.xml
+     */
     public void clickReturn(View view){
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
@@ -82,9 +96,13 @@ public class HelpActivity extends CoreActivity {
             System.out.println("watch list stock is");
             System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
-            redirectActivity(this,activity,bundle);
+            redirectActivity(this, activity, bundle);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         }else {
             redirectActivity(this, activity);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+
         }
     }
 
