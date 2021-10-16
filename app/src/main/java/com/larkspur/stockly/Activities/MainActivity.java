@@ -49,10 +49,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
         public ViewHolder() {
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            _techView = (RecyclerView) findViewById(R.id.technology_recycle_view);
-            _financeView = (RecyclerView) findViewById(R.id.finance_recycle_view);
-            _industryView = (RecyclerView) findViewById(R.id.industrial_recycle_view);
-            _healthView = (RecyclerView) findViewById(R.id.health_recycle_view);
+       
             _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
             _usernameText = (TextView) findViewById(R.id.username);
             _usernameText.setText("Hi " + _user.getUsername());
@@ -73,7 +70,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         this.setTitle("Home");
 
         getStockMostView();
-        setupCategoryViews();
 
         //        =======================Search functionality=============================
         // Locate the ListView in listview_main.xml
@@ -92,13 +88,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _editSearch.clearFocus();
         _editSearch.requestFocusFromTouch();
         //        =======================--------------------=============================
-    }
-
-    private void setupCategoryViews(){
-        getCategoryStock(Category.HealthCare);
-        getCategoryStock(Category.InformationTechnology);
-        getCategoryStock(Category.ConsumerDiscretionary);
-        getCategoryStock(Category.Industrials);
     }
 
     private void getStockMostView(){
@@ -171,7 +160,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-                    QuerySnapshot results = task.getResult();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> data = document.getData();
 
