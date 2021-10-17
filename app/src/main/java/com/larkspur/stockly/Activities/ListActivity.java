@@ -56,6 +56,8 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     }
 
     private ViewHolder _vh;
+    private ListViewAdapter _listViewAdapter;
+    private List<IStock> _categoryStocks;
     ListView list;
 
     /**
@@ -75,6 +77,12 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             String stringCategory = intent.getStringExtra("Category");
             _vh._categoryText.setText(stringCategory);
             Category category = Category.getValue(stringCategory);
+
+            _categoryStocks = new ArrayList<>();
+            _listViewAdapter = new ListViewAdapter(this, R.layout.list_item, _categoryStocks);
+            _vh._listView.setAdapter(_listViewAdapter);
+            _vh._listView.setVisibility(View.VISIBLE);
+
             getCategoryStocks(category);
         } else {
             throw new RuntimeException("Stock not found!");
@@ -111,7 +119,8 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         if (stockList == null){
             fetchCategoryStocks(category);
         }else{
-            propogateCatAdapter(stockList);
+            _categoryStocks.addAll(stockList);
+            _listViewAdapter.notifyDataSetChanged();;
         }
     }
    
@@ -130,7 +139,8 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
                         stockList.add(StockMapper.toStock(document.getData()));
                     }
                     if (stockList.size() > 0) {
-                        propogateCatAdapter(stockList);
+                        _categoryStocks.addAll(stockList); //We can also change it to add one item at a time.
+                        _listViewAdapter.notifyDataSetChanged();
                         _stockHandler.addCategoryStock(category,stockList);
                     } else {
                         Log.d("Fetch Failed", "return value was empty");
@@ -140,16 +150,6 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
                 }
             }
         });
-    }
-
-    /**
-     * Creates adaptor for the list of items and makes them visible using the adaptor
-     * @param data Stock information list
-     */
-    private void propogateCatAdapter(List<IStock> data) {
-        ListViewAdapter adapter = new ListViewAdapter(this, R.layout.list_item, data);
-        _vh._listView.setAdapter(adapter);
-        _vh._listView.setVisibility(View.VISIBLE);
     }
 
     /**
