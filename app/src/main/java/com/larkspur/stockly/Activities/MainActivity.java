@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -84,8 +86,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         public ViewHolder() {
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             _categories = (RecyclerView) findViewById(R.id.category_recycler_view);
-
             _mostPopular = (RecyclerView) findViewById(R.id.most_popular_view);
+
             _usernameText = (TextView) findViewById(R.id.username);
             _usernameText.setText("Hi " + _user.getUsername());
 
@@ -113,6 +115,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private ViewHolder _vh;
     private Typeface tfLight;
 
+
+    private ShimmerFrameLayout mShimmerViewContainer;
+    private List<IStock> _mostViewedStocks;
+    private MostViewAdapter _mostViewAdapater;
     //        =======================Search functionality=============================
     ListView list;
     //        =======================--------------------=============================
@@ -124,6 +130,15 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh = new ViewHolder();
 
         this.setTitle("Home");
+
+        mShimmerViewContainer = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
+        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
+        _vh._mostPopular.setItemAnimator(new DefaultItemAnimator());
+        _mostViewedStocks = new ArrayList<>();
+        _mostViewAdapater = new MostViewAdapter(_mostViewedStocks);
+        _vh._mostPopular.setAdapter(_mostViewAdapater);
+        _vh._mostPopular.setLayoutManager(lm);
+//        shimmerContainer.startShimmer();
 
         setupGraph(_vh._loserChart);
         setupGraph(_vh._gainerChart);
@@ -254,15 +269,21 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         });
     }
 
-
     @Override
     public void clickHome(View view) {
         closeDrawer(_drawerLayout);
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmer();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
+        mShimmerViewContainer.stopShimmer();
         closeDrawer(_drawerLayout);
     }
 
@@ -321,12 +342,13 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
-                                    stockList.add(StockMapper.toStock(task.getResult().getData()));
+                                    IStock stock = StockMapper.toStock(task.getResult().getData());
+                                    _mostViewedStocks.add(stock);
+                                    _stockHandler.addMostViewStock(stock);
+                                    _mostViewAdapater.notifyDataSetChanged();
 
-                                    if(stockList.size() == 10){
-                                        propogateMostViewAdapter(stockList);
-                                        _stockHandler.addMostViewStock(stockList);
-                                    }
+                                    mShimmerViewContainer.stopShimmer();
+                                    mShimmerViewContainer.setVisibility(View.GONE);
                                 } else {
                                     Log.e("Fetch Error", "failed to fetch stocks by mostView's reference");
                                 }
@@ -352,10 +374,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
      * @param data Stock information list
      */
     private void propogateMostViewAdapter(List<IStock> data){
-        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        MostViewAdapter adapter = new MostViewAdapter(data);
-        _vh._mostPopular.setAdapter(adapter);
-        _vh._mostPopular.setLayoutManager(lm);
+
     }
 
 
@@ -505,6 +524,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
             // set data
             chart.setData(data);
+            chart.notifyDataSetChanged();
         }
     }
 }
