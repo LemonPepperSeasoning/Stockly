@@ -95,9 +95,11 @@
                     android:layout_marginEnd="20dp"
                     android:ems="8"
                     android:textSize="22sp"
+                    android:fontFamily="sans-serif-condensed-medium"
                     android:inputType="textPersonName"
                     android:text=" Guest"
-                    android:background="@android:color/darker_gray"
+                    android:textColor="#bdbdbd"
+                    android:background="#757575"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:hint="username"/>
@@ -157,26 +159,44 @@
                     android:layout_marginBottom="5dp"
                     android:background="#00FFFFFF"
                     android:fontFamily="sans-serif-condensed-medium"
-                    android:text="other setting"
+                    android:text="Currency"
                     android:textColor="#FFFFFF"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Switch
+                <TextView
+                    android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="40dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#00FFFFFF"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:text="NZD $"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <!--                <Switch-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="2dp"-->
+<!--                    android:layout_marginEnd="40dp"-->
+<!--                    android:layout_marginBottom="2dp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clear_portfolio_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -192,23 +212,23 @@
                     android:layout_marginBottom="5dp"
                     android:background="#00FFFFFF"
                     android:fontFamily="sans-serif-condensed-medium"
-                    android:text="Some other setting"
+                    android:text="Clear Portfolio"
                     android:textColor="#FFFFFF"
                     android:textSize="22sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Switch
-                    android:id="@+id/switch1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginEnd="40dp"
-                    android:layout_marginBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--                <Switch-->
+<!--                    android:id="@+id/switch1"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="2dp"-->
+<!--                    android:layout_marginEnd="40dp"-->
+<!--                    android:layout_marginBottom="2dp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -222,7 +242,7 @@
                 android:background="@drawable/settingscomponent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_one_5"
+                    android:id="@+id/clear_watchlist_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
@@ -244,26 +264,26 @@
                         android:layout_marginBottom="5dp"
                         android:background="#00FFFFFF"
                         android:fontFamily="sans-serif-condensed-medium"
-                        android:text="Some other setting"
+                        android:text="Clear Watchlist"
                         android:textColor="#FFFFFF"
                         android:textSize="22sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageButton
-                        android:id="@+id/expand_button_5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="40dp"
-                        android:background="#00FFFFFF"
-                        android:contentDescription="expand button"
-                        android:padding="0dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/expand_button"
-                        tools:ignore="TouchTargetSizeCheck" />
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/expand_button_5"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="8dp"-->
+<!--                        android:layout_marginEnd="40dp"-->
+<!--                        android:background="#00FFFFFF"-->
+<!--                        android:contentDescription="expand button"-->
+<!--                        android:padding="0dp"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:srcCompat="@drawable/expand_button"-->
+<!--                        tools:ignore="TouchTargetSizeCheck" />-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
