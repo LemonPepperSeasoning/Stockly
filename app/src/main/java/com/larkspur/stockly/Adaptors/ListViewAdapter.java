@@ -51,7 +51,7 @@ public class ListViewAdapter extends ArrayAdapter {
 
     /**
      * Default constructor
-     * @param context this information require to access the xml files
+     * @param context this information required to access the xml files
      * @param resource the resource id for a layout file containing the relevant ListView
      * @param objects stock data objects list
      */
@@ -68,7 +68,7 @@ public class ListViewAdapter extends ArrayAdapter {
      * @param position position in list
      * @param convertView the listView item you wish to create dynamically
      * @param parent the layout in which the listView item is created
-     * @return
+     * @return CardViews inside the ListView
      */
     @NonNull
     @Override
@@ -87,7 +87,7 @@ public class ListViewAdapter extends ArrayAdapter {
      * inside the listView
      * @param currentStock current stock being populated in the CardView
      * @param currentListView current cardView inside listView
-     * @return
+     * @return CardView inside the ListView with information inside them
      */
     private View populateList(IStock currentStock, View currentListView) {
         System.out.println("stock list size is " + _stocks.size());

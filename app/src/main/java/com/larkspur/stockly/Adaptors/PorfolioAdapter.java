@@ -51,8 +51,15 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+ * This adaptor holds the views in the Portfolio screen.
+ * Author: Alan, Jonathon
+ */
 public class PorfolioAdapter extends ArrayAdapter {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice, _stockTotalPrice, _quantityStock;
         LinearLayout _removeStock, _stockSide;
@@ -74,6 +81,13 @@ public class PorfolioAdapter extends ArrayAdapter {
     private List<IStock> _stocks;
     private PieChart _chart;
 
+    /**
+     * Default constructor
+     * @param context this information required to access the xml files
+     * @param resource the resource id for a layout file containing the relevant ListView
+     * @param objects stock data objects list
+     * @param chart PieChart
+     */
     public PorfolioAdapter(@NonNull Context context, int resource, @NonNull List<IStock> objects, PieChart chart) {
         super(context, resource, objects);
         _layoutID = resource;
@@ -82,6 +96,14 @@ public class PorfolioAdapter extends ArrayAdapter {
         _chart = chart;
     }
 
+    /**
+     * Uses layoutInflater to initialise the cardView in listview and populates the card fields
+     * with stock information using populateList
+     * @param position position of stock in list
+     * @param convertView the listView item you wish to create dynamically
+     * @param parent the layout in which the listView item is created
+     * @return CardViews inside the ListView
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -94,6 +116,13 @@ public class PorfolioAdapter extends ArrayAdapter {
         return populatePortfolio(currentStock, currentListViewItem);
     }
 
+    /**
+     * Populates the stock items with data and implements click functionality for the CardViews
+     * inside the listView
+     * @param currentStock current stock being populated in the CardView
+     * @param currentListView current cardView inside listView
+     * @return CardView inside the ListView with information inside them
+     */
     private View populatePortfolio(IStock currentStock, View currentListView) {
         System.out.println("stock list size is " + _stocks.size());
 
@@ -212,7 +241,11 @@ public class PorfolioAdapter extends ArrayAdapter {
         return currentListView;
     }
 
-
+    /**
+     * Populates the portfolio with the user's information such as number of stocks selected
+     * and which stocks they chose
+     * @param portfolio User's portfolio
+     */
     private void setData(Hashtable<IStock, Integer> portfolio) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
@@ -268,7 +301,13 @@ public class PorfolioAdapter extends ArrayAdapter {
         _chart.invalidate();
     }
 
-
+    /**
+     * Initialise the center string for the portfolio, showcasing the total sum of stocks
+     * and the total value of the user's portfolio.
+     * @param portfolio User's portfolio (which stock they chose and how many of each they chose)
+     * @return String of information (total sum of stock and the total value of the
+     * user's portfolio)
+     */
     private SpannableString generateCenterSpannableText(IPortfolio portfolio) {
         Double totalValue = portfolio.getTotalValue();
         Double percentageChange = portfolio.getTotal24HrChange();
