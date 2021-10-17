@@ -274,3 +274,5 @@ public abstract class CoreActivity extends AppCompatActivity implements
         });
     }
 }
+
+//        =======================End of Search functionality=============================

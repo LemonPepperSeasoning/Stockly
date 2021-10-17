@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -123,6 +125,9 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private CategoryAdapter _categoryAdapter;
     //        =======================Search functionality=============================
     ListView list;
+    ListView _searchListView;
+    EditText _searchEditText;
+
     //        =======================--------------------=============================
 
     @Override
@@ -164,9 +169,37 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         // Binds the Adapter to the ListView
         list.setAdapter(_adaptor);
 
-        // Locate the EditText in listview_main.xml
+        // Locate SearchView
         _editSearch = (SearchView) findViewById(R.id.search);
         _editSearch.setOnQueryTextListener(this);
+
+        // Setup the listview and EditText
+        _searchListView = findViewById(R.id.searchList);
+        _searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+
+        // Set up onclick listener for close button
+        // - Get the search close button image view
+        ImageView closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
+        // - Set up on click listener
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Collapse searchList
+                Log.d("closed", "button is pressed");
+
+                _searchListView.setVisibility(View.GONE);
+
+                //Hide keyboard
+                _editSearch.clearFocus();
+                _editSearch.requestFocusFromTouch();
+
+                //Stop blinking in searchbar
+                _searchEditText.setCursorVisible(false);
+
+                //Clear text in searchbar
+                _searchEditText.setText("");
+            }
+        });
 
         // Set up the searchbar settings
         _editSearch.clearFocus();
