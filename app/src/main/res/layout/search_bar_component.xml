@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
-                    app:cardCornerRadius="20dp">
+                    app:cardCornerRadius="28dp">
 
                     <androidx.appcompat.widget.SearchView
                         android:id="@+id/search"
@@ -46,7 +47,8 @@
                         android:layout_gravity="bottom"
                         android:clickable="true"
                         android:onClick="clickSearch"
-                        android:background="@drawable/search_bar_background">
+                        android:background="@drawable/search_bar_background"
+                        app:searchIcon="@drawable/search_icon">
         <!--                <requestFocus />-->
                     </androidx.appcompat.widget.SearchView>
                 </androidx.cardview.widget.CardView>
@@ -81,4 +83,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
