@@ -27,30 +27,13 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * This class is the adaptor for the search list.
+ * This class is the adaptor for dynamically loading the CardViews for the ListView which
+ * represented the search list suggestion.
  * Author: Jonathon
  * Reference: https://abhiandroid.com/ui/searchview
  */
 
 public class SearchListViewAdaptor extends ArrayAdapter {
-
-    // Declare Variables
-
-    Context _context;
-    int _layoutID;
-    LayoutInflater inflater;
-    private List<IStock> _stockNamesList = null;
-    private List<IStock> _arraylist;
-
-    public SearchListViewAdaptor(Context context, int resource, List<IStock> stockNamesList) {
-        super(context, resource, stockNamesList);
-        _context = context;
-        _layoutID = resource;
-        _stockNamesList = stockNamesList;
-        inflater = LayoutInflater.from(_context);
-        _arraylist = new ArrayList<IStock>();
-        _arraylist.addAll(stockNamesList);
-    }
 
     public class ViewHolder {
         public CardView _searchListCard;
@@ -65,6 +48,38 @@ public class SearchListViewAdaptor extends ArrayAdapter {
         }
     }
 
+    // Declare Variables
+    Context _context;
+    int _layoutID;
+    LayoutInflater inflater;
+    private List<IStock> _stockNamesList = null;
+    private List<IStock> _arraylist;
+
+    /**
+     * Default constructor
+     * @param context this information required to access the xml files
+     * @param resource the resource id for a layout file containing the relevant ListView
+     * @param stockNamesList List of stocks which are suggestible to the user, based
+     *                       on their input to the search bar (different from list of all stocks)
+     */
+    public SearchListViewAdaptor(Context context, int resource, List<IStock> stockNamesList) {
+        super(context, resource, stockNamesList);
+        _context = context;
+        _layoutID = resource;
+        _stockNamesList = stockNamesList;
+        inflater = LayoutInflater.from(_context);
+        _arraylist = new ArrayList<IStock>();
+        _arraylist.addAll(stockNamesList);
+    }
+
+    /**
+     * Uses layoutInflater to initialise the cardView in listview for the search suggestions
+     * and populates the card fields with stock information using populateList
+     * @param position position of stock in list
+     * @param convertView the listView item you wish to create dynamically
+     * @param parent the layout in which the listView item is created
+     * @return CardViews inside the ListView
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -79,6 +94,13 @@ public class SearchListViewAdaptor extends ArrayAdapter {
         return populateList(currentStock, currentListViewItem);
     }
 
+    /**
+     * Populates the CardView items with data and implements click functionality for the CardViews
+     * inside the listView
+     * @param currentStock current stock being populated in the CardView
+     * @param currentListView current cardView inside listView
+     * @return CardView inside the ListView with information inside them
+     */
     private View populateList(IStock currentStock, View currentListView) {
         System.out.println("stock list size is " + _stockNamesList.size());
 
@@ -116,30 +138,55 @@ public class SearchListViewAdaptor extends ArrayAdapter {
         return currentListView;
     }
 
+    /**
+     * Initialises the list of stocks which the user has suggestions for as well as the
+     * list of all stocks in the system to the SearchListView Adaptor so all information
+     * can be loaded in the Search component
+     * @param data List of Stock objects
+     */
     public void addData(List<IStock> data){
         _stockNamesList = data;
         _arraylist = new ArrayList<IStock>(); // create new object to avoid pointing to same object
         _arraylist.addAll(data);
-
-
     }
 
+    /**
+     * Returns stock list size of search suggestions
+     * @return stock list size of search suggestions
+     */
     @Override
     public int getCount() {
         return _stockNamesList.size();
     }
 
+    /**
+     * Returns the stock in the stock list of search suggestions based on
+     * its position
+     * @param position position of the stock in the stock list of search suggestions
+     * @return the stock in the stock list of search suggestions
+     */
     @Override
     public IStock getItem(int position) {
         return _stockNamesList.get(position);
     }
 
+    /**
+     * Returns the stock's id in its stock list based on its position
+     * @param position stock's position
+     * @return id in the form of the stock's position
+     */
     @Override
     public long getItemId(int position) {
         return position;
     }
-    
-    // Filter Class
+
+    /**
+     * Filters the list of stock's based on the user's input. If the user has not done
+     * any input action, the list of all stocks will be presented automatically.
+     * On the other hand, if the user inputs a string, the system will populate
+     * another list of suggestion based on the input and display them.
+     * @param charText User input in search bar
+     */
     public void filter(String charText) {
         // change to lower case
         charText = charText.toLowerCase(Locale.getDefault());

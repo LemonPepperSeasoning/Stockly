@@ -10,6 +10,10 @@ import com.larkspur.stockly.Models.IStock;
 
 import java.util.List;
 
+/**
+ * Basic adaptor for Stock item
+ * Author: Takahiro
+ */
 public class StockAdaptor {
     public StockAdaptor(MainActivity context, int resource, @NonNull List<IStock> data) {
     }

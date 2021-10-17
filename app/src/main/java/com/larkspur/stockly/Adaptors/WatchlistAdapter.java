@@ -25,8 +25,15 @@ import com.larkspur.stockly.R;
 import java.text.DecimalFormat;
 import java.util.List;
 
+/**
+ * This adaptor loads and holds the views inside the WatchList screen.
+ * Author: Takahiro
+ */
 public class WatchlistAdapter extends ArrayAdapter {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice;
         LinearLayout _removeStock,_stockStats;
@@ -44,6 +51,12 @@ public class WatchlistAdapter extends ArrayAdapter {
     Context _context;
     private List<IStock> _stocks;
 
+    /**
+     * Default constructor
+     * @param context this information required to access the xml files
+     * @param resource the resource id for a layout file containing the relevant ListView
+     * @param objects stock data objects list
+     */
     public WatchlistAdapter(@NonNull Context context, int resource, @NonNull List<IStock> objects) {
         super(context, resource, objects);
         _layoutID = resource;
@@ -51,6 +64,14 @@ public class WatchlistAdapter extends ArrayAdapter {
         _stocks = objects;
     }
 
+    /**
+     * Uses layoutInflater to initialise the cardView in listview and populates the card fields
+     * with stock information using populateList
+     * @param position position of stock in list
+     * @param convertView the listView item you wish to create dynamically
+     * @param parent the layout in which the listView item is created
+     * @return CardViews inside the ListView
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -63,6 +84,13 @@ public class WatchlistAdapter extends ArrayAdapter {
         return populateWatchList(currentStock, currentListViewItem);
     }
 
+    /**
+     * Populates the CardView items with data and implements click functionality for the CardViews
+     * inside the listView
+     * @param currentStock current stock being populated in the CardView
+     * @param currentListView current cardView inside listView
+     * @return CardView inside the ListView with information inside them
+     */
     private View populateWatchList(IStock currentStock, View currentListView){
         System.out.println("stock list size is " + _stocks.size());
 

@@ -7,6 +7,11 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * This class handles the orientation of the categories layouts by dynamically creating
+ * space between each category layout for a better UI experience.
+ * Author: Takahiro
+ */
 public class CategoryItemDecoration extends RecyclerView.ItemDecoration {
 
     int spaceBetween;
@@ -14,6 +19,13 @@ public class CategoryItemDecoration extends RecyclerView.ItemDecoration {
         spaceBetween = space;
     }
 
+    /**
+     * Calculate the categories layout's spacing from each other
+     * @param outRect Parent layout shape
+     * @param view Categories layout
+     * @param parent Parent layout
+     * @param state state of RecyclerView
+     */
     @Override
     public void getItemOffsets(Rect outRect, View view,
                                RecyclerView parent, RecyclerView.State state) {

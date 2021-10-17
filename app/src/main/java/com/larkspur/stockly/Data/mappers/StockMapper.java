@@ -8,8 +8,19 @@ import com.larkspur.stockly.Models.Stock;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class returns Stock object by fetching the data inside a map between a stock
+ * and its contents such as name, symbol.
+ * Author: Takahiro
+ */
 public class StockMapper {
 
+    /**
+     * Returns Stock object by fetching the data inside a map between a stock
+     * and its contents such as name, symbol.
+     * @param data map between a stock and its fields
+     * @return Stock object
+     */
     public static IStock toStock(Map<String, Object> data) {
         HistoricalPrice tmpHistoricalPrice = new HistoricalPrice((List<Double>) data.get("Price"));
         return new Stock(

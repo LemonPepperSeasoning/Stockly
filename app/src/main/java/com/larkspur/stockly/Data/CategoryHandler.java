@@ -15,13 +15,25 @@ import com.larkspur.stockly.Models.Stock;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This classes fetches data for the stocks inside a specific category from FireStore.
+ * Author: Takahiro
+ */
 public class CategoryHandler extends DataHandler{
     private FirebaseFirestore db;
 
+    /**
+     * Default constructor
+     */
     public CategoryHandler(){
         db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Fetches the list of stock objects in a specific category
+     * @param category Category of which the user wishes to fetch data from
+     * @return
+     */
     public List<IStock> getCategoryStocks(Category category) {
         List<IStock> stockList = new LinkedList<>();
 
@@ -44,6 +56,10 @@ public class CategoryHandler extends DataHandler{
         return stockList;
     }
 
+    /**
+     * Returns stock object
+     * @return null
+     */
     public IStock getStock() {
         return null;
     }
