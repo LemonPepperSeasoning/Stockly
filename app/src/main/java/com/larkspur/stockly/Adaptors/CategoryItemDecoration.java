@@ -7,6 +7,9 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * This class handles the class
+ */
 public class CategoryItemDecoration extends RecyclerView.ItemDecoration {
 
     int spaceBetween;

@@ -34,8 +34,15 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class handles the textView for the categories in the main screen.
+ * Author: Alan
+ */
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder>{
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _categoryName;
         public ImageView _categoryImage;
@@ -66,11 +73,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private List<Category> _categoryList;
     private Context _context;
 
+    /**
+     * Default constructor
+     */
     public CategoryAdapter(){
         _categoryList = Arrays.asList(Category.values());
     }
 
-
+    /**
+     * Creates a ViewHolder for the TextViews for the categories titles once the main screen
+     * is launched
+     * @param parent layout in which the TextViews are held
+     * @param viewType view type
+     * @return VIewHolder holding the TextViews
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -82,6 +98,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return holder;
     }
 
+    /**
+     * Updates the ViewHolder's contents for the TextViews
+     * @param holder ViewHolder for the TextViews
+     * @param position position in stock list
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -90,6 +111,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder._categoryImage.setImageResource(R.drawable.category_communication_service_icon);
     }
 
+    /**
+     * Get the number of categories
+     * @return number of categories
+     */
     @Override
     public int getItemCount() {
         return _categoryList.size();
