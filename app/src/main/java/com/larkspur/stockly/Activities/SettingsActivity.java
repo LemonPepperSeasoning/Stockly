@@ -1,6 +1,7 @@
 package com.larkspur.stockly.Activities;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +9,20 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
+import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IUser;
+import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
@@ -38,15 +48,14 @@ public class SettingsActivity extends CoreActivity {
 
     /**
      * Initialises all processes for the screen once screen is launched.
+     *
      * @param savedInstanceState default input (Any saved stock or user information)
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
-
-        _vh =  new ViewHolder();
+        _vh = new ViewHolder();
         _vh._usernameTextField.setText(_user.getUsername());
         _vh._usernameTextField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -63,64 +72,133 @@ public class SettingsActivity extends CoreActivity {
             public void afterTextChanged(Editable editable) {
             }
         });
+        ConstraintLayout portfolioCard = findViewById(R.id.clear_portfolio_view);
+        ConstraintLayout watchlistCard = findViewById(R.id.clear_watchlist_view);
 
-        ConstraintLayout card = findViewById(R.id.base_expandablelayout);
-        ImageButton button = findViewById(R.id.expand_button_5);
-        ConstraintLayout hiddenLayout = findViewById(R.id.hidden_layout_5);
+        portfolioCard.setOnClickListener(new View.OnClickListener() {
 
-        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.alert_dialog, null);
+                PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                IPortfolio portfolio = User.getInstance().getPortfolio();
 
-                // If the CardView is already expanded, set its visibility
-                //  to gone and change the expand less icon to expand more.
-                if (hiddenLayout.getVisibility() == View.VISIBLE) {
-                    //TODO: Fix this transition. This transition works but its glitchy.
-//                    TransitionManager.beginDelayedTransition(card,
-//                            new AutoTransition());
-                    hiddenLayout.setVisibility(View.GONE);
-                    button.setImageResource(R.drawable.expand_button);
-                }
+                Button noButton = (Button) popupView.findViewById(R.id.no_button_view);
+                Button yesButton = (Button) popupView.findViewById(R.id.yes_button_view);
 
-                // If the CardView is not expanded, set its visibility
-                // to visible and change the expand more icon to expand less.
-                else {
-                    TransitionManager.beginDelayedTransition(card,
-                            new AutoTransition());
-                    hiddenLayout.setVisibility(View.VISIBLE);
-                    button.setImageResource(R.drawable.unexpand_button);
-                }
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                });
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        IUser user = User.getInstance();
+                        IPortfolio portfolio = user.getPortfolio();
+                        portfolio.removeAllStocks();
+                        Toast.makeText(view.getContext(), "Removed all stocks from Portfolio", Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss();
+                    }
+                });
+
             }
         });
+
+        watchlistCard.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.alert_dialog, null);
+                PopupWindow popupWindow = new PopupWindow(popupView, DrawerLayout.LayoutParams.WRAP_CONTENT, DrawerLayout.LayoutParams.WRAP_CONTENT, true);
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                IPortfolio portfolio = User.getInstance().getPortfolio();
+
+                Button noButton = (Button) popupView.findViewById(R.id.no_button_view);
+                Button yesButton = (Button) popupView.findViewById(R.id.yes_button_view);
+
+                noButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                });
+                yesButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        IUser user = User.getInstance();
+                        IWatchlist watchlist = user.getWatchlist();
+                        watchlist.removeAllStocks();
+                        Toast.makeText(view.getContext(), "Removed all stocks from Watchlist", Toast.LENGTH_SHORT).show();
+                        popupWindow.dismiss();
+                    }
+                });
+
+            }
+        });
+//
+//        ConstraintLayout card = findViewById(R.id.base_expandablelayout);
+//        ImageButton button = findViewById(R.id.expand_button_5);
+//        ConstraintLayout hiddenLayout = findViewById(R.id.hidden_layout_5);
+//
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                // If the CardView is already expanded, set its visibility
+//                //  to gone and change the expand less icon to expand more.
+//                if (hiddenLayout.getVisibility() == View.VISIBLE) {
+//                    //TODO: Fix this transition. This transition works but its glitchy.
+////                    TransitionManager.beginDelayedTransition(card,
+////                            new AutoTransition());
+//                    hiddenLayout.setVisibility(View.GONE);
+//                    button.setImageResource(R.drawable.expand_button);
+//                }
+//
+//                // If the CardView is not expanded, set its visibility
+//                // to visible and change the expand more icon to expand less.
+//                else {
+//                    TransitionManager.beginDelayedTransition(card,
+//                            new AutoTransition());
+//                    hiddenLayout.setVisibility(View.VISIBLE);
+//                    button.setImageResource(R.drawable.unexpand_button);
+//                }
+//            }
+//        });
     }
 
     /**
      * Handles click functionality for return text
+     *
      * @param view TextView
      */
-    public void clickReturn(View view){
+    public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
-        if(activity == StockActivity.class){
+        if (activity == StockActivity.class) {
             Bundle bundle = intent.getExtras();
             intent.putExtras(bundle);
-            redirectActivity(this,activity,bundle);
+            redirectActivity(this, activity, bundle);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
-        }else {
+        } else {
             redirectActivity(this, activity);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 
         }
     }
 
-    public void clearPortfolio(){
+    public void clearPortfolio() {
     }
 
-    public void clearWatchlist(){
+    public void clearWatchlist() {
     }
 
-    public void setName(){
+    public void setName() {
     }
 
 }

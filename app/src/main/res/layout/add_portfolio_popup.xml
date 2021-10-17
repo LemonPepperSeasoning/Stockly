@@ -11,9 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_margin="30dp"
-        android:textSize="22sp"
         android:text="Enter number to add to portfolio"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:textSize="22sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
