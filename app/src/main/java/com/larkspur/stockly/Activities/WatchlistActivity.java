@@ -52,6 +52,8 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
 
     private ViewHolder _vh;
     ListView list;
+    private WatchlistAdapter _watchlistAdapter;
+    private List<IStock> _watchlistStocks;
   
      /**
      * Initialises all processes for the screen once screen is launched.
@@ -69,6 +71,12 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
         } else {
             throw new RuntimeException("Stock not found!");
         }
+
+        _watchlistStocks = new ArrayList<>();
+        _watchlistAdapter = new WatchlistAdapter(this, R.layout.watchlist_item, _watchlistStocks);
+        _vh._watchlistView.setAdapter(_watchlistAdapter);
+        _vh._watchlistView.setVisibility(View.VISIBLE);
+
         getWatchList();
 
         //        =======================Search functionality=============================
@@ -99,18 +107,9 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
         Toast.makeText(this, "watchlist size is " + stockList.size(), Toast.LENGTH_SHORT).show();
 
         if (stockList.size() > 0) {
-            propagateAadapter(stockList);
+            _watchlistStocks.clear();;
+            _watchlistStocks.addAll(stockList);
         }
-    }
-
-    /**
-     * Creates adaptor for ListViews which displays stocks in the RecyclerView.
-     * @param data Stock information list
-     */
-    private void propagateAadapter(List<IStock> data) {
-        WatchlistAdapter stockAdapter = new WatchlistAdapter(this, R.layout.watchlist_item, data);
-        _vh._watchlistView.setAdapter(stockAdapter);
-        _vh._watchlistView.setVisibility(View.VISIBLE);
     }
 
     /**
