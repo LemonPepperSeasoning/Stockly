@@ -1,12 +1,18 @@
 package com.larkspur.stockly.Activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import androidx.cardview.widget.CardView;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
+import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -19,6 +25,7 @@ import com.larkspur.stockly.R;
 
 public class HelpActivity extends CoreActivity {
 
+    LinearLayout _linearLayout;
     /**
      * Initialises all processes for the screen once screen is launched.
      * @param savedInstanceState default input
@@ -28,9 +35,9 @@ public class HelpActivity extends CoreActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
-        setButtonOnClick(findViewById(R.id.base_expandableCard_1),
-                findViewById(R.id.expand_button_1),
-                findViewById(R.id.hidden_layout_1));
+//        setButtonOnClick(findViewById(R.id.base_expandableCard_1),
+//                findViewById(R.id.expand_button_1),
+//                findViewById(R.id.hidden_layout_1));
         setButtonOnClick(findViewById(R.id.base_expandableCard_2),
                 findViewById(R.id.expand_button_2),
                 findViewById(R.id.hidden_layout_2));
@@ -46,6 +53,7 @@ public class HelpActivity extends CoreActivity {
         setButtonOnClick(findViewById(R.id.base_expandableCard_6),
                 findViewById(R.id.expand_button_6),
                 findViewById(R.id.hidden_layout_6));
+        _linearLayout = findViewById(R.id.help_linear_view);
     }
 
     /**
@@ -55,20 +63,27 @@ public class HelpActivity extends CoreActivity {
      * @param hiddenLayout the hidden textView
      */
     private void setButtonOnClick(CardView card,ImageButton button,ConstraintLayout hiddenLayout){
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 // If the CardView is already expanded, set its visibility
-                //  to gone and change the expand less icon to expand more.
+//                //  to gone and change the expand less icon to expand more.
                 if (hiddenLayout.getVisibility() == View.VISIBLE) {
 
 
                     //TODO: Fix this transition. This transition works but its glitchy.
-//                    TransitionManager.beginDelayedTransition(card,
-//                            new AutoTransition());
+
                     hiddenLayout.setVisibility(View.GONE);
+                    TransitionManager.beginDelayedTransition(_linearLayout,
+                            new AutoTransition());
+                    TransitionManager.beginDelayedTransition(hiddenLayout,
+                            new AutoTransition());
+
                     button.setImageResource(R.drawable.expand_button);
+//                    TransitionManager.beginDelayedTransition(_linearLayout,
+//                            new AutoTransition());
                 }
 
                 // If the CardView is not expanded, set its visibility
