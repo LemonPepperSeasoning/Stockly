@@ -119,6 +119,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private ShimmerFrameLayout mShimmerViewContainer;
     private List<IStock> _mostViewedStocks;
     private MostViewAdapter _mostViewAdapater;
+
+    private CategoryAdapter _categoryAdapter;
     //        =======================Search functionality=============================
     ListView list;
     //        =======================--------------------=============================
@@ -138,14 +140,17 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _mostViewAdapater = new MostViewAdapter(_mostViewedStocks);
         _vh._mostPopular.setAdapter(_mostViewAdapater);
         _vh._mostPopular.setLayoutManager(lm);
-//        shimmerContainer.startShimmer();
+
+        _categoryAdapter = new CategoryAdapter();
+        _vh._categories.setAdapter(_categoryAdapter);
+//        _vh._categories.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
+        _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
 
         setupGraph(_vh._loserChart);
         setupGraph(_vh._gainerChart);
 
         getStockMostView();
-        propogateCategoryAdapter();
-
         getGainer();
         getLoser();
 
@@ -175,7 +180,9 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         if (stockList == null){
             fetchStockMostView();
         }else{
-            propogateMostViewAdapter(stockList);
+            _mostViewedStocks.clear();;
+            _mostViewedStocks.addAll(stockList);
+            _mostViewAdapater.notifyDataSetChanged();
         }
     }
 
@@ -186,7 +193,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }else{
             setData(true,stock);
         }
-
     }
 
     private void getLoser(){
@@ -287,35 +293,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         closeDrawer(_drawerLayout);
     }
 
-//    private void fetchStockByCategory(Category category) {
-//        List<IStock> stockList = new LinkedList<>();
-//
-//        // Getting numbers collection from Firestore
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        db.collection("company")
-//                .whereEqualTo("Category", category.toString())
-//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        stockList.add(StockMapper.toStock(document.getData()));
-//                    }
-//
-//                    if (stockList.size() > 0) {
-//                        propogateCatAdapter(stockList, category);
-//                        _stockHandler.addCategoryStock(category,stockList);
-//                    } else {
-//                        Log.d("Fetch Failed", "return value was empty");
-//                    }
-//                } else {
-//                    Log.e("Fetch Error", "failed to fetch stocks by category");
-//                }
-//            }
-//        });
-//    }
-//
-
     /**
      *  Makes a query to Firestore database for stock information on one thread while
      *  another thread executes the java functions (creating stock items using onComplete
@@ -361,82 +338,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             }
         });
     }
-    private void propogateCategoryAdapter(){
-        CategoryAdapter adapter = new CategoryAdapter();
-        _vh._categories.setAdapter(adapter);
-//        _vh._categories.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
-        _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
-    }
-
-    /**
-     * Creates adaptor for ListViews which displays stocks in the RecyclerView for most viewed.
-     * @param data Stock information list
-     */
-    private void propogateMostViewAdapter(List<IStock> data){
-
-    }
-
-
-//    private void propogateCatAdapter(List<IStock> data, Category category) {
-//        LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-//        StockCategoriesMainAdatper adapter = new StockCategoriesMainAdatper(data);
-//        switch (category) {
-//            case InformationTechnology:
-//                _vh._techView.setAdapter(adapter);
-//                _vh._techView.setLayoutManager(lm);
-//                break;
-//            case HealthCare:
-//                _vh._healthView.setAdapter(adapter);
-//                _vh._healthView.setLayoutManager(lm);
-//                break;
-//            case Industrials:
-//                _vh._industryView.setAdapter(adapter);
-//                _vh._industryView.setLayoutManager(lm);
-//                break;
-//            case ConsumerDiscretionary:
-//                _vh._financeView.setAdapter(adapter);
-//                _vh._financeView.setLayoutManager(lm);
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Category not supported at the moment");
-//        }
-//    }
-
-
-    /**
-     * This method browses every category.
-     * @param view
-     */
-    public void browseAll(View view){
-        System.out.println(view.getResources().getResourceName(view.getId()));
-        System.out.println(view.getTag());
-        String categoryView = view.getTag().toString();
-        Intent intent = new Intent(view.getContext(),ListActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("Screen", "Home");
-        intent.putExtra("Class",this.getClass());
-        switch (categoryView){
-            case "technology":
-                intent.putExtra("Category","Information Technology");
-                view.getContext().startActivity(intent);
-                break;
-            case "finance":
-                intent.putExtra("Category","Consumer Discretionary");
-                view.getContext().startActivity(intent);
-                break;
-            case "industrials":
-                intent.putExtra("Category","Industrials");
-                view.getContext().startActivity(intent);
-                break;
-            case "health care":
-                intent.putExtra("Category","Health Care");
-                view.getContext().startActivity(intent);
-                    break;
-            default:
-                throw new IllegalArgumentException("category not found");
-        }
-    }
 
     private void setupGraph(LineChart chart) {
         chart.setViewPortOffsets(0, 0, 0, 0);
@@ -460,15 +361,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
         XAxis x = chart.getXAxis();
         x.setEnabled(false);
-
         YAxis y = chart.getAxisLeft();
-//        y.setTypeface(tfLight);
-//        y.setLabelCount(6, false);
-//        y.setTextColor(Color.WHITE);
-//        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         y.setDrawGridLines(false);
-//        y.setAxisLineColor(Color.WHITE);
-
         chart.getAxisRight().setEnabled(false);
         chart.getLegend().setEnabled(false);
         chart.animateXY(2000, 2000);
@@ -524,7 +418,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
             // set data
             chart.setData(data);
-            chart.notifyDataSetChanged();
+            chart.invalidate();
         }
     }
 }

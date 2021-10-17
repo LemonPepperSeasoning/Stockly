@@ -73,7 +73,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             Intent intent = this.getIntent();
             System.out.println(intent.getExtras().getSerializable("Class"));
             String previousScreen = intent.getStringExtra("Screen");
-            _vh._previousScreen.setText("Return to " + previousScreen);
+            _vh._previousScreen.setText("Return :wto " + previousScreen);
             String stringCategory = intent.getStringExtra("Category");
             _vh._categoryText.setText(stringCategory);
             Category category = Category.getValue(stringCategory);
@@ -119,6 +119,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
         if (stockList == null){
             fetchCategoryStocks(category);
         }else{
+            _categoryStocks.clear();
             _categoryStocks.addAll(stockList);
             _listViewAdapter.notifyDataSetChanged();;
         }
