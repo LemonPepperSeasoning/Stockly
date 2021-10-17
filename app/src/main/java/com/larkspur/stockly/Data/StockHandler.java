@@ -58,8 +58,11 @@ public class StockHandler extends DataHandler {
         tmp.addAll(stocks);
         _categoricalCollection.put(category, tmp);
     }
+    public void addMostViewStock(IStock stocks){
+        _mostViewCollection.add(stocks);
+    }
 
-    public void addMostViewStock(List<IStock> stocks){
+    public void addMostViewStocks(List<IStock> stocks){
         _mostViewCollection.addAll(stocks);
     }
 
