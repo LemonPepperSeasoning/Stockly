@@ -76,6 +76,9 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
     private IPortfolio _portfolio;
     ListView list;
 
+    private PorfolioAdapter _portfolioAdapter;
+    private List<IStock> _portfolioStocks;
+
     /**
      * Initialises all processes for the screen once screen is launched.
      * @param savedInstanceState default input (Any saved stock or user information)
@@ -96,6 +99,12 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
         }else{
             throw new RuntimeException("Something went wrong : previous screen not found");
         }
+
+        chart = findViewById(R.id.doughnut_chart);
+        _portfolioStocks = new ArrayList<>();
+        _portfolioAdapter = new PorfolioAdapter(this, R.layout.portfolio_card,_portfolioStocks,chart);
+        _vh._stockList.setAdapter(_portfolioAdapter);
+        _vh._stockList.setVisibility(View.VISIBLE);
 
         setPiechart();
         displayData();
@@ -122,33 +131,24 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
     }
 
     /**
-     * Handles display of watchlist data (size of watchlist)
+     * Handles display of Portfolio data (size of Portfolio)
      */
     private void displayData(){
         setData(_portfolio.getPortfolio());
         Toast.makeText(this,"watchlist size is " + _portfolio.getPortfolio().size(), Toast.LENGTH_SHORT).show();;
         if(_portfolio.getPortfolio().size()>0){
-            List<IStock> data = new ArrayList<>();
-            data.addAll( _portfolio.getPortfolio().keySet() );
-            propagateAadapter(data);
+            _portfolioStocks.clear();
+            _portfolioStocks.addAll(_portfolio.getPortfolio().keySet());
+            _portfolioAdapter.notifyDataSetChanged();
         }
     }
 
-    /**
-     * Creates adaptor for ListViews which displays stocks in the RecyclerView.
-     * @param data Stock information list
-     */
-    private void propagateAadapter(List<IStock> data){
-        PorfolioAdapter stockAdapter = new PorfolioAdapter(this, R.layout.portfolio_card,data,chart);
-        _vh._stockList.setAdapter(stockAdapter);
-        _vh._stockList.setVisibility(View.VISIBLE);
-    }
 
     /**
      * Displays the doughnut graph displaying the percentage of the stocks
      */
     private void setPiechart(){
-        chart = findViewById(R.id.doughnut_chart);
+//        chart = findViewById(R.id.doughnut_chart);
         chart.setUsePercentValues(true);
         chart.getDescription().setEnabled(false);
         chart.setExtraOffsets(0, 0, 0, 0);
