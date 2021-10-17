@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="120dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
     android:layout_marginTop="10dp"
@@ -18,7 +18,7 @@
             android:id="@+id/category_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/category_communication_service_icon"
+            android:src="@drawable/energy"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="65dp"
             android:layout_marginEnd="65dp"

@@ -133,6 +133,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
         this.setTitle("Home");
 
+
         _shimmerView = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         _vh._mostPopular.setItemAnimator(new DefaultItemAnimator());
@@ -145,6 +146,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh._categories.setAdapter(_categoryAdapter);
 //        _vh._categories.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
+//        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.HORIZONTAL,false));
         _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
 
         LineChartHandler.setupGraph(_vh._loserChart,false, Color.BLACK);
