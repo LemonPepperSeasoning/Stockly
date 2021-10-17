@@ -37,6 +37,7 @@ import java.util.Map;
 public class DataFetcher {
 
     public static void fetchCategoryStocks(Category category, List<IStock> list, BaseAdapter adapter){
+        StockHandler stockHandler = StockHandler.getInstance();
         List<IStock> stockList = new LinkedList<>();
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -53,7 +54,7 @@ public class DataFetcher {
                     if (stockList.size() > 0) {
                         list.addAll(stockList); //We can also change it to add one item at a time.
                         adapter.notifyDataSetChanged();
-//                        _stockHandler.addCategoryStock(category,stockList);
+                        stockHandler.addCategoryStock(category,stockList);
                     } else {
                         Log.d("Fetch Failed", "return value was empty");
                     }
@@ -71,6 +72,7 @@ public class DataFetcher {
      *  called in order
      */
     public static void fetchStockMostView(List<IStock> list, RecyclerView.Adapter adapter, ShimmerFrameLayout shimmerView){
+        StockHandler stockHandler = StockHandler.getInstance();
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("viewcount")
@@ -91,11 +93,10 @@ public class DataFetcher {
                                 if (task.isSuccessful()) {
                                     IStock stock = StockMapper.toStock(task.getResult().getData());
                                     list.add(stock);
-//                                    _stockHandler.addMostViewStock(stock);
                                     adapter.notifyDataSetChanged();
-
                                     shimmerView.stopShimmer();
                                     shimmerView.setVisibility(View.GONE);
+                                    stockHandler.addMostViewStock(stock);
                                 } else {
                                     Log.e("Fetch Error", "failed to fetch stocks by mostView's reference");
                                 }
