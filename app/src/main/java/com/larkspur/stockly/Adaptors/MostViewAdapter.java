@@ -25,6 +25,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
@@ -117,7 +118,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
         holder._stockSymbol.setText(stock.getSymbol());
         holder._stockPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
                 + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
-        downloadImage(stock.getImageLink().get(0),holder._stockImage);
+        DataFetcher.downloadImage(stock.getImageLink().get(0),holder._stockImage);
         if (stock.getHistoricalPrice().getLast24HourChange() > 0 ){
             holder._stockPrice.setTextColor(Color.GREEN);
             holder._statusView.setCardBackgroundColor(Color.GREEN);
@@ -136,34 +137,5 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
         return _stockList.size();
     }
 
-    /**
-     * Fetches image from Firestore database loads it into the imageView in the CardView
-     * inside the recyclerView "Most Viewed"
-     * @param referenceLink the URL for the image in Firestore Storage
-     * @param imageView the imageView in the CardView inside the RecyclerView
-     */
-    private void downloadImage(String referenceLink, ImageView imageView){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        try{
-            StorageReference httpsReference = storage.getReferenceFromUrl(referenceLink);
-            File localFile = File.createTempFile("images", "jpg");
-            httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    Bitmap myBitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    imageView.setImageBitmap(myBitmap);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.e("NO IMAGE :",referenceLink);
-                }
-            });
-        }catch(IOException e) {
-            //TODO : When image download fails, maybe we will just set it to default image or something.
-            Log.e("NO IMAGE:",referenceLink);
-        }
-    }
 }
 

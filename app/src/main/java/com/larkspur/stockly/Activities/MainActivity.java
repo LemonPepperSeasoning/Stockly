@@ -46,6 +46,8 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
+import com.larkspur.stockly.Adaptors.utils.LineChartHandler;
+import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
@@ -113,10 +115,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
      */
     
     private ViewHolder _vh;
-    private Typeface tfLight;
 
-
-    private ShimmerFrameLayout mShimmerViewContainer;
+    private ShimmerFrameLayout _shimmerView;
     private List<IStock> _mostViewedStocks;
     private MostViewAdapter _mostViewAdapater;
 
@@ -133,7 +133,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
         this.setTitle("Home");
 
-        mShimmerViewContainer = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
+        _shimmerView = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         _vh._mostPopular.setItemAnimator(new DefaultItemAnimator());
         _mostViewedStocks = new ArrayList<>();
@@ -147,8 +147,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
         _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
 
-        setupGraph(_vh._loserChart);
-        setupGraph(_vh._gainerChart);
+        LineChartHandler.setupGraph(_vh._loserChart,false, Color.BLACK);
+        LineChartHandler.setupGraph(_vh._gainerChart,false,Color.BLACK);
 
         getStockMostView();
         getGainer();
@@ -178,7 +178,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private void getStockMostView(){
         List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
         if (stockList == null){
-            fetchStockMostView();
+            DataFetcher.fetchStockMostView(_mostViewedStocks,_mostViewAdapater,_shimmerView);
         }else{
             _mostViewedStocks.clear();;
             _mostViewedStocks.addAll(stockList);
@@ -204,6 +204,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }
     }
 
+
+    //TODO : Add base adapter to the top gainer/loser component and move this to DataFetcher class.
     private void fetchTopChange(Query.Direction direction) {
         final IStock[] stock = new IStock[1];
 
@@ -247,14 +249,14 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _vh._topGainerSymbol.setText(stock.getSymbol());
             _vh._topGainerPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
                     + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
-            setData(stock.getHistoricalPrice(), _vh._gainerChart);
+            LineChartHandler.setData(stock.getHistoricalPrice(), _vh._gainerChart);
             view = _vh._topGainer;
         }else{
             _vh._topLoserName.setText(stock.getCompName());
             _vh._topLoserSymbol.setText(stock.getSymbol());
             _vh._topLoserPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
                     + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
-            setData(stock.getHistoricalPrice(), _vh._loserChart);
+            LineChartHandler.setData(stock.getHistoricalPrice(), _vh._loserChart);
             view = _vh._topLoser;
         }
         view.setOnClickListener(new View.OnClickListener() {
@@ -283,142 +285,17 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     @Override
     protected void onResume() {
         super.onResume();
-        mShimmerViewContainer.startShimmer();
+        _shimmerView.startShimmer();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mShimmerViewContainer.stopShimmer();
+        _shimmerView.stopShimmer();
         closeDrawer(_drawerLayout);
     }
 
-    /**
-     *  Makes a query to Firestore database for stock information on one thread while
-     *  another thread executes the java functions (creating stock items using onComplete
-     *  function). Stock items are created and put inside a list for use. All stock items are
-     *  called in order
-     */
-    private void fetchStockMostView(){
-        List<IStock> stockList = new LinkedList<>();
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("viewcount")
-                .orderBy("viewcount", Query.Direction.DESCENDING)
-                .limit(10)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Map<String, Object> data = document.getData();
 
-                        DocumentReference ref = (DocumentReference)data.get("company");
-                        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    IStock stock = StockMapper.toStock(task.getResult().getData());
-                                    _mostViewedStocks.add(stock);
-                                    _stockHandler.addMostViewStock(stock);
-                                    _mostViewAdapater.notifyDataSetChanged();
 
-                                    mShimmerViewContainer.stopShimmer();
-                                    mShimmerViewContainer.setVisibility(View.GONE);
-                                } else {
-                                    Log.e("Fetch Error", "failed to fetch stocks by mostView's reference");
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    Log.e("Fetch Error", "failed to fetch most viewed");
-                }
-            }
-        });
-    }
-
-    private void setupGraph(LineChart chart) {
-        chart.setViewPortOffsets(0, 0, 0, 0);
-        chart.setBackgroundColor(Color.BLACK);
-
-        // no description text
-        chart.getDescription().setEnabled(false);
-
-        // enable touch gestures
-        chart.setTouchEnabled(true);
-
-        // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(false);
-
-        chart.setDrawGridBackground(false);
-        chart.setMaxHighlightDistance(300);
-
-        XAxis x = chart.getXAxis();
-        x.setEnabled(false);
-        YAxis y = chart.getAxisLeft();
-        y.setDrawGridLines(false);
-        chart.getAxisRight().setEnabled(false);
-        chart.getLegend().setEnabled(false);
-        chart.animateXY(2000, 2000);
-
-        // don't forget to refresh the drawing
-        chart.invalidate();
-    }
-
-    private void setData(@NonNull IHistoricalPrice prices, LineChart chart) {
-        ArrayList<Entry> values = new ArrayList<>();
-
-        int index = 0;
-        for (Double i : prices.getHistoricalPrice()) {
-            values.add(new Entry(index, i.floatValue()));
-            index++;
-        }
-        LineDataSet set1;
-
-        if (chart.getData() != null &&
-                chart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(values, "DataSet 1");
-
-            set1.setMode(LineDataSet.Mode.LINEAR);
-            set1.setCubicIntensity(0.2f);
-            set1.setDrawFilled(true);
-            set1.setDrawCircles(false);
-            set1.setLineWidth(1.8f);
-            set1.setCircleRadius(4f);
-            set1.setCircleColor(Color.rgb(159, 125, 225));
-            set1.setHighLightColor(Color.rgb(244, 117, 117));
-            set1.setColor(Color.rgb(159, 125, 225));
-            set1.setFillColor(Color.rgb(159, 125, 225));
-            set1.setFillAlpha(100);
-            set1.setDrawHorizontalHighlightIndicator(false);
-            set1.setFillFormatter(new IFillFormatter() {
-                @Override
-                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                    return chart.getAxisLeft().getAxisMinimum();
-                }
-            });
-
-            // create a data object with the data sets
-            LineData data = new LineData(set1);
-            data.setValueTypeface(tfLight);
-            data.setValueTextSize(9f);
-            data.setDrawValues(false);
-
-            // set data
-            chart.setData(data);
-            chart.invalidate();
-        }
-    }
 }
