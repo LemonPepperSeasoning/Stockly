@@ -23,9 +23,15 @@ import com.larkspur.stockly.R;
 import java.text.DecimalFormat;
 import java.util.List;
 
+/**
+ * This adaptor was used for an old layout for the main screen. (Maybe delete this.)
+ * Author: Alan
+ */
 public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCategoriesMainAdatper.ViewHolder> {
 
-
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _stockSymbol, _stockPrice, _stockPercent;
         private Class _parent;
@@ -37,7 +43,6 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
             _stockSymbol = (TextView) view.findViewById(R.id.stock_symbol);
             _stockPrice = (TextView) view.findViewById(R.id.stock_price);
             _stockPercent = (TextView) view.findViewById(R.id.stock_percent);
-
         }
 
         @Override
@@ -62,11 +67,21 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
     private List<IStock> _stockList;
     private Context _context;
 
+    /**
+     * Default constructor
+     * @param stockList List of stocks
+     */
     public StockCategoriesMainAdatper(List<IStock> stockList){
         _stockList = stockList;
     }
 
-
+    /**
+     * Creates a ViewHolder for the TextViews for the categories titles once the main screen
+     * is launched
+     * @param parent layout in which the TextViews are held
+     * @param viewType view type
+     * @return VIewHolder holding the TextViews
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -77,6 +92,11 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
         return holder;
     }
 
+    /**
+     * Updates the ViewHolder's contents for the TextViews
+     * @param holder ViewHolder for the TextViews
+     * @param position position in stock list
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IStock stock = _stockList.get(position);
@@ -92,6 +112,10 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
         }
     }
 
+    /**
+     * Get the number of categories
+     * @return number of categories
+     */
     @Override
     public int getItemCount() {
         return _stockList.size();
