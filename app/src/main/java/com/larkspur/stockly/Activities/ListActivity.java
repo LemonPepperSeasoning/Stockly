@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.ListViewAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
+import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
@@ -117,40 +118,12 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     public void getCategoryStocks(Category category){
         List<IStock> stockList= _stockHandler.getCategoryStock(category);
         if (stockList == null){
-            fetchCategoryStocks(category);
+            DataFetcher.fetchCategoryStocks(category,_categoryStocks,_listViewAdapter);
         }else{
             _categoryStocks.clear();
             _categoryStocks.addAll(stockList);
             _listViewAdapter.notifyDataSetChanged();;
         }
-    }
-   
-    private void fetchCategoryStocks(Category category){
-        List<IStock> stockList = new LinkedList<>();
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v2")
-                .whereEqualTo("Category", category.toString())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        Log.d("+++++", document.getId() + " => " + document.getData());
-                        stockList.add(StockMapper.toStock(document.getData()));
-                    }
-                    if (stockList.size() > 0) {
-                        _categoryStocks.addAll(stockList); //We can also change it to add one item at a time.
-                        _listViewAdapter.notifyDataSetChanged();
-                        _stockHandler.addCategoryStock(category,stockList);
-                    } else {
-                        Log.d("Fetch Failed", "return value was empty");
-                    }
-                } else {
-                    Log.e("Fetch Error", "failed to fetch stocks by category");
-                }
-            }
-        });
     }
 
     /**

@@ -55,6 +55,7 @@ import com.google.firebase.storage.StorageReference;
 
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 
+import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
@@ -125,7 +126,7 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             Bundle bundle = intent.getExtras();
             _stock = (IStock) bundle.getSerializable("stock");
 
-            downloadImage(_stock.getImageLink().get(_currentImageIndex));
+            DataFetcher.downloadImage(_stock.getImageLink().get(_currentImageIndex),_vh._stockImage);
 
             _watchlist = User.getInstance().getWatchlist();
             _watchlisted = _watchlist.hasStock(_stock);
@@ -182,35 +183,6 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         //        =======================--------------------=============================
     }
 
-
-    /**
-     * Fetches image from firebase storage.
-     * @param referenceLink URL link for image in firebase.
-     */
-    private void downloadImage(String referenceLink) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        try {
-            StorageReference httpsReference = storage.getReferenceFromUrl(referenceLink);
-            File localFile = File.createTempFile("images", "jpg");
-            httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                    Bitmap myBitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                    _vh._stockImage.setImageBitmap(myBitmap);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                    Log.e("NO IMAGE=", referenceLink);
-                }
-            });
-        } catch (IOException e) {
-            //TODO : When image download fails, maybe we will just set it to default image or something.
-            Log.e("NO IMAGE:", referenceLink);
-        }
-    }
 
     /**
      * Initialises the stock view (contains the company name, symbol and price of stock)
@@ -551,7 +523,7 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
      */
     public void clickNextImageLeft(View view) {
         _currentImageIndex += 2; //same as -1
-        downloadImage(_stock.getImageLink().get(_currentImageIndex % 3));
+        DataFetcher.downloadImage(_stock.getImageLink().get(_currentImageIndex % 3),_vh._stockImage);
     }
 
     /**
@@ -560,6 +532,6 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
      */
     public void clickNextImageRight(View view) {
         _currentImageIndex += 1;
-        downloadImage(_stock.getImageLink().get(_currentImageIndex % 3));
+        DataFetcher.downloadImage(_stock.getImageLink().get(_currentImageIndex % 3),_vh._stockImage);
     }
 }

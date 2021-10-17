@@ -46,6 +46,7 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
+import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
@@ -116,7 +117,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private Typeface tfLight;
 
 
-    private ShimmerFrameLayout mShimmerViewContainer;
+    private ShimmerFrameLayout _shimmerView;
     private List<IStock> _mostViewedStocks;
     private MostViewAdapter _mostViewAdapater;
 
@@ -133,7 +134,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
         this.setTitle("Home");
 
-        mShimmerViewContainer = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
+        _shimmerView = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         _vh._mostPopular.setItemAnimator(new DefaultItemAnimator());
         _mostViewedStocks = new ArrayList<>();
@@ -178,7 +179,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private void getStockMostView(){
         List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
         if (stockList == null){
-            fetchStockMostView();
+            DataFetcher.fetchStockMostView(_mostViewedStocks,_mostViewAdapater,_shimmerView);
         }else{
             _mostViewedStocks.clear();;
             _mostViewedStocks.addAll(stockList);
@@ -204,6 +205,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         }
     }
 
+
+    //TODO : Add base adapter to the top gainer/loser component and move this to DataFetcher class.
     private void fetchTopChange(Query.Direction direction) {
         final IStock[] stock = new IStock[1];
 
@@ -283,61 +286,16 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     @Override
     protected void onResume() {
         super.onResume();
-        mShimmerViewContainer.startShimmer();
+        _shimmerView.startShimmer();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mShimmerViewContainer.stopShimmer();
+        _shimmerView.stopShimmer();
         closeDrawer(_drawerLayout);
     }
 
-    /**
-     *  Makes a query to Firestore database for stock information on one thread while
-     *  another thread executes the java functions (creating stock items using onComplete
-     *  function). Stock items are created and put inside a list for use. All stock items are
-     *  called in order
-     */
-    private void fetchStockMostView(){
-        List<IStock> stockList = new LinkedList<>();
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("viewcount")
-                .orderBy("viewcount", Query.Direction.DESCENDING)
-                .limit(10)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Map<String, Object> data = document.getData();
-
-                        DocumentReference ref = (DocumentReference)data.get("company");
-                        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    IStock stock = StockMapper.toStock(task.getResult().getData());
-                                    _mostViewedStocks.add(stock);
-                                    _stockHandler.addMostViewStock(stock);
-                                    _mostViewAdapater.notifyDataSetChanged();
-
-                                    mShimmerViewContainer.stopShimmer();
-                                    mShimmerViewContainer.setVisibility(View.GONE);
-                                } else {
-                                    Log.e("Fetch Error", "failed to fetch stocks by mostView's reference");
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    Log.e("Fetch Error", "failed to fetch most viewed");
-                }
-            }
-        });
-    }
 
     private void setupGraph(LineChart chart) {
         chart.setViewPortOffsets(0, 0, 0, 0);
