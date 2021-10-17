@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.MainActivity"
+    android:background="@drawable/gradient_custom_searchbar_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,27 +47,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:clickable="true"
-                        android:onClick="clickSearch"
                         android:background="@drawable/search_bar_background"
-                        app:searchIcon="@drawable/search_icon">
+                        app:searchIcon="@drawable/search_icon"
+                        app:closeIcon="@drawable/close_button"
+                        android:clickable="true"
+                        android:onClick="clickSearch">
         <!--                <requestFocus />-->
                     </androidx.appcompat.widget.SearchView>
+
                 </androidx.cardview.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:onClick="clickSearch">
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:onClick="closeSearch">
-                </LinearLayout>
+<!--                <ImageView-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_gravity="right"-->
+<!--                    android:layout_marginRight="10dp"-->
+<!--                    android:src="@drawable/search_bar_close_button"-->
+<!--                    android:clickable="true"-->
+<!--                    android:onClick="closeSearch"-->
+<!--                    android:id="@+id/close_button">-->
+<!--                </ImageView>-->
 
             </FrameLayout>
 

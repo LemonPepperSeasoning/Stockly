@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -209,7 +210,6 @@ public abstract class CoreActivity extends AppCompatActivity implements
         _editSearch.requestFocusFromTouch();
 
         // Show text
-
         EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(true);
 
@@ -224,6 +224,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
      */
     public void closeSearch(View view) {
         // Collapse searchList
+        Log.d("closed", "button is pressed");
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.GONE);
 
@@ -232,7 +233,6 @@ public abstract class CoreActivity extends AppCompatActivity implements
         _editSearch.requestFocusFromTouch();
 
         //Stop blinking in searchbar
-
         EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(false);
 
