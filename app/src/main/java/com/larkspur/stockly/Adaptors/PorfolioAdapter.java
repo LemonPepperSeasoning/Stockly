@@ -73,6 +73,7 @@ public class PorfolioAdapter extends ArrayAdapter {
     Context _context;
     private List<IStock> _stocks;
     private PieChart _chart;
+    private IPortfolio _portfolio;
 
     public PorfolioAdapter(@NonNull Context context, int resource, @NonNull List<IStock> objects, PieChart chart) {
         super(context, resource, objects);
@@ -80,6 +81,7 @@ public class PorfolioAdapter extends ArrayAdapter {
         _context = context;
         _stocks = objects;
         _chart = chart;
+        _portfolio = User.getInstance().getPortfolio();
     }
 
     @NonNull
@@ -106,8 +108,7 @@ public class PorfolioAdapter extends ArrayAdapter {
         String formattedPrice = df.format(currentStock.getPrice());
         vh._stockPrice.setText("$"+formattedPrice);
 
-        IPortfolio portfolio = User.getInstance().getPortfolio();
-        int quantity = portfolio.getQuantity(currentStock.getSymbol());
+        int quantity = _portfolio.getQuantity(currentStock.getSymbol());
         Double totalPrice = currentStock.getPrice() * quantity;
         String formattedTotalPrice = df.format(totalPrice);
         vh._stockTotalPrice.setText(formattedTotalPrice);
