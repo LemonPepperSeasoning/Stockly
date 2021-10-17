@@ -7,26 +7,26 @@
     android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:cardCornerRadius="40dp"
-        android:innerRadius="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="45dp"
+        android:layout_height="46dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="menu button"
+        android:innerRadius="0dp"
+        android:onClick="clickMenu"
         android:shape="ring"
         app:cardBackgroundColor="@color/black"
-        android:onClick="clickMenu"
-        android:contentDescription="menu button">
+        app:cardCornerRadius="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:src="@drawable/hamburger_menu"></ImageView>
     </androidx.cardview.widget.CardView>
 
