@@ -3,10 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="#111229"
+    app:cardBackgroundColor="#1b1b1b"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="10dp"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="10dp"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/stock_image_view"
             android:layout_alignParentLeft="true"
-            android:text="symbo"
+            android:text="symbol"
             android:layout_marginTop="5dp"
             android:textColor="@color/white"
             android:textSize="15dp"
