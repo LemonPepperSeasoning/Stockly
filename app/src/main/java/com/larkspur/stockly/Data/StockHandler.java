@@ -75,7 +75,7 @@ public class StockHandler extends DataHandler {
 
     public List<IStock> getTopNMostViewed(int n){
         // TODO : Sort by view count, return top N stocks
-        return null;
+        return _mostViewCollection;
     }
 
     public List<IStock> getCategoryStock(Category category){

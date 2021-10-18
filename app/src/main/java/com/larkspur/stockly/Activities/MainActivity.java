@@ -107,6 +107,9 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private ViewHolder _vh;
 
     private ShimmerFrameLayout _shimmerView;
+    private ShimmerFrameLayout _shimmerViewGainer;
+    private ShimmerFrameLayout _shimmerViewLoser;
+
     private List<IStock> _mostViewedStocks;
     private MostViewAdapter _mostViewAdapater;
 
@@ -143,6 +146,9 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
 //        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.HORIZONTAL,false));
         _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
+
+        _shimmerViewGainer = (ShimmerFrameLayout) findViewById(R.id.shimmer_gainer);
+        _shimmerViewLoser = (ShimmerFrameLayout) findViewById(R.id.shimmer_loser);
 
         _topGainerList = new ArrayList<>();
         _topGainerAdapter = new TopChangeAdapter(_topGainerList);
@@ -182,34 +188,45 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
     private void getStockMostView(){
         List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
-        if (stockList == null){
+        if (stockList.isEmpty()){
+            Log.e("new data", "HERE============");
+
             DataFetcher.fetchStockMostView(_mostViewedStocks,_mostViewAdapater,_shimmerView);
         }else{
+            Log.e("Prefetched data", "HERE============");
             _mostViewedStocks.clear();;
             _mostViewedStocks.addAll(stockList);
             _mostViewAdapater.notifyDataSetChanged();
+            _shimmerView.stopShimmer();
+            _shimmerView.setVisibility(View.GONE);
         }
     }
 
     private void getGainer(){
         IStock stock = _stockHandler.getTopGainer();
         if (stock == null){
-            DataFetcher.fetchTopChange(Query.Direction.DESCENDING,_topGainerList,_topGainerAdapter);
+            DataFetcher.fetchTopChange(Query.Direction.DESCENDING,_topGainerList,_topGainerAdapter,_shimmerViewGainer);
         }else{
+            Log.e("Prefetched data", "HERE============");
+
             _topGainerList.clear();
             _topGainerList.add(stock);
             _topGainerAdapter.notifyDataSetChanged();
+            _shimmerViewGainer.stopShimmer();
+            _shimmerViewGainer.setVisibility(View.GONE);
         }
     }
 
     private void getLoser(){
         IStock stock = _stockHandler.getTopLoser();
         if (stock == null){
-            DataFetcher.fetchTopChange(Query.Direction.ASCENDING,_topLoserList,_topLoserAdapter);
+            DataFetcher.fetchTopChange(Query.Direction.ASCENDING,_topLoserList,_topLoserAdapter,_shimmerViewLoser);
         }else{
             _topLoserList.clear();
             _topLoserList.add(stock);
             _topLoserAdapter.notifyDataSetChanged();
+            _shimmerViewLoser.stopShimmer();
+            _shimmerViewLoser.setVisibility(View.GONE);
         }
     }
 
@@ -222,12 +239,16 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     protected void onResume() {
         super.onResume();
         _shimmerView.startShimmer();
+        _shimmerViewGainer.startShimmer();
+        _shimmerViewLoser.startShimmer();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         _shimmerView.stopShimmer();
+        _shimmerViewGainer.stopShimmer();
+        _shimmerViewLoser.stopShimmer();
         closeDrawer(_drawerLayout);
     }
 }

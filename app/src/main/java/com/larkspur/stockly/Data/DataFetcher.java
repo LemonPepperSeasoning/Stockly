@@ -141,8 +141,9 @@ public class DataFetcher {
         }
     }
 
-    public static void fetchTopChange(Query.Direction direction,List<IStock> list, RecyclerView.Adapter adapter) {
+    public static void fetchTopChange(Query.Direction direction,List<IStock> list, RecyclerView.Adapter adapter,ShimmerFrameLayout shimmerView) {
         final IStock[] stock = new IStock[1];
+        StockHandler stockHandler = StockHandler.getInstance();
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -159,6 +160,13 @@ public class DataFetcher {
                     if (stock[0] != null) {
                         list.add(stock[0]);
                         adapter.notifyDataSetChanged();
+                        shimmerView.stopShimmer();
+                        shimmerView.setVisibility(View.GONE);
+                        if (direction.equals(Query.Direction.ASCENDING)){
+                            stockHandler.addTopLoser(stock[0]);
+                        }else{
+                            stockHandler.addTopGainer(stock[0]);
+                        }
                     } else {
                         Log.d("Fetch Failed", "return value was empty");
                     }

@@ -74,12 +74,18 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-<!--                <include layout="@layout/main_view_top_change_stock"-->
-<!--                    android:id="@+id/top_gainer"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginEnd="10dp"></include>-->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_gainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:shimmer_duration="1000">
+                    <include layout="@layout/placeholder_main_view_top_change_stock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"></include>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/top_gainer"
@@ -102,12 +108,17 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-<!--                <include layout="@layout/main_view_top_change_stock"-->
-<!--                    android:id="@+id/top_loser"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:layout_marginEnd="10dp"></include>-->
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_loser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:shimmer_duration="1000">
+                    <include layout="@layout/placeholder_main_view_top_change_stock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"></include>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/top_loser"
