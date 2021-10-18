@@ -3,6 +3,7 @@ package com.larkspur.stockly.Adaptors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IStock;
@@ -99,9 +101,15 @@ public class WatchlistAdapter extends ArrayAdapter {
         vh._stockName.setText(currentStock.getCompName());
         vh._stockSymbol.setText(currentStock.getSymbol());
         //cut price to two decimal places
-        DecimalFormat df = new DecimalFormat("#.##");
-        String formattedPrice = df.format(currentStock.getPrice());
-        vh._stockPrice.setText(formattedPrice);
+        double percentChange = currentStock.getHistoricalPrice().getLast24HourChange();
+        vh._stockPrice.setText("$" + String.format("%.2f", currentStock.getPrice()) + " +" + String.format("%.2f", percentChange) + "%");
+
+        if(percentChange < 0){
+            vh._stockPrice.setText("$" + String.format("%.2f", currentStock.getPrice()) + " " + String.format("%.2f", percentChange) + "%");//
+            vh._stockPrice.setTextColor(Color.RED);
+        }else{
+            vh._stockPrice.setTextColor(_context.getResources().getColor(R.color.colorPrimaryBlue));
+        }
 
         vh._removeStock.setOnClickListener(new View.OnClickListener(){
             @Override
