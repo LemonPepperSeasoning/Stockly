@@ -176,4 +176,32 @@ public class DataFetcher {
             }
         });
     }
+
+    public static void fetchAllStocks(List<IStock> list, List<IStock> list2, RecyclerView.Adapter adapter){
+        StockHandler stockHandler = StockHandler.getInstance();
+        List<IStock> stockList = new LinkedList<>();
+        // Getting numbers collection from Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("company")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        stockList.add(StockMapper.toStock(document.getData()));
+                    }
+                    if (stockList.size() > 0) {
+                        list.addAll(stockList); //We can also change it to add one item at a time.
+                        list2.addAll(stockList);
+                        adapter.notifyDataSetChanged();
+                        stockHandler.addAllStock(stockList);
+                    } else {
+                        Log.d("Fetch Failed", "return value was empty");
+                    }
+                } else {
+                    Log.e("Fetch Error", "failed to fetch stocks by category");
+                }
+            }
+        });
+    }
 }

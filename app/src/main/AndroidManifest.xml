@@ -35,6 +35,10 @@
             android:label="Category"
             android:exported="true" />
         <activity
+            android:name=".Activities.SearchActivity"
+            android:label="Search"
+            android:exported="true" />
+        <activity
             android:name=".Activities.MainActivity"
             android:label="Stockly"
             android:exported="true">
