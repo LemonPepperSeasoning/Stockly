@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,24 +51,24 @@ public class SearchListViewAdaptor extends ArrayAdapter {
     Context _context;
     int _layoutID;
     LayoutInflater inflater;
-    private List<IStock> _stockNamesList = null;
-    private List<IStock> _arraylist;
+    private List<IStock> _stockUserList;
+    private List<IStock> _allStockList;
 
     /**
      * Default constructor
      * @param context this information required to access the xml files
      * @param resource the resource id for a layout file containing the relevant ListView
-     * @param stockNamesList List of stocks which are suggestible to the user, based
+     * @param stockUserList List of stocks which are suggestible to the user, based
      *                       on their input to the search bar (different from list of all stocks)
      */
-    public SearchListViewAdaptor(Context context, int resource, List<IStock> stockNamesList) {
-        super(context, resource, stockNamesList);
+    public SearchListViewAdaptor(Context context, int resource, List<IStock> stockUserList) {
+        super(context, resource, stockUserList);
         _context = context;
         _layoutID = resource;
-        _stockNamesList = stockNamesList;
+        _allStockList = stockUserList;
         inflater = LayoutInflater.from(_context);
-        _arraylist = new ArrayList<IStock>();
-        _arraylist.addAll(stockNamesList);
+        _stockUserList = new ArrayList<IStock>();
+        _stockUserList.addAll(_allStockList);
     }
 
     /**
@@ -87,9 +86,7 @@ public class SearchListViewAdaptor extends ArrayAdapter {
         if (currentListViewItem == null) {
             currentListViewItem = LayoutInflater.from(getContext()).inflate(_layoutID, parent, false);
         }
-
-        IStock currentStock = _stockNamesList.get(position);
-
+        IStock currentStock = _stockUserList.get(position);
 
         return populateList(currentStock, currentListViewItem);
     }
@@ -102,7 +99,7 @@ public class SearchListViewAdaptor extends ArrayAdapter {
      * @return CardView inside the ListView with information inside them
      */
     private View populateList(IStock currentStock, View currentListView) {
-        System.out.println("stock list size is " + _stockNamesList.size());
+        System.out.println("stock list size is " + _stockUserList.size());
 
         ViewHolder vh = new ViewHolder(currentListView);
 
@@ -138,17 +135,17 @@ public class SearchListViewAdaptor extends ArrayAdapter {
         return currentListView;
     }
 
-    /**
-     * Initialises the list of stocks which the user has suggestions for as well as the
-     * list of all stocks in the system to the SearchListView Adaptor so all information
-     * can be loaded in the Search component
-     * @param data List of Stock objects
-     */
-    public void addData(List<IStock> data){
-        _stockNamesList = data;
-        _arraylist = new ArrayList<IStock>(); // create new object to avoid pointing to same object
-        _arraylist.addAll(data);
-    }
+//    /**
+//     * Initialises the list of stocks which the user has suggestions for as well as the
+//     * list of all stocks in the system to the SearchListView Adaptor so all information
+//     * can be loaded in the Search component
+//     * @param data List of Stock objects
+//     */
+//    public void addData(List<IStock> data){
+//        _stockNamesList = data;
+//        _arraylist = new ArrayList<IStock>(); // create new object to avoid pointing to same object
+//        _arraylist.addAll(data);
+//    }
 
     /**
      * Returns stock list size of search suggestions
@@ -156,7 +153,7 @@ public class SearchListViewAdaptor extends ArrayAdapter {
      */
     @Override
     public int getCount() {
-        return _stockNamesList.size();
+        return _stockUserList.size();
     }
 
     /**
@@ -167,7 +164,7 @@ public class SearchListViewAdaptor extends ArrayAdapter {
      */
     @Override
     public IStock getItem(int position) {
-        return _stockNamesList.get(position);
+        return _stockUserList.get(position);
     }
 
     /**
@@ -188,18 +185,20 @@ public class SearchListViewAdaptor extends ArrayAdapter {
      * @param charText User input in search bar
      */
     public void filter(String charText) {
+        Log.e("length: ",String.valueOf(_stockUserList.size()));
+        Log.e("length: ",String.valueOf(_allStockList.size()));
         // change to lower case
         charText = charText.toLowerCase(Locale.getDefault());
         // clear all stocks
-        _stockNamesList.clear();
+        _stockUserList.clear();
         if (charText.length() == 0) {
             // _stockNamesList refers to the stocks which contain the search query
             // _arrayList refers to the all stocks
-            _stockNamesList.addAll(_arraylist);
+            _stockUserList.addAll(_allStockList);
         } else {
-            for (IStock wp : _arraylist) {
+            for (IStock wp : _allStockList) {
                 if (wp.getCompName().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    _stockNamesList.add(wp);
+                    _stockUserList.add(wp);
                 }
             }
         }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -47,10 +48,16 @@ public abstract class CoreActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener{
 
     protected DrawerLayout _drawerLayout;
-    protected SearchListViewAdaptor _adaptor;
-    protected SearchView _editSearch;
     protected IUser _user;
     protected StockHandler _stockHandler;
+
+    protected SearchListViewAdaptor _adaptor;
+    protected SearchView _editSearch;
+    protected ListView list;
+    protected ListView _searchListView;
+    protected EditText _searchEditText;
+    protected ImageView _closeButton;
+//    protected ImageView _searchButton;
 
     /**
      * Default constructor
@@ -190,6 +197,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
      */
     @Override
     public boolean onQueryTextChange(String newText) {
+        Log.e("Changed","Text Changed");
         String text = newText;
         _adaptor.filter(text);
         return false;
@@ -210,35 +218,39 @@ public abstract class CoreActivity extends AppCompatActivity implements
         _editSearch.requestFocusFromTouch();
 
         // Show text
-        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setCursorVisible(true);
+        EditText _searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+        _searchEditText.setCursorVisible(true);
+
+        // Show close button
+        ImageView _closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
+        _closeButton.setVisibility(View.VISIBLE);
 
         // Fetch the stock data for suggestions
-        fetchAllStocks();
+//        fetchAllStocks();
     }
 
-    /**
-     * Handles click functionality for search bar and display changes such as collapsing
-     * keyboard and text cursor. Also removes any input text.
-     * @param view SearchView
-     */
-    public void closeSearch(View view) {
-        // Collapse searchList
-        Log.d("closed", "button is pressed");
-        ListView listview = findViewById(R.id.searchList);
-        listview.setVisibility(View.GONE);
-
-        //Hide keyboard
-        _editSearch.clearFocus();
-        _editSearch.requestFocusFromTouch();
-
-        //Stop blinking in searchbar
-        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setCursorVisible(false);
-
-        //Clear text in searchbar
-        searchEditText.setText("");
-    }
+//    /**
+//     * Handles click functionality for search bar and display changes such as collapsing
+//     * keyboard and text cursor. Also removes any input text.
+//     * @param view SearchView
+//     */
+//    public void closeSearch(View view) {
+//        // Collapse searchList
+//        Log.d("closed", "button is pressed");
+//        ListView listview = findViewById(R.id.searchList);
+//        listview.setVisibility(View.GONE);
+//
+//        //Hide keyboard
+//        _editSearch.clearFocus();
+//        _editSearch.requestFocusFromTouch();
+//
+//        //Stop blinking in searchbar
+//        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+//        searchEditText.setCursorVisible(false);
+//
+//        //Clear text in searchbar
+//        searchEditText.setText("");
+//    }
 
     /**
      * Makes a query to Firestore database for stock information on one thread while
@@ -246,7 +258,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
      * function). Stock items are created and put inside a list for use. All stock items are
      * called.
      */
-    private void fetchAllStocks() {
+    protected void fetchAllStocks(List<IStock> list, SearchListViewAdaptor adapter) {
         List<IStock> stockList = new LinkedList<>();
 
         // Getting numbers collection from Firestore
@@ -262,8 +274,11 @@ public abstract class CoreActivity extends AppCompatActivity implements
                     }
 
                     if (stockList.size() > 0) {
-                        _adaptor.addData(stockList);
+                        list.addAll(stockList);
+                        adapter.filter("");
+//                        adapter.notifyDataSetChanged();
                         _stockHandler.addAllStock(stockList);
+                        Log.e("Size of stock list: ", String.valueOf(list.size()));
                     } else {
                         Log.d("Fetch Failed", "return value was empty");
                     }
