@@ -1,5 +1,6 @@
 package com.larkspur.stockly.Adaptors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -66,6 +67,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             intent.putExtra("Category", category.getCategoryName());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             view.getContext().startActivity(intent);
+            Activity activity = (Activity) view.getContext();
+           activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             Toast.makeText(_context, category.toString() + " was clicked!", Toast.LENGTH_SHORT).show();
         }
     }
