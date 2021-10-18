@@ -74,7 +74,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             Intent intent = this.getIntent();
             System.out.println(intent.getExtras().getSerializable("Class"));
             String previousScreen = intent.getStringExtra("Screen");
-            _vh._previousScreen.setText("Return :wto " + previousScreen);
+            _vh._previousScreen.setText("Return to " + previousScreen);
             String stringCategory = intent.getStringExtra("Category");
             _vh._categoryText.setText(stringCategory);
             Category category = Category.getValue(stringCategory);
