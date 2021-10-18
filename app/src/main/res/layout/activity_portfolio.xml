@@ -15,8 +15,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="55dp">
+            android:layout_marginTop="55dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,29 +24,29 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                android:id="@+id/return_view"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:onClick="clickReturn"
-                >
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:paddingBottom="4dp"
-                    android:src="@drawable/back_arrow"
-                    android:layout_gravity="center_vertical"/>
-
-                <TextView
-                    android:id="@+id/previous_screen_text_view"
+                    android:id="@+id/return_view"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Return to Main"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    android:layout_gravity="center_vertical"/>
-            </LinearLayout>
+                    android:onClick="clickReturn"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:paddingBottom="4dp"
+                        android:src="@drawable/back_arrow" />
+
+                    <TextView
+                        android:id="@+id/previous_screen_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:text="Return to Main"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -56,42 +56,49 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
                 android:text="Portfolio"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:fontFamily="sans-serif"
-                android:textSize="34sp" />
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="5">
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/doughnut_chart"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
+                    android:layout_height="0dp"
+                    android:layout_weight="5"
+                    android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/portfolio_stocklist"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:dividerHeight="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
-            </ListView>
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/doughnut_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp" />
 
-            <include
-                layout="@layout/portfolio_export_component"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp" />
+                    <ListView
+                        android:id="@+id/portfolio_stocklist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:dividerHeight="10dp"></ListView>
+
+                </LinearLayout>
+            </ScrollView>
 
         </LinearLayout>
+
+<!--        <include-->
+<!--            layout="@layout/portfolio_export_component"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.5"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
 
         <include layout="@layout/search_bar_component" />
 
