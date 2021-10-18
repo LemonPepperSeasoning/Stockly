@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -57,6 +58,7 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 
 import com.larkspur.stockly.Adaptors.utils.LineChartHandler;
 import com.larkspur.stockly.Data.DataFetcher;
+import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
@@ -83,10 +85,10 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         SearchView.OnQueryTextListener {
                 
     private class ViewHolder {
-        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen, _description;
+        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen, _description, _categoryText;
         LinearLayout _return;
         ImageView _stockImage, _addWatchList, _addPortfolio;
-
+        CardView _categoryCard;
         public ViewHolder() {
             _stockName = findViewById(R.id.stock_name);
             _stockNameAndSymbol = findViewById(R.id.stock_name_and_symbol);
@@ -99,6 +101,8 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             _addWatchList = findViewById(R.id.watchlist_image_view);
             _addPortfolio = findViewById(R.id.portfolio_image_view);
             _description = findViewById(R.id.stock_description_view);
+            _categoryCard = findViewById(R.id.category_card_view);
+            _categoryText = findViewById(R.id.category_text_view);
         }
     }
 
@@ -183,6 +187,8 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             _vh._addPortfolio.setImageResource(R.drawable.grey_portfolio_button);
         }
 
+        setupCategory();
+
         //        =======================--------------------=============================
     }
 
@@ -195,11 +201,49 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         _vh._stockName.setText(_stock.getCompName());
         _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        String formattedPrice = df.format(_stock.getPrice());
-        _vh._stockPrice.setText(formattedPrice);
+//        DecimalFormat df = new DecimalFormat("#.##");
+//        String formattedPrice = df.format(_stock.getPrice());
+        double percentChange = _stock.getHistoricalPrice().getLast24HourChange();
+
+        _vh._stockPrice.setText("$" + String.format("%.2f", _stock.getPrice()));
+
+        _vh._stockPercent.setText("+" +String.format("%.2f", (percentChange*100)) + "%");
+        if(percentChange < 0){
+            _vh._stockPercent.setText(String.format("%.2f", (percentChange*100)) + "%");
+            _vh._stockPercent.setTextColor(Color.RED);
+            _vh._stockPrice.setTextColor(Color.RED);
+//             _vh._stockPercent.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }else{
+            _vh._stockPercent.setTextColor(getResources().getColor(R.color.colorPrimaryBlue));
+            _vh._stockPrice.setTextColor(getResources().getColor(R.color.colorPrimaryBlue));
+
+        }
+
     }
 
+    private void setupCategory(){
+
+        Category category = _stock.getCategory();
+        int catColor = category.getColor();
+        _vh._categoryCard.setCardBackgroundColor(catColor);
+        _vh._categoryText.setText(category.toString());
+        _vh._categoryCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ListActivity.class);
+                intent.putExtra("Screen", "Stock");
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("stock", _stock);
+                System.out.println((view.getContext().getClass()));
+                intent.putExtra("Class", view.getContext().getClass());
+                intent.putExtra("Category", category.getCategoryName());
+                intent.putExtras(bundle);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+                Toast.makeText(view.getContext(), category.toString() + " was clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     /**
      * Initialises the contents of the activity's stnadard options menu.
      * @param menu the option menu where you place your items.

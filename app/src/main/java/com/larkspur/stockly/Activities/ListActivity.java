@@ -63,6 +63,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
 
     /**
      * Initialises all processes for the screen once screen is launched.
+     *
      * @param savedInstanceState default input (Any saved stock or user information)
      */
     @Override
@@ -115,14 +116,15 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
      * called for one specific category.
      */
 
-    public void getCategoryStocks(Category category){
-        List<IStock> stockList= _stockHandler.getCategoryStock(category);
-        if (stockList == null){
-            DataFetcher.fetchCategoryStocks(category,_categoryStocks,_listViewAdapter);
-        }else{
+    public void getCategoryStocks(Category category) {
+        List<IStock> stockList = _stockHandler.getCategoryStock(category);
+        if (stockList == null) {
+            DataFetcher.fetchCategoryStocks(category, _categoryStocks, _listViewAdapter);
+        } else {
             _categoryStocks.clear();
             _categoryStocks.addAll(stockList);
-            _listViewAdapter.notifyDataSetChanged();;
+            _listViewAdapter.notifyDataSetChanged();
+            ;
         }
     }
 
@@ -139,13 +141,27 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
 
     /**
      * Handles click functionality for return text
+     *
      * @param view TextView
      */
+//    public void clickReturn(View view) {
+//        Intent intent = this.getIntent();
+//        Class activity = (Class) intent.getExtras().getSerializable("Class");
+//        redirectActivity(this, activity);
+//        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+//    }
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
-        redirectActivity(this, activity);
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        if (activity == StockActivity.class) {
+            Bundle bundle = intent.getExtras();
+            intent.putExtras(bundle);
+            redirectActivity(this, activity, bundle);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        } else {
+            redirectActivity(this, MainActivity.class);
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        }
     }
 
 }
