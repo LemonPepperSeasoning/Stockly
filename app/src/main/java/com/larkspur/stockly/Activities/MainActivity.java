@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +47,7 @@ import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.StockAdaptor;
 import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
+import com.larkspur.stockly.Adaptors.TopChangeAdapter;
 import com.larkspur.stockly.Adaptors.utils.LineChartHandler;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Data.mappers.StockMapper;
@@ -78,12 +80,11 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private class ViewHolder {
         RecyclerView _mostPopular;
         RecyclerView _categories;
+        RecyclerView _topGainer, _topLoser;
 
-        TextView _usernameText, _topGainerName, _topGainerSymbol, _topGainerPrice,
-                _topLoserName, _topLoserSymbol, _topLoserPrice;
+        TextView _usernameText;
 
         LineChart _gainerChart, _loserChart;
-        View _topGainer, _topLoser;
 
         public ViewHolder() {
             _drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -94,18 +95,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
             _usernameText.setText("Hi " + _user.getUsername());
 
             _topGainer = findViewById(R.id.top_gainer);
-            _topGainerName = (TextView) _topGainer.findViewById(R.id.stock_name);
-            _topGainerSymbol = (TextView) _topGainer.findViewById(R.id.stock_symbol);
-            _topGainerPrice = (TextView) _topGainer.findViewById(R.id.stock_price);
-            _gainerChart = (LineChart) _topGainer.findViewById(R.id.chart1);
-
             _topLoser = findViewById(R.id.top_loser);
-            _topLoserName = (TextView) _topLoser.findViewById(R.id.stock_name);
-            _topLoserSymbol = (TextView) _topLoser.findViewById(R.id.stock_symbol);
-            _topLoserPrice = (TextView) _topLoser.findViewById(R.id.stock_price);
-            _loserChart = (LineChart) _topLoser.findViewById(R.id.chart1);
-
-//            _categories.setNestedScrollingEnabled(false);
         }
     }
   
@@ -117,10 +107,18 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private ViewHolder _vh;
 
     private ShimmerFrameLayout _shimmerView;
+    private ShimmerFrameLayout _shimmerViewGainer;
+    private ShimmerFrameLayout _shimmerViewLoser;
+
     private List<IStock> _mostViewedStocks;
     private MostViewAdapter _mostViewAdapater;
 
     private CategoryAdapter _categoryAdapter;
+    private TopChangeAdapter _topGainerAdapter;
+    private TopChangeAdapter _topLoserAdapter;
+    private List<IStock> _topGainerList;
+    private List<IStock> _topLoserList;
+
     //        =======================Search functionality=============================
     ListView list;
     //        =======================--------------------=============================
@@ -149,10 +147,21 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 //        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.HORIZONTAL,false));
         _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
 
-        LineChartHandler.setupGraph(_vh._loserChart,false, Color.BLACK);
-        LineChartHandler.setupGraph(_vh._gainerChart,false,Color.BLACK);
+        _shimmerViewGainer = (ShimmerFrameLayout) findViewById(R.id.shimmer_gainer);
+        _shimmerViewLoser = (ShimmerFrameLayout) findViewById(R.id.shimmer_loser);
+
+        _topGainerList = new ArrayList<>();
+        _topGainerAdapter = new TopChangeAdapter(_topGainerList);
+        _vh._topGainer.setAdapter(_topGainerAdapter);
+        _vh._topGainer.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        _topLoserList = new ArrayList<>();
+        _topLoserAdapter = new TopChangeAdapter(_topLoserList);
+        _vh._topLoser.setAdapter(_topLoserAdapter);
+        _vh._topLoser.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         getStockMostView();
+
         getGainer();
         getLoser();
 
@@ -179,104 +188,46 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
     private void getStockMostView(){
         List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
-        if (stockList == null){
+        if (stockList.isEmpty()){
+            Log.e("new data", "HERE============");
+
             DataFetcher.fetchStockMostView(_mostViewedStocks,_mostViewAdapater,_shimmerView);
         }else{
+            Log.e("Prefetched data", "HERE============");
             _mostViewedStocks.clear();;
             _mostViewedStocks.addAll(stockList);
             _mostViewAdapater.notifyDataSetChanged();
+            _shimmerView.stopShimmer();
+            _shimmerView.setVisibility(View.GONE);
         }
     }
 
     private void getGainer(){
         IStock stock = _stockHandler.getTopGainer();
         if (stock == null){
-            fetchTopChange(Query.Direction.DESCENDING);
+            DataFetcher.fetchTopChange(Query.Direction.DESCENDING,_topGainerList,_topGainerAdapter,_shimmerViewGainer);
         }else{
-            setData(true,stock);
+            Log.e("Prefetched data", "HERE============");
+
+            _topGainerList.clear();
+            _topGainerList.add(stock);
+            _topGainerAdapter.notifyDataSetChanged();
+            _shimmerViewGainer.stopShimmer();
+            _shimmerViewGainer.setVisibility(View.GONE);
         }
     }
 
     private void getLoser(){
         IStock stock = _stockHandler.getTopLoser();
         if (stock == null){
-            fetchTopChange(Query.Direction.ASCENDING);
+            DataFetcher.fetchTopChange(Query.Direction.ASCENDING,_topLoserList,_topLoserAdapter,_shimmerViewLoser);
         }else{
-            setData(false,stock);
+            _topLoserList.clear();
+            _topLoserList.add(stock);
+            _topLoserAdapter.notifyDataSetChanged();
+            _shimmerViewLoser.stopShimmer();
+            _shimmerViewLoser.setVisibility(View.GONE);
         }
-    }
-
-
-    //TODO : Add base adapter to the top gainer/loser component and move this to DataFetcher class.
-    private void fetchTopChange(Query.Direction direction) {
-        final IStock[] stock = new IStock[1];
-
-        // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company")
-                .orderBy("Name", direction) // TODO : Add % change to DB and query.
-                .limit(1)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        stock[0] = StockMapper.toStock(document.getData());
-                    }
-
-                    if (stock[0] != null) {
-                        if (direction.equals(Query.Direction.DESCENDING)){
-                            setData(true,stock[0]);
-                            _stockHandler.addTopGainer(stock[0]);
-                        }else if(direction.equals(Query.Direction.ASCENDING)){
-                            setData(false,stock[0]);
-                            _stockHandler.addTopLoser(stock[0]);
-                        }else{
-                            Log.d("Fetch Failed", "return value was empty");
-                        }
-                    } else {
-                        Log.d("Fetch Failed", "return value was empty");
-                    }
-                } else {
-                    Log.e("Fetch Error", "failed to fetch stocks by category");
-                }
-            }
-        });
-    }
-
-    public void setData(Boolean isGainer, IStock stock){
-        View view;
-        if (isGainer){
-            _vh._topGainerName.setText(stock.getCompName());
-            _vh._topGainerSymbol.setText(stock.getSymbol());
-            _vh._topGainerPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
-                    + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
-            LineChartHandler.setData(stock.getHistoricalPrice(), _vh._gainerChart);
-            view = _vh._topGainer;
-        }else{
-            _vh._topLoserName.setText(stock.getCompName());
-            _vh._topLoserSymbol.setText(stock.getSymbol());
-            _vh._topLoserPrice.setText("$" + String.format("%.2f", stock.getPrice()) + " "
-                    + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
-            LineChartHandler.setData(stock.getHistoricalPrice(), _vh._loserChart);
-            view = _vh._topLoser;
-        }
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), StockActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("stock", stock);
-                Log.e("stock",stock.getCompName());
-                intent.putExtra("Screen", "Home");
-                intent.putExtra("Class", MainActivity.class);
-                IStock test = (IStock) bundle.getSerializable("stock");
-                intent.putExtras(bundle);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                v.getContext().startActivity(intent);
-                Toast.makeText(getBaseContext(), stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -288,16 +239,16 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     protected void onResume() {
         super.onResume();
         _shimmerView.startShimmer();
+        _shimmerViewGainer.startShimmer();
+        _shimmerViewLoser.startShimmer();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         _shimmerView.stopShimmer();
+        _shimmerViewGainer.stopShimmer();
+        _shimmerViewLoser.stopShimmer();
         closeDrawer(_drawerLayout);
     }
-
-
-
-
 }

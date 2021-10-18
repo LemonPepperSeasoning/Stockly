@@ -1,5 +1,7 @@
 package com.larkspur.stockly.Models;
 
+import android.util.Log;
+
 import java.util.List;
 
 public class HistoricalPrice implements IHistoricalPrice{
@@ -33,15 +35,15 @@ public class HistoricalPrice implements IHistoricalPrice{
         Double yesterdayPrice = _historicalPrice.get(_historicalPrice.size()-2);
 
         Double change = (todayPrice-yesterdayPrice)/yesterdayPrice;
-        return change;
+        return change*100;
     }
 
     @Override
     public Double getLastWeekChange() {
         Double todayPrice = _historicalPrice.get(_historicalPrice.size()-1);
-        Double weekBeforePrice = _historicalPrice.get(_historicalPrice.size()-8);
+        Double weekBeforePrice = _historicalPrice.get(_historicalPrice.size()-6);
 
         Double change = (todayPrice-weekBeforePrice)/weekBeforePrice;
-        return change;
+        return change*100;
     }
 }

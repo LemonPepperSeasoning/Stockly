@@ -140,4 +140,40 @@ public class DataFetcher {
             Log.e("NO IMAGE:", referenceLink);
         }
     }
+
+    public static void fetchTopChange(Query.Direction direction,List<IStock> list, RecyclerView.Adapter adapter,ShimmerFrameLayout shimmerView) {
+        final IStock[] stock = new IStock[1];
+        StockHandler stockHandler = StockHandler.getInstance();
+
+        // Getting numbers collection from Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("company_v1")
+                .orderBy("WeekChange", direction)
+                .limit(1)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        stock[0] = StockMapper.toStock(document.getData());
+                    }
+                    if (stock[0] != null) {
+                        list.add(stock[0]);
+                        adapter.notifyDataSetChanged();
+                        shimmerView.stopShimmer();
+                        shimmerView.setVisibility(View.GONE);
+                        if (direction.equals(Query.Direction.ASCENDING)){
+                            stockHandler.addTopLoser(stock[0]);
+                        }else{
+                            stockHandler.addTopGainer(stock[0]);
+                        }
+                    } else {
+                        Log.d("Fetch Failed", "return value was empty");
+                    }
+                } else {
+                    Log.e("Fetch Error", "failed to fetch stocks by category");
+                }
+            }
+        });
+    }
 }

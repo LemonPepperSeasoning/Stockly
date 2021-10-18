@@ -3,8 +3,7 @@ package com.larkspur.stockly.Adaptors;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,12 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.IStock;
@@ -120,11 +113,11 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
                 + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
         DataFetcher.downloadImage(stock.getImageLink().get(0),holder._stockImage);
         if (stock.getHistoricalPrice().getLast24HourChange() > 0 ){
-            holder._stockPrice.setTextColor(Color.GREEN);
-            holder._statusView.setCardBackgroundColor(Color.GREEN);
+            holder._stockPrice.setTextColor(Color.rgb(17, 168, 253));
+            holder._statusView.setCardBackgroundColor(Color.rgb(17, 168, 253));
         }else{
-            holder._stockPrice.setTextColor(Color.RED);
-            holder._statusView.setCardBackgroundColor(Color.RED);
+            holder._stockPrice.setTextColor(Color.rgb(255, 24, 24));
+            holder._statusView.setCardBackgroundColor(Color.rgb(255, 24, 24));
         }
     }
 
