@@ -201,9 +201,24 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
         _vh._stockName.setText(_stock.getCompName());
         _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        String formattedPrice = df.format(_stock.getPrice());
-        _vh._stockPrice.setText(formattedPrice);
+//        DecimalFormat df = new DecimalFormat("#.##");
+//        String formattedPrice = df.format(_stock.getPrice());
+        double percentChange = _stock.getHistoricalPrice().getLast24HourChange();
+
+        _vh._stockPrice.setText("$" + String.format("%.2f", _stock.getPrice()));
+
+        _vh._stockPercent.setText("+" +String.format("%.2f", (percentChange*100)) + "%");
+        if(percentChange < 0){
+            _vh._stockPercent.setText(String.format("%.2f", (percentChange*100)) + "%");
+            _vh._stockPercent.setTextColor(Color.RED);
+            _vh._stockPrice.setTextColor(Color.RED);
+//             _vh._stockPercent.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        }else{
+            _vh._stockPercent.setTextColor(getResources().getColor(R.color.colorPrimaryBlue));
+            _vh._stockPrice.setTextColor(getResources().getColor(R.color.colorPrimaryBlue));
+
+        }
+
     }
 
     private void setupCategory(){

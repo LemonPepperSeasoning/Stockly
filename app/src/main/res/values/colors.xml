@@ -11,6 +11,7 @@
 
     <color name="colorPrimary">#d91248</color>
     <color name="colorPrimaryDark">#d91248</color>
+    <color name="colorPrimaryBlue">#00DDFF</color>
     <color name="colorAccent">#3ad23e</color>
     <color name="placeholder_bg">#dddddd</color>
     <color name="item_name">#0c0c0c</color>
