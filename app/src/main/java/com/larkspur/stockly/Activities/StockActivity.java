@@ -207,9 +207,9 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
 
         _vh._stockPrice.setText("$" + String.format("%.2f", _stock.getPrice()));
 
-        _vh._stockPercent.setText("+" +String.format("%.2f", (percentChange*100)) + "%");
+        _vh._stockPercent.setText("+" +String.format("%.2f", percentChange) + "%");
         if(percentChange < 0){
-            _vh._stockPercent.setText(String.format("%.2f", (percentChange*100)) + "%");
+            _vh._stockPercent.setText(String.format("%.2f", percentChange) + "%");
             _vh._stockPercent.setTextColor(Color.RED);
             _vh._stockPrice.setTextColor(Color.RED);
 //             _vh._stockPercent.setTextColor(getResources().getColor(android.R.color.holo_red_light));

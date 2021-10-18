@@ -55,14 +55,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
                 android:text="Watchlist"
-                android:textSize="50sp"
-                android:textStyle="bold" />
+                android:textSize="34sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
 
             <ListView
                 android:id="@+id/watchlist_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></ListView>
+                android:layout_height="match_parent"
+                android:dividerHeight="10dp"></ListView>
         </LinearLayout>
 
         <include layout="@layout/search_bar_component" />

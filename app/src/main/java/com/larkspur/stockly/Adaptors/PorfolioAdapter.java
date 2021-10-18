@@ -73,7 +73,7 @@ public class PorfolioAdapter extends ArrayAdapter {
             _quantityStock = currentListViewItem.findViewById(R.id.stock_quantity);
             _removeStock = currentListViewItem.findViewById(R.id.remove_stock);
             _stockSide = currentListViewItem.findViewById(R.id.stock_view);
-            _stockColor = currentListViewItem.findViewById(R.id.stock_piechart_color);
+            _stockColor = currentListViewItem.findViewById(R.id.status_view);
         }
     }
 
@@ -137,6 +137,19 @@ public class PorfolioAdapter extends ArrayAdapter {
 
         String formattedPrice = df.format(currentStock.getPrice());
         vh._stockPrice.setText("$"+formattedPrice);
+        double percentChange = currentStock.getHistoricalPrice().getLast24HourChange();
+
+        vh._stockPrice.setText("$" + String.format("%.2f", currentStock.getPrice()) + " +" + String.format("%.2f", percentChange) + "%");
+
+        if(percentChange < 0){
+            vh._stockPrice.setText("$" + String.format("%.2f", currentStock.getPrice()) + " " + String.format("%.2f", percentChange) + "%");//
+            vh._stockPrice.setTextColor(Color.RED);
+            vh._stockColor.setCardBackgroundColor(Color.RED);
+        }else{
+            vh._stockPrice.setTextColor(_context.getResources().getColor(R.color.colorPrimaryBlue));
+            vh._stockColor.setCardBackgroundColor(_context.getResources().getColor(R.color.colorPrimaryBlue));
+
+        }
 
         int quantity = _portfolio.getQuantity(currentStock.getSymbol());
         Double totalPrice = currentStock.getPrice() * quantity;

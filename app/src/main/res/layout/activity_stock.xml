@@ -94,7 +94,7 @@
                             android:layout_marginStart="10dp"
                             android:text="$141.50"
                             android:textColor="@android:color/holo_red_light"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/stock_percent"
@@ -103,7 +103,7 @@
                             android:layout_marginStart="10dp"
                             android:text="(-0.93%)"
                             android:textColor="@android:color/holo_red_light"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                 </LinearLayout>
