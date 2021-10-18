@@ -56,7 +56,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
     protected ListView list;
     protected ListView _searchListView;
     protected EditText _searchEditText;
-    protected ImageView _closeButton;
+//    protected ImageView _closeButton;
 //    protected ImageView _searchButton;
 
     /**

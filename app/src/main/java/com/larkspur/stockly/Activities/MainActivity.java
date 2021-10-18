@@ -1,6 +1,7 @@
 package com.larkspur.stockly.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -74,6 +75,8 @@ import java.util.Map;
 
 public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
+
+
     /**
      * Represents every item in the screen and displays each one.
      */
@@ -128,8 +131,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     ListView _searchListView;
     EditText _searchEditText;
     List<IStock> _searchViewList;
-    ImageView _searchButton;
-
+    AppCompatImageView _searchingButton;
+    private TextView _searchText;
 
     //        =======================--------------------=============================
 
@@ -181,10 +184,14 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         _searchListView = findViewById(R.id.searchList);
         _searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
 
+//        _searchText = (TextView) _editSearch.findViewById(androidx.appcompat.R.id.search_badge);
+//        _searchText.setFocusable(false);
+
         // Set up onclick listener for close button
         // - Get the search close button image view + search icon
-//        ImageView _closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
-        ImageView _searchButton = (ImageView) _editSearch.findViewById(R.id.search);
+        ImageView _closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
+        AppCompatImageView _searchingButton = (AppCompatImageView) _editSearch.findViewById(R.id.search_mag_icon);
+//        _searchingButton.setFocusable(true);
         // - Set up on click listener
         _closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,15 +213,33 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
                 // Hide the close button
                 _closeButton.setVisibility(View.GONE);
 
-//                // Show search icon
-//                _searchButton.setVisibility(View.VISIBLE);
+                // Show search icon
+                _searchingButton.setVisibility(View.VISIBLE);
             }
         });
 
-        _searchButton.setOnClickListener(new View.OnClickListener() {
+        _searchingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ListView listview = findViewById(R.id.searchList);
+                listview.setVisibility(View.VISIBLE);
 
+                // Show the keyboard
+                _editSearch.setFocusable(true);
+                _editSearch.setIconified(false);
+                _editSearch.requestFocusFromTouch();
+
+                // Show text
+//                EditText _searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+                _searchEditText.setCursorVisible(true);
+
+                // Show close button
+                ImageView _closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
+                _closeButton.setVisibility(View.VISIBLE);
+
+                // Fetch the stock data for suggestions
+                fetchAllStocks(_searchViewList, _adaptor);
+                Log.e("Called", "ClickingSearch");
             }
         });
 
@@ -224,33 +249,33 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
-    /**
-     * Handles click functionality for search bar and display changes such as opening
-     * keyboard and text cursor and fetches stock data for filtering.
-     * @param view SearchView
-     */
-    @Override
-    public void clickSearch(View view) {
-        ListView listview = findViewById(R.id.searchList);
-        listview.setVisibility(View.VISIBLE);
-
-        // Show the keyboard
-        _editSearch.setFocusable(true);
-        _editSearch.setIconified(false);
-        _editSearch.requestFocusFromTouch();
-
-        // Show text
-        EditText _searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
-        _searchEditText.setCursorVisible(true);
-
-        // Show close button
-        ImageView _closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
-        _closeButton.setVisibility(View.VISIBLE);
-
-        // Fetch the stock data for suggestions
-        fetchAllStocks(_searchViewList, _adaptor);
-        Log.e("Called", "ClickSearch");
-    }
+//    /**
+//     * Handles click functionality for search bar and display changes such as opening
+//     * keyboard and text cursor and fetches stock data for filtering.
+//     * @param view SearchView
+//     */
+//    @Override
+//    public void clickSearch(View view) {
+//        ListView listview = findViewById(R.id.searchList);
+//        listview.setVisibility(View.VISIBLE);
+//
+//        // Show the keyboard
+//        _editSearch.setFocusable(true);
+//        _editSearch.setIconified(false);
+//        _editSearch.requestFocusFromTouch();
+//
+//        // Show text
+//        EditText _searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+//        _searchEditText.setCursorVisible(true);
+//
+//        // Show close button
+//        ImageView _closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
+//        _closeButton.setVisibility(View.VISIBLE);
+//
+//        // Fetch the stock data for suggestions
+//        fetchAllStocks(_searchViewList, _adaptor);
+//        Log.e("Called", "ClickSearch");
+//    }
 
     private void getStockMostView(){
         List<IStock> stockList = _stockHandler.getTopNMostViewed(10);

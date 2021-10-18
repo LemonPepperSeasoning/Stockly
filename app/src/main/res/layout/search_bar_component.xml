@@ -48,9 +48,9 @@
                         android:layout_gravity="bottom"
                         android:background="@drawable/search_bar_background"
                         app:searchIcon="@drawable/search_icon"
-                        app:closeIcon="@drawable/close_button"
-                        android:clickable="true"
-                        android:onClick="clickSearch">
+                        app:closeIcon="@drawable/close_button">
+<!--                        android:clickable="true">-->
+<!--                        android:onClick="clickSearch">-->
         <!--                <requestFocus />-->
                     </androidx.appcompat.widget.SearchView>
 
