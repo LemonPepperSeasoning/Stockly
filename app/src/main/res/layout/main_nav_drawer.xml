@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_gravity="left"
-    android:background="@drawable/side_menu">
+    android:background="@drawable/side_menu"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,8 +24,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
 
-    <TextView
+
+        <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -53,137 +62,140 @@
         android:layout_marginBottom="16dp"
         android:background="#6C6C6C" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/side_menu_button"
-        android:gravity="center_vertical"
-        android:onClick="clickHome"
-        android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:src="@drawable/home_button" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/side_menu_button"
+            android:gravity="center_vertical"
+            android:onClick="clickHome"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/home_button" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:text="Home"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:text="Home"
-            android:textColor="#FFFFFF" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/side_menu_button"
+            android:gravity="center_vertical"
+            android:onClick="clickPortfolio"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/portfolio_button" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:text="Portfolio"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/side_menu_button"
-        android:gravity="center_vertical"
-        android:onClick="clickPortfolio"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:src="@drawable/portfolio_button" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/side_menu_button"
+            android:gravity="center_vertical"
+            android:onClick="clickWatchlist"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/watchlist_button" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:text="Watchlist"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:text="Portfolio"
-            android:textColor="#FFFFFF" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/side_menu_button"
+            android:gravity="center_vertical"
+            android:onClick="clickSettings"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/settings_button" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:text="Settings"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/side_menu_button"
-        android:gravity="center_vertical"
-        android:onClick="clickWatchlist"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:src="@drawable/watchlist_button" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/side_menu_button"
+            android:gravity="center_vertical"
+            android:onClick="clickHelp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:text="Watchlist"
-            android:textColor="#FFFFFF" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/help_button" />
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/side_menu_button"
-        android:gravity="center_vertical"
-        android:onClick="clickSettings"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:src="@drawable/settings_button" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:text="Settings"
-            android:textColor="#FFFFFF" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/side_menu_button"
-        android:gravity="center_vertical"
-        android:onClick="clickHelp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:src="@drawable/help_button" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:text="Help"
-            android:textColor="#FFFFFF" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:text="Help"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
