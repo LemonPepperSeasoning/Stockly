@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
+    android:background="@android:color/darker_gray">
 
     <androidx.cardview.widget.CardView
         android:layout_width="45dp"
@@ -43,7 +43,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:shape="ring"
         app:cardBackgroundColor="@color/black"
-        android:contentDescription="search button">
+        android:contentDescription="search button"
+        android:onClick="clickSearch">>
 
         <ImageView
             android:layout_width="wrap_content"

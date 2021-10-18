@@ -8,11 +8,16 @@
     android:background="@drawable/gradient"
     tools:context=".Activities.MainActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants">
-        
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
+
+        <include layout="@layout/action_bar_minimized_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -20,14 +25,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="0dp"
                 android:paddingLeft="5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginStart="12dp"
                     android:text="Popular Stocks"
                     android:textStyle="bold"
@@ -156,9 +161,7 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <include layout="@layout/search_bar_component" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="300dp"
