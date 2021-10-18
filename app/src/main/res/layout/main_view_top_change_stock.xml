@@ -42,7 +42,7 @@
                         android:layout_gravity="center_vertical" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/stock_piechart_color"
+                        android:id="@+id/stock_status_card"
                         android:layout_width="10dp"
                         android:layout_height="10dp"
                         android:layout_gravity="center_vertical"

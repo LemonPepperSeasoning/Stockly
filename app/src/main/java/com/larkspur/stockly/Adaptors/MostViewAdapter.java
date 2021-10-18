@@ -120,11 +120,11 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
                 + String.format("%.2f", stock.getHistoricalPrice().getLast24HourChange()) + "%");
         DataFetcher.downloadImage(stock.getImageLink().get(0),holder._stockImage);
         if (stock.getHistoricalPrice().getLast24HourChange() > 0 ){
-            holder._stockPrice.setTextColor(Color.GREEN);
-            holder._statusView.setCardBackgroundColor(Color.GREEN);
+            holder._stockPrice.setTextColor(Color.rgb(17, 168, 253));
+            holder._statusView.setCardBackgroundColor(Color.rgb(17, 168, 253));
         }else{
-            holder._stockPrice.setTextColor(Color.RED);
-            holder._statusView.setCardBackgroundColor(Color.RED);
+            holder._stockPrice.setTextColor(Color.rgb(255, 24, 24));
+            holder._statusView.setCardBackgroundColor(Color.rgb(255, 24, 24));
         }
     }
 
