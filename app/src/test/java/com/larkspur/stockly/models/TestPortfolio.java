@@ -75,4 +75,21 @@ public class TestPortfolio {
         assertEquals(10, hashtableP.get(x));
     }
 
+    @Test
+    public void TestRemoveAllStocks(){
+        IStock x = new Stock(1, "apple","AAPL");
+        portfolio.addStock(x,10);
+
+        IStock y = new Stock(1, "amazon","AMZN");
+        portfolio.addStock(y,20);
+
+        Hashtable hashtableP = portfolio.getPortfolio();
+        assertEquals(2, hashtableP.size());
+        assertEquals(10, hashtableP.get(x));
+        assertEquals(20, hashtableP.get(y));
+
+        portfolio.removeAllStocks();
+        assertEquals(0, hashtableP.size());
+    }
+
 }
