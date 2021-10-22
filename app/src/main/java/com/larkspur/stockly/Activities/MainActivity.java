@@ -185,10 +185,10 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         //        =======================--------------------=============================
     }
 
-    @Override
-    public void clickSearch(View view) {
-        redirectActivity(this,SearchActivity.class);
-    }
+//    @Override
+//    public void clickSearch(View view) {
+//        redirectActivity(this,SearchActivity.class);
+//    }
 
 
     private void getStockMostView(){
