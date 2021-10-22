@@ -97,7 +97,7 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stock);
+        setContentView(R.layout.activity_details);
         _vh = new ViewHolder();
         _currentImageIndex = 0;
 

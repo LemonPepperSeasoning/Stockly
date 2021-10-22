@@ -32,8 +32,8 @@ public class TestCategory {
             "Consumer Discretionary",
             "Utilities",
             "Materials",
-            "RealEstate",
-            "ConsumerStaples",
+            "Real Estate",
+            "Consumer Staples",
             "Energy"));
 
     @Test
