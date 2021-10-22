@@ -276,7 +276,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
                     if (stockList.size() > 0) {
                         list.addAll(stockList);
                         adapter.filter("");
-//                        adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();
                         _stockHandler.addAllStock(stockList);
                         Log.e("Size of stock list: ", String.valueOf(list.size()));
                     } else {

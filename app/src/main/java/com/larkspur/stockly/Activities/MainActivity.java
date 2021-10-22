@@ -167,6 +167,8 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
 
         //        =======================Search functionality=============================
+
+
         // Locate the ListView in listview_main.xml
         list = (ListView) findViewById(R.id.searchList);
 
@@ -238,7 +240,34 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
                 _closeButton.setVisibility(View.VISIBLE);
 
                 // Fetch the stock data for suggestions
-                fetchAllStocks(_searchViewList, _adaptor);
+//                fetchAllStocks(_searchViewList, _adaptor);
+                _adaptor.notifyDataSetChanged();
+                Log.e("Called", "ClickingSearch");
+            }
+        });
+
+        _editSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ListView listview = findViewById(R.id.searchList);
+                listview.setVisibility(View.VISIBLE);
+
+                // Show the keyboard
+                _editSearch.setFocusable(true);
+                _editSearch.setIconified(false);
+                _editSearch.requestFocusFromTouch();
+
+                // Show text
+//                EditText _searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+                _searchEditText.setCursorVisible(true);
+
+                // Show close button
+                ImageView _closeButton = (ImageView) _editSearch.findViewById(R.id.search_close_btn);
+                _closeButton.setVisibility(View.VISIBLE);
+
+                // Fetch the stock data for suggestions
+//                fetchAllStocks(_searchViewList, _adaptor);
+                _adaptor.notifyDataSetChanged();
                 Log.e("Called", "ClickingSearch");
             }
         });
@@ -246,6 +275,9 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
         // Set up the searchbar settings
         _editSearch.clearFocus();
         _editSearch.requestFocusFromTouch();
+
+        // Fetch all stocks
+        fetchAllStocks(_searchViewList, _adaptor);
         //        =======================--------------------=============================
     }
 
