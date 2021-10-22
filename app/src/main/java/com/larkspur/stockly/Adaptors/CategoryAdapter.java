@@ -95,7 +95,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Category category = _categoryList.get(position);
-        holder._categoryName.setText(category.getCategoryName().replace(" ","\n"));
+        holder._categoryName.setText(category.getCategoryName());
         holder._categoryImage.setImageResource(category.getDrawableId());
         holder._categoryImage.setColorFilter(category.getColor());
     }
