@@ -79,23 +79,6 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
 
         getWatchList();
 
-        //        =======================Search functionality=============================
-
-//        // Locate the ListView in listview_main.xml
-//        list = (ListView) findViewById(R.id.searchList);
-//        _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
-//
-//        // Binds the Adapter to the ListView
-//        list.setAdapter(_adaptor);
-//
-//        // Locate the EditText in listview_main.xml
-//        _editSearch = (SearchView) findViewById(R.id.search);
-//        _editSearch.setOnQueryTextListener(this);
-//
-//        // Set up the searchbar settings
-//        _editSearch.clearFocus();
-//        _editSearch.requestFocusFromTouch();
-        //        =======================--------------------=============================
     }
 
     /**
@@ -139,12 +122,6 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
      */
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
-//        Class activity = (Class) intent.getExtras().getSerializable("Class");
-//        if (activity == StockActivity.class) {
-//            Bundle bundle = intent.getExtras();
-//            intent.putExtras(bundle);
-//            redirectActivity(this, activity, bundle);
-//        } else {
             redirectActivity(this, MainActivity.class);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 //        }
