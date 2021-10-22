@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.larkspur.stockly.Activities.MainActivity;
 import com.larkspur.stockly.Activities.DetailsActivity;
-import com.larkspur.stockly.Adaptors.utils.LineChartHandler;
+import com.larkspur.stockly.Activities.utils.LineChartHandler;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 

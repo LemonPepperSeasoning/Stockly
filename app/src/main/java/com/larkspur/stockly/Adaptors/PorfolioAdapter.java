@@ -27,7 +27,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.larkspur.stockly.Activities.DetailsActivity;
-import com.larkspur.stockly.Adaptors.utils.PieChartHandler;
+import com.larkspur.stockly.Activities.utils.PieChartHandler;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.User;
