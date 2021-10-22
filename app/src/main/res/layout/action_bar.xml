@@ -15,12 +15,20 @@
         android:contentDescription="menu button"
         android:innerRadius="0dp"
         android:onClick="clickMenu"
-        android:shape="ring"
+        android:shape="oval"
         app:cardBackgroundColor="@color/black"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/menu_button_background"
+            android:background="@drawable/search_bar_background"
+            >
+        </ImageView>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -31,9 +39,9 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="48dp"
+        android:layout_width="315dp"
         android:layout_height="48dp"
-        app:cardCornerRadius="40dp"
+        app:cardCornerRadius="25dp"
         android:innerRadius="0dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="20dp"
@@ -45,6 +53,14 @@
         app:cardBackgroundColor="@color/black"
         android:contentDescription="search button"
         android:onClick="clickSearch">>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/search_background"
+            android:background="@drawable/search_bar_background"
+            >
+        </ImageView>
 
         <ImageView
             android:layout_width="wrap_content"
