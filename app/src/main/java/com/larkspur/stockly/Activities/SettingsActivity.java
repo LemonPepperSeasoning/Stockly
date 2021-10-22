@@ -7,17 +7,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IUser;
 import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
@@ -174,7 +179,7 @@ public class SettingsActivity extends CoreActivity {
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
-        if (activity == DetailsActivity.class) {
+        if (activity == StockActivity.class) {
             Bundle bundle = intent.getExtras();
             intent.putExtras(bundle);
             redirectActivity(this, activity, bundle);

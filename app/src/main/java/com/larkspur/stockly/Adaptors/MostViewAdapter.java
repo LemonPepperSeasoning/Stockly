@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.larkspur.stockly.Activities.DetailsActivity;
+import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -52,7 +55,7 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
         @Override
         public void onClick(View view) {
             IStock stock = _stockList.get(getAdapterPosition());
-            Intent intent = new Intent(view.getContext(), DetailsActivity.class);
+            Intent intent = new Intent(view.getContext(), StockActivity.class);
             intent.putExtra("Screen", "Home");
             intent.putExtra("Class", _parent);
             Bundle bundle = new Bundle();

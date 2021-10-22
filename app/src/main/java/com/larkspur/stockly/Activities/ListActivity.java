@@ -140,7 +140,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
-        if (activity == DetailsActivity.class) {
+        if (activity == StockActivity.class) {
             Bundle bundle = intent.getExtras();
             intent.putExtras(bundle);
             redirectActivity(this, activity, bundle);

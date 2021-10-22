@@ -6,7 +6,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +31,25 @@ import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.larkspur.stockly.Activities.DetailsActivity;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
+import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Adaptors.utils.PieChartHandler;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
+import com.larkspur.stockly.Models.IWatchlist;
+import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.User;
+import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -144,7 +160,7 @@ public class PorfolioAdapter extends ArrayAdapter {
         vh._stockSide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
+                Intent intent = new Intent(v.getContext(), StockActivity.class);
                 System.out.println(v.getContext());
                 intent.putExtra("Screen", "Portfolio");
                 intent.putExtra("Class", _context.getClass());
