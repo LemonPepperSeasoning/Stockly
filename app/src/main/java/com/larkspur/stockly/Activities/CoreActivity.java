@@ -1,14 +1,12 @@
 package com.larkspur.stockly.Activities;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,19 +20,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-import com.larkspur.stockly.Data.StockHandler;
+import com.larkspur.stockly.Data.DataCache;
 import com.larkspur.stockly.Data.mappers.StockMapper;
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IUser;
-import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class is an abstract class which defines the implementation of the drawer layout for the
@@ -49,13 +43,13 @@ public abstract class CoreActivity extends AppCompatActivity implements
     protected SearchListViewAdaptor _adaptor;
     protected SearchView _editSearch;
     protected IUser _user;
-    protected StockHandler _stockHandler;
+    protected DataCache _dataCache;
 
     /**
      * Default constructor
      */
     public CoreActivity(){
-        _stockHandler = StockHandler.getInstance();
+        _dataCache = DataCache.getInstance();
         _user = User.getInstance();
     }
 
@@ -263,7 +257,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
 
                     if (stockList.size() > 0) {
                         _adaptor.addData(stockList);
-                        _stockHandler.addAllStock(stockList);
+                        _dataCache.addAllStock(stockList);
                     } else {
                         Log.d("Fetch Failed", "return value was empty");
                     }

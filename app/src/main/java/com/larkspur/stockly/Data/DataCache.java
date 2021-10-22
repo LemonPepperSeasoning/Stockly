@@ -1,34 +1,15 @@
 package com.larkspur.stockly.Data;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.larkspur.stockly.Models.IUser;
-import com.larkspur.stockly.Models.Stock;
-import com.larkspur.stockly.Models.User;
+public class DataCache {
 
-public class StockHandler extends DataHandler {
-
-    private static StockHandler single_instance = null;
+    private static DataCache single_instance = null;
 
     private List<IStock> _stockCollection;
     private List<IStock> _mostViewCollection;
@@ -36,15 +17,15 @@ public class StockHandler extends DataHandler {
     private IStock _topGainer;
     private IStock _topLoser;
 
-    private StockHandler() {
+    private DataCache() {
         _stockCollection = new ArrayList<>();
         _mostViewCollection = new ArrayList<>();
         _categoricalCollection = new Hashtable<>();
     }
 
-    public static StockHandler getInstance() {
+    public static DataCache getInstance() {
         if (single_instance == null) {
-            single_instance = new StockHandler();
+            single_instance = new DataCache();
         }
         return single_instance;
     }
