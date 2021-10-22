@@ -39,5 +39,4 @@ public class CategoryItemDecoration extends RecyclerView.ItemDecoration {
             outRect.right = 0;
         }
     }
-
 }
