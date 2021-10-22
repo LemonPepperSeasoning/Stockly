@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-public class DataCache {
+public class DataCache implements IDataCache{
 
     private static DataCache single_instance = null;
 
