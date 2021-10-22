@@ -195,21 +195,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
      * @param view SearchView
      */
     public void clickSearch(View view) {
-        ListView listview = findViewById(R.id.searchList);
-        listview.setVisibility(View.VISIBLE);
-
-        // Show the keyboard
-        _editSearch.setFocusable(true);
-        _editSearch.setIconified(false);
-        _editSearch.requestFocusFromTouch();
-
-        // Show text
-
-        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setCursorVisible(true);
-
-        // Fetch the stock data for suggestions
-        fetchAllStocks();
+        redirectActivity(this, SearchActivity.class);
     }
 
     /**

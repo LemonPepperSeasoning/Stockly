@@ -81,20 +81,20 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
 
         //        =======================Search functionality=============================
 
-        // Locate the ListView in listview_main.xml
-        list = (ListView) findViewById(R.id.searchList);
-        _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
-
-        // Binds the Adapter to the ListView
-        list.setAdapter(_adaptor);
-
-        // Locate the EditText in listview_main.xml
-        _editSearch = (SearchView) findViewById(R.id.search);
-        _editSearch.setOnQueryTextListener(this);
-
-        // Set up the searchbar settings
-        _editSearch.clearFocus();
-        _editSearch.requestFocusFromTouch();
+//        // Locate the ListView in listview_main.xml
+//        list = (ListView) findViewById(R.id.searchList);
+//        _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
+//
+//        // Binds the Adapter to the ListView
+//        list.setAdapter(_adaptor);
+//
+//        // Locate the EditText in listview_main.xml
+//        _editSearch = (SearchView) findViewById(R.id.search);
+//        _editSearch.setOnQueryTextListener(this);
+//
+//        // Set up the searchbar settings
+//        _editSearch.clearFocus();
+//        _editSearch.requestFocusFromTouch();
         //        =======================--------------------=============================
     }
 
