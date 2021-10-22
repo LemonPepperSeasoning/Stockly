@@ -42,7 +42,7 @@
                     android:clickable="true"
                     android:onClick="clickSearch"
 
-                    android:background="@color/grey">
+                    android:background="@drawable/search_bar_background">
     <!--                <requestFocus />-->
                 </androidx.appcompat.widget.SearchView>
 
