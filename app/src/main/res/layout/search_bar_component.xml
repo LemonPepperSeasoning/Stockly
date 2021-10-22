@@ -4,12 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.MainActivity"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/gradient_custom_searchbar_background"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,9 +44,10 @@
                     android:layout_marginRight="5dp"
                     android:clickable="true"
                     android:onClick="clickSearch"
-
-                    android:background="@color/grey">
-    <!--                <requestFocus />-->
+                    app:searchIcon="@drawable/search_icon"
+                    app:closeIcon="@drawable/close_button"
+                    android:background="@drawable/search_bar_background">
+                    <!--                <requestFocus />-->
                 </androidx.appcompat.widget.SearchView>
 
                 <LinearLayout

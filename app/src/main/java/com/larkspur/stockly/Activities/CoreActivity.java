@@ -57,6 +57,8 @@ public abstract class CoreActivity extends AppCompatActivity implements
     public CoreActivity(){
         _stockHandler = StockHandler.getInstance();
         _user = User.getInstance();
+        fetchAllStocks();
+
     }
 
     /**
@@ -200,6 +202,10 @@ public abstract class CoreActivity extends AppCompatActivity implements
      * @param view SearchView
      */
     public void clickSearch(View view) {
+
+        // Fetch the stock data for suggestions
+
+        System.out.println("I was clicked");
         ListView listview = findViewById(R.id.searchList);
         listview.setVisibility(View.VISIBLE);
 
@@ -213,8 +219,8 @@ public abstract class CoreActivity extends AppCompatActivity implements
         EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setCursorVisible(true);
 
-        // Fetch the stock data for suggestions
-        fetchAllStocks();
+//        fetchAllStocks();
+
     }
 
     /**
@@ -272,5 +278,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
                 }
             }
         });
+
+
     }
 }
