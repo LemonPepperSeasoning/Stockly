@@ -37,7 +37,7 @@ import java.util.Map;
 public class DataFetcher {
 
     public static void fetchCategoryStocks(Category category, List<IStock> list, BaseAdapter adapter){
-        StockHandler stockHandler = StockHandler.getInstance();
+        DataCache dataCache = DataCache.getInstance();
         List<IStock> stockList = new LinkedList<>();
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,7 +54,7 @@ public class DataFetcher {
                     if (stockList.size() > 0) {
                         list.addAll(stockList); //We can also change it to add one item at a time.
                         adapter.notifyDataSetChanged();
-                        stockHandler.addCategoryStock(category,stockList);
+                        dataCache.addCategoryStock(category,stockList);
                     } else {
                         Log.d("Fetch Failed", "return value was empty");
                     }
@@ -72,7 +72,7 @@ public class DataFetcher {
      *  called in order
      */
     public static void fetchStockMostView(List<IStock> list, RecyclerView.Adapter adapter, ShimmerFrameLayout shimmerView){
-        StockHandler stockHandler = StockHandler.getInstance();
+        DataCache dataCache = DataCache.getInstance();
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("viewcount")
@@ -96,7 +96,7 @@ public class DataFetcher {
                                     adapter.notifyDataSetChanged();
                                     shimmerView.stopShimmer();
                                     shimmerView.setVisibility(View.GONE);
-                                    stockHandler.addMostViewStock(stock);
+                                    dataCache.addMostViewStock(stock);
                                 } else {
                                     Log.e("Fetch Error", "failed to fetch stocks by mostView's reference");
                                 }
@@ -143,7 +143,7 @@ public class DataFetcher {
 
     public static void fetchTopChange(Query.Direction direction,List<IStock> list, RecyclerView.Adapter adapter,ShimmerFrameLayout shimmerView) {
         final IStock[] stock = new IStock[1];
-        StockHandler stockHandler = StockHandler.getInstance();
+        DataCache dataCache = DataCache.getInstance();
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -163,9 +163,9 @@ public class DataFetcher {
                         shimmerView.stopShimmer();
                         shimmerView.setVisibility(View.GONE);
                         if (direction.equals(Query.Direction.ASCENDING)){
-                            stockHandler.addTopLoser(stock[0]);
+                            dataCache.addTopLoser(stock[0]);
                         }else{
-                            stockHandler.addTopGainer(stock[0]);
+                            dataCache.addTopGainer(stock[0]);
                         }
                     } else {
                         Log.d("Fetch Failed", "return value was empty");

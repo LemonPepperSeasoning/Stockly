@@ -1,4 +1,4 @@
-package com.larkspur.stockly.Adaptors.utils;
+package com.larkspur.stockly.Activities.utils;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

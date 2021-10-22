@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
-import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Activities.DetailsActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
@@ -116,7 +114,7 @@ public class SearchListViewAdaptor extends ArrayAdapter {
         vh._searchListCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), StockActivity.class);
+                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
                 System.out.println("serializing stock");
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("stock", currentStock);

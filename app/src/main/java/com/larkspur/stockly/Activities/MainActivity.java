@@ -1,70 +1,32 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.CategoryAdapter;
 import com.larkspur.stockly.Adaptors.CategoryItemDecoration;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
-import com.larkspur.stockly.Adaptors.StockAdaptor;
-import com.larkspur.stockly.Adaptors.StockCategoriesMainAdatper;
 import com.larkspur.stockly.Adaptors.TopChangeAdapter;
-import com.larkspur.stockly.Adaptors.utils.LineChartHandler;
 import com.larkspur.stockly.Data.DataFetcher;
-import com.larkspur.stockly.Data.mappers.StockMapper;
-import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.IUser;
-import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
-import com.larkspur.stockly.Models.Stock;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class handles the main home screen. It has a most viewed RecyclerView for "Most Viewed",
@@ -187,7 +149,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
 
     private void getStockMostView(){
-        List<IStock> stockList = _stockHandler.getTopNMostViewed(10);
+        List<IStock> stockList = _dataCache.getTopNMostViewed(10);
         if (stockList.isEmpty()){
             Log.e("new data", "HERE============");
 
@@ -203,7 +165,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     }
 
     private void getGainer(){
-        IStock stock = _stockHandler.getTopGainer();
+        IStock stock = _dataCache.getTopGainer();
         if (stock == null){
             DataFetcher.fetchTopChange(Query.Direction.DESCENDING,_topGainerList,_topGainerAdapter,_shimmerViewGainer);
         }else{
@@ -218,7 +180,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     }
 
     private void getLoser(){
-        IStock stock = _stockHandler.getTopLoser();
+        IStock stock = _dataCache.getTopLoser();
         if (stock == null){
             DataFetcher.fetchTopChange(Query.Direction.ASCENDING,_topLoserList,_topLoserAdapter,_shimmerViewLoser);
         }else{

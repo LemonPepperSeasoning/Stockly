@@ -29,12 +29,6 @@ public class CategoryItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void getItemOffsets(Rect outRect, View view,
                                RecyclerView parent, RecyclerView.State state) {
-//        int parentWidth = parent.getMeasuredWidth();
-//        Log.e("widths","Parent : " + String.valueOf(parentWidth));
-//        int childWidth = view.getMeasuredWidth();
-//        Log.e("widths", "Child : "+ String.valueOf(childWidth));
-//        int spaceBetween = parentWidth - childWidth*2;
-
         outRect.left = 0;
         outRect.right = 0;
         outRect.bottom = 0;
@@ -45,5 +39,4 @@ public class CategoryItemDecoration extends RecyclerView.ItemDecoration {
             outRect.right = 0;
         }
     }
-
 }

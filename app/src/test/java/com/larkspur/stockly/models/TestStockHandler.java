@@ -5,8 +5,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-import com.larkspur.stockly.Data.StockHandler;
-import com.larkspur.stockly.Models.IStock;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

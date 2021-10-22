@@ -1,14 +1,11 @@
 package com.larkspur.stockly.Activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 
@@ -32,45 +29,23 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 
-import com.larkspur.stockly.Adaptors.utils.LineChartHandler;
+import com.larkspur.stockly.Activities.utils.LineChartHandler;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
-import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.User;
-import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -81,7 +56,7 @@ import java.util.ArrayList;
  * and portfolio.
  * Author: Takahiro, Alin, Jonathon
  */
-public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
+public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
         SearchView.OnQueryTextListener {
                 
     private class ViewHolder {

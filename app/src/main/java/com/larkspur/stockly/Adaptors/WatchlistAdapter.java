@@ -15,16 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
-import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Activities.DetailsActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.User;
-import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -124,7 +121,7 @@ public class WatchlistAdapter extends ArrayAdapter {
         vh._stockStats.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(v.getContext(), StockActivity.class);
+                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
                 intent.putExtra("Screen", "Watchlist");
                 intent.putExtra("Class", _context.getClass());
                 Bundle bundle = new Bundle();
