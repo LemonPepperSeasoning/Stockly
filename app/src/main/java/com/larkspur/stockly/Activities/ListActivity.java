@@ -2,35 +2,22 @@ package com.larkspur.stockly.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.larkspur.stockly.Adaptors.ListViewAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
+import com.larkspur.stockly.Adaptors.BasicStockAdapter;
 import com.larkspur.stockly.Data.DataFetcher;
-import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.Stock;
-import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class handles the screen for the list of items in each category, once directed
@@ -57,7 +44,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     }
 
     private ViewHolder _vh;
-    private ListViewAdapter _listViewAdapter;
+    private BasicStockAdapter _listAdapter;
     private List<IStock> _categoryStocks;
     ListView list;
 
@@ -81,8 +68,8 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             Category category = Category.getValue(stringCategory);
 
             _categoryStocks = new ArrayList<>();
-            _listViewAdapter = new ListViewAdapter(this, R.layout.list_item, _categoryStocks);
-            _vh._listView.setAdapter(_listViewAdapter);
+            _listAdapter = new BasicStockAdapter(this, R.layout.list_item, _categoryStocks);
+            _vh._listView.setAdapter(_listAdapter);
             _vh._listView.setVisibility(View.VISIBLE);
 
             getCategoryStocks(category);
@@ -119,11 +106,11 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     public void getCategoryStocks(Category category) {
         List<IStock> stockList = _stockHandler.getCategoryStock(category);
         if (stockList == null) {
-            DataFetcher.fetchCategoryStocks(category, _categoryStocks, _listViewAdapter);
+            DataFetcher.fetchCategoryStocks(category, _categoryStocks, _listAdapter);
         } else {
             _categoryStocks.clear();
             _categoryStocks.addAll(stockList);
-            _listViewAdapter.notifyDataSetChanged();
+            _listAdapter.notifyDataSetChanged();
             ;
         }
     }

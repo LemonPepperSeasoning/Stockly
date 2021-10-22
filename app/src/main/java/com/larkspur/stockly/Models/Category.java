@@ -14,8 +14,8 @@ public enum Category {
     ConsumerDiscretionary("Consumer Discretionary", Color.rgb(244,164,96), R.drawable.consumerdiscretionary),
     Utilities("Utilities", Color.rgb(0,255,0), R.drawable.utilities),
     Materials("Materials", Color.rgb(0,255,255), R.drawable.materials),
-    RealEstate("RealEstate", Color.rgb(0,191,255), R.drawable.realestate),
-    ConsumerStaples("ConsumerStaples", Color.rgb(123,104,238), R.drawable.consumerstaples),
+    RealEstate("Real Estate", Color.rgb(0,191,255), R.drawable.realestate),
+    ConsumerStaples("Consumer Staples", Color.rgb(123,104,238), R.drawable.consumerstaples),
     Energy("Energy", Color.rgb(255,20,147), R.drawable.energy),
     Financials("Financials", Color.rgb(255,250,205), R.drawable.financials);
 

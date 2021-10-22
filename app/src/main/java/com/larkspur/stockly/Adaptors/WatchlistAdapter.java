@@ -15,16 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
 import com.larkspur.stockly.Activities.StockActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.User;
-import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -38,14 +35,14 @@ public class WatchlistAdapter extends ArrayAdapter {
      */
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice;
-        LinearLayout _removeStock,_stockStats;
+        LinearLayout _removeStock, _stockDetailsSide;
 
         public ViewHolder(View currentListViewItem) {
             _stockName = currentListViewItem.findViewById(R.id.stock_name_view);
             _stockSymbol = currentListViewItem.findViewById(R.id.stock_symbol_view);
             _stockPrice = currentListViewItem.findViewById(R.id.stock_price_view);
             _removeStock = currentListViewItem.findViewById(R.id.remove_item_view);
-            _stockStats = currentListViewItem.findViewById(R.id.stock_stats_view);
+            _stockDetailsSide = currentListViewItem.findViewById(R.id.stock_details_view);
         }
     }
 
@@ -121,7 +118,7 @@ public class WatchlistAdapter extends ArrayAdapter {
             }
         });
 
-        vh._stockStats.setOnClickListener(new View.OnClickListener(){
+        vh._stockDetailsSide.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(v.getContext(), StockActivity.class);

@@ -152,7 +152,6 @@ public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChan
             }
 
             _vh._description.setText(_stock.getDesc());
-            System.out.println(_stock.getDesc());
             setupStockView();
             chart = findViewById(R.id.chart1);
             LineChartHandler.setupGraph(chart,true,Color.rgb(46, 46, 51));

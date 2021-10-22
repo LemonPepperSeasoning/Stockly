@@ -42,7 +42,7 @@ public class ListViewAdapter extends ArrayAdapter {
             _stockName = currentListView.findViewById(R.id.stock_name_view);
             _stockSymbol = currentListView.findViewById(R.id.stock_symbol_view);
             _stockPrice = currentListView.findViewById(R.id.stock_price_view);
-            _stockView = currentListView.findViewById(R.id.stock_view);
+            _stockView = currentListView.findViewById(R.id.stock_details_view);
         }
     }
 
@@ -75,6 +75,8 @@ public class ListViewAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View currentListViewItem = convertView;
+        System.out.println("listview text");
+        System.out.println(convertView);
         if (currentListViewItem == null) {
             currentListViewItem = LayoutInflater.from(getContext()).inflate(_layoutID, parent, false);
         }
