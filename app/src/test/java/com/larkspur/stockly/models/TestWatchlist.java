@@ -73,28 +73,5 @@ public class TestWatchlist {
 
         assertEquals(1, watchlist.getWatchlist().size());
     }
-
-    @Test
-    public void testClearAllStocks(){
-        IStock x = new Stock(1, "apple","AAPL");
-        watchlist.addStock(x);
-
-        assertEquals(1, watchlist.getWatchlist().size());
-
-        IStock y = new Stock(1, "amazon","AMZN");
-        watchlist.addStock(y);
-
-        assertEquals(2, watchlist.getWatchlist().size());
-        IStock z = new Stock(1, "google","GOOGL");
-        watchlist.addStock(z);
-
-        assertEquals(3, watchlist.getWatchlist().size());
-
-        watchlist.removeAllStocks();
-        
-        assertEquals(0, watchlist.getWatchlist().size());
-
-
-    }
 }
 

@@ -66,12 +66,12 @@ public class PorfolioAdapter extends ArrayAdapter {
         LinearLayout _removeStock, _stockSide;
         CardView _stockColor;
         public ViewHolder(View currentListViewItem) {
-            _stockName = currentListViewItem.findViewById(R.id.stock_name_view);
-            _stockSymbol = currentListViewItem.findViewById(R.id.stock_symbol_view);
+            _stockName = currentListViewItem.findViewById(R.id.stock_name);
+            _stockSymbol = currentListViewItem.findViewById(R.id.stock_symbol);
             _stockPrice = currentListViewItem.findViewById(R.id.stock_price);
             _stockTotalPrice = currentListViewItem.findViewById(R.id.stock_total_price);
             _quantityStock = currentListViewItem.findViewById(R.id.stock_quantity);
-            _removeStock = currentListViewItem.findViewById(R.id.remove_item_view);
+            _removeStock = currentListViewItem.findViewById(R.id.remove_stock);
             _stockSide = currentListViewItem.findViewById(R.id.stock_view);
             _stockColor = currentListViewItem.findViewById(R.id.status_view);
         }
