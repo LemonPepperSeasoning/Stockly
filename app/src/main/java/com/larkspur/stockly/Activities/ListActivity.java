@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 
+import com.larkspur.stockly.Adaptors.BasicStockAdapter;
 import com.larkspur.stockly.Adaptors.ListViewAdapter;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Data.DataFetcher;
@@ -44,7 +45,7 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     }
 
     private ViewHolder _vh;
-    private ListViewAdapter _listViewAdapter;
+    private BasicStockAdapter _listAdapter;
     private List<IStock> _categoryStocks;
     ListView list;
 
@@ -68,8 +69,8 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             Category category = Category.getValue(stringCategory);
 
             _categoryStocks = new ArrayList<>();
-            _listViewAdapter = new ListViewAdapter(this, R.layout.list_item, _categoryStocks);
-            _vh._listView.setAdapter(_listViewAdapter);
+            _listAdapter = new BasicStockAdapter(this, R.layout.list_item, _categoryStocks);
+            _vh._listView.setAdapter(_listAdapter);
             _vh._listView.setVisibility(View.VISIBLE);
 
             getCategoryStocks(category);
@@ -89,11 +90,11 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
     public void getCategoryStocks(Category category) {
         List<IStock> stockList = _dataCache.getCategoryStock(category);
         if (stockList == null) {
-            DataFetcher.fetchCategoryStocks(category, _categoryStocks, _listViewAdapter);
+            DataFetcher.fetchCategoryStocks(category, _categoryStocks, _listAdapter);
         } else {
             _categoryStocks.clear();
             _categoryStocks.addAll(stockList);
-            _listViewAdapter.notifyDataSetChanged();
+            _listAdapter.notifyDataSetChanged();
             ;
         }
     }

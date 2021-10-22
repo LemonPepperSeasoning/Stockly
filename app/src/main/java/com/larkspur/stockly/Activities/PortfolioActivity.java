@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.PieChart;
 import com.larkspur.stockly.Activities.utils.PieChartHandler;
 import com.larkspur.stockly.Adaptors.PorfolioAdapter;
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
@@ -55,7 +54,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
     }
 
     private ViewHolder _vh;
-    private PieChart chart;
+    private PieChart _chart;
     private IPortfolio _portfolio;
     ListView list;
 
@@ -83,13 +82,13 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
             throw new RuntimeException("Something went wrong : previous screen not found");
         }
 
-        chart = findViewById(R.id.doughnut_chart);
+        _chart = findViewById(R.id.doughnut_chart);
         _portfolioStocks = new ArrayList<>();
-        _portfolioAdapter = new PorfolioAdapter(this, R.layout.portfolio_card,_portfolioStocks,chart);
+        _portfolioAdapter = new PorfolioAdapter(this, R.layout.portfolio_card,_portfolioStocks, _chart);
         _vh._stockList.setAdapter(_portfolioAdapter);
         _vh._stockList.setVisibility(View.VISIBLE);
 
-        PieChartHandler.setPiechart(chart,PieChartHandler.generateCenterSpannableText(_portfolio));
+        PieChartHandler.setPiechart(_chart,PieChartHandler.generateCenterSpannableText(_portfolio));
         displayData();
 
     }
@@ -98,7 +97,7 @@ public class PortfolioActivity extends CoreActivity implements SearchView.OnQuer
      * Handles display of Portfolio data (size of Portfolio)
      */
     private void displayData(){
-        PieChartHandler.setData(_portfolio.getPortfolio(),chart);
+        PieChartHandler.setData(_portfolio.getPortfolio(), _chart);
         Toast.makeText(this,"watchlist size is " + _portfolio.getPortfolio().size(), Toast.LENGTH_SHORT).show();;
         if(_portfolio.getPortfolio().size()>0){
             _portfolioStocks.clear();

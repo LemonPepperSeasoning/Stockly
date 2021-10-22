@@ -94,7 +94,7 @@ public class Portfolio implements IPortfolio{
         Double todayValue = getTotalValue();
         Double yesterday = getYesterdaysValue();
         Double change = (todayValue-yesterday)/yesterday;
-        return change;
+        return change*100;
     }
 
 }
