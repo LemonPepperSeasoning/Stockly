@@ -220,38 +220,5 @@ public abstract class CoreActivity extends AppCompatActivity implements
         //Clear text in searchbar
         searchEditText.setText("");
     }
-
-    /**
-     * Makes a query to Firestore database for stock information on one thread while
-     * another thread executes the java functions (creating stock items using onComplete
-     * function). Stock items are created and put inside a list for use. All stock items are
-     * called.
-     */
-    private void fetchAllStocks() {
-        List<IStock> stockList = new LinkedList<>();
-
-        // Getting numbers collection from Firestore
-                   // Getting numbers collection from Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        stockList.add(StockMapper.toStock(document.getData()));
-                    }
-
-                    if (stockList.size() > 0) {
-                        _adaptor.addData(stockList);
-                        _dataCache.addAllStock(stockList);
-                    } else {
-                        Log.d("Fetch Failed", "return value was empty");
-                    }
-                } else {
-                    Log.e("Fetch Error", "failed to fetch all stocks");
-                }
-            }
-        });
-    }
+    
 }

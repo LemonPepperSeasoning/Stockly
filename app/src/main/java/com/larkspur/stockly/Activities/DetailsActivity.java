@@ -138,26 +138,6 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
             throw new RuntimeException("Stock not found!");
         }
 
-        //        =======================Search functionality=============================
-
-        // Locate the ListView in listview_main.xml
-//        list = (ListView) findViewById(R.id.searchList);
-//
-//        _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
-//
-//        // Binds the Adapter to the ListView
-//        list.setAdapter(_adaptor);
-//
-//        // Locate the EditText in listview_main.xml
-//        _editSearch = (SearchView) findViewById(R.id.search);
-//        _editSearch.setOnQueryTextListener(this);
-//
-//        // Set up the searchbar settings
-//        _editSearch.clearFocus();
-//        _editSearch.requestFocusFromTouch();
-
-        //        =======================--------------------=============================
-
         if (_user.getPortfolio().getQuantity(_stock.getSymbol()) >= 1) {
             _vh._addPortfolio.setImageResource(R.drawable.blue_portfolio_button);
         } else {
@@ -165,10 +145,7 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
         }
 
         setupCategory();
-
-
     }
-
 
     /**
      * Initialises the stock view (contains the company name, symbol and price of stock)
@@ -193,9 +170,7 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
         }else{
             _vh._stockPercent.setTextColor(getResources().getColor(R.color.colorPrimaryBlue));
             _vh._stockPrice.setTextColor(getResources().getColor(R.color.colorPrimaryBlue));
-
         }
-
     }
 
     private void setupCategory(){
@@ -268,8 +243,6 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
     }
-
-
 
     /**
      * Click functionality for home button in side menu

@@ -77,23 +77,6 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
             throw new RuntimeException("Stock not found!");
         }
 
-        //        =======================Search functionality=============================
-
-//        // Locate the ListView in listview_main.xml
-//        list = (ListView) findViewById(R.id.searchList);
-//        _adaptor = new SearchListViewAdaptor(this, R.layout.search_list_item, new ArrayList<>());
-//
-//        // Binds the Adapter to the ListView
-//        list.setAdapter(_adaptor);
-//
-//        // Locate the EditText in listview_main.xml
-//        _editSearch = (SearchView) findViewById(R.id.search);
-//        _editSearch.setOnQueryTextListener(this);
-//
-//        // Set up the searchbar settings
-//        _editSearch.clearFocus();
-//        _editSearch.requestFocusFromTouch();
-        //        =======================--------------------=============================
     }
 
     /**
@@ -131,12 +114,6 @@ public class ListActivity extends CoreActivity implements SearchView.OnQueryText
      *
      * @param view TextView
      */
-//    public void clickReturn(View view) {
-//        Intent intent = this.getIntent();
-//        Class activity = (Class) intent.getExtras().getSerializable("Class");
-//        redirectActivity(this, activity);
-//        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-//    }
     public void clickReturn(View view) {
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
