@@ -16,13 +16,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Activities.DetailsActivity;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.IWatchlist;
-import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -113,7 +110,7 @@ public class ListViewAdapter extends ArrayAdapter {
         vh._stockView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), StockActivity.class);
+                Intent intent = new Intent(v.getContext(), DetailsActivity.class);
                 System.out.println("serializing stock");
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("stock", currentStock);

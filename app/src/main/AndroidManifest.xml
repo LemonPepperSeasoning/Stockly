@@ -27,7 +27,7 @@
             android:label="Portfolio"
             android:exported="true" />
         <activity
-            android:name=".Activities.StockActivity"
+            android:name=".Activities.DetailsActivity"
             android:label="Stock"
             android:exported="true" />
         <activity

@@ -16,7 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Activities.DetailsActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.User;
@@ -150,7 +150,7 @@ public class BasicStockAdapter extends ArrayAdapter {
             vh._stockDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), StockActivity.class);
+                    Intent intent = new Intent(v.getContext(), DetailsActivity.class);
                     intent.putExtra("Screen", "Watchlist");
                     intent.putExtra("Class", _context.getClass());
                     Bundle bundle = new Bundle();
@@ -181,7 +181,7 @@ public class BasicStockAdapter extends ArrayAdapter {
             vh._stockDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), StockActivity.class);
+                    Intent intent = new Intent(v.getContext(), DetailsActivity.class);
                     System.out.println("serializing stock");
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("stock", currentStock);

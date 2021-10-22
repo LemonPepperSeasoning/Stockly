@@ -81,7 +81,7 @@ import java.util.ArrayList;
  * and portfolio.
  * Author: Takahiro, Alin, Jonathon
  */
-public class StockActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
+public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
         SearchView.OnQueryTextListener {
                 
     private class ViewHolder {
