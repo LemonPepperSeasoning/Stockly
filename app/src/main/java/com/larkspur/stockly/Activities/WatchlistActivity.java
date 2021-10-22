@@ -5,20 +5,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Explode;
-import android.transition.Transition;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
+import com.larkspur.stockly.Adaptors.BasicStockAdapter;
 import com.larkspur.stockly.Adaptors.WatchlistAdapter;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
-import com.larkspur.stockly.Models.User;
-import com.larkspur.stockly.Models.Watchlist;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
@@ -52,7 +48,7 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
 
     private ViewHolder _vh;
     ListView list;
-    private WatchlistAdapter _watchlistAdapter;
+    private BasicStockAdapter _listAdapter;
     private List<IStock> _watchlistStocks;
   
      /**
@@ -73,8 +69,8 @@ public class WatchlistActivity extends CoreActivity implements SearchView.OnQuer
         }
 
         _watchlistStocks = new ArrayList<>();
-        _watchlistAdapter = new WatchlistAdapter(this, R.layout.watchlist_item, _watchlistStocks);
-        _vh._watchlistView.setAdapter(_watchlistAdapter);
+        _listAdapter = new BasicStockAdapter(this, R.layout.watchlist_item, _watchlistStocks);
+        _vh._watchlistView.setAdapter(_listAdapter);
         _vh._watchlistView.setVisibility(View.VISIBLE);
 
         getWatchList();
