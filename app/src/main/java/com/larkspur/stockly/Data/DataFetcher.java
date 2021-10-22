@@ -178,7 +178,7 @@ public class DataFetcher {
     }
 
     public static void fetchAllStocks(List<IStock> list, List<IStock> list2, RecyclerView.Adapter adapter){
-        StockHandler stockHandler = StockHandler.getInstance();
+        DataCache stockHandler = DataCache.getInstance();
         List<IStock> stockList = new LinkedList<>();
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();

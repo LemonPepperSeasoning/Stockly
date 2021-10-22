@@ -19,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Activities.DetailsActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
@@ -48,7 +48,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         @Override
         public void onClick(View view) {
             IStock stock = _searchResult.get(getAdapterPosition());
-            Intent intent = new Intent(view.getContext(), StockActivity.class);
+            Intent intent = new Intent(view.getContext(), DetailsActivity.class);
             intent.putExtra("Screen", "Home");
             intent.putExtra("Class", _parent);
             System.out.println("serializing stock");

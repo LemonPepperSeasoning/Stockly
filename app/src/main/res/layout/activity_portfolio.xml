@@ -12,10 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            layout="@layout/action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="75dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -100,7 +105,7 @@
 <!--            app:layout_constraintHorizontal_bias="0.5"-->
 <!--            app:layout_constraintStart_toStartOf="parent" />-->
 
-        <include layout="@layout/search_bar_component" />
+<!--        <include layout="@layout/search_bar_component" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
