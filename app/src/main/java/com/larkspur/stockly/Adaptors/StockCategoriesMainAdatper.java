@@ -8,19 +8,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Activities.DetailsActivity;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -48,7 +45,7 @@ public class StockCategoriesMainAdatper extends RecyclerView.Adapter<StockCatego
         @Override
         public void onClick(View view) {
             IStock stock = _stockList.get(getAdapterPosition());
-            Intent intent = new Intent(view.getContext(), StockActivity.class);
+            Intent intent = new Intent(view.getContext(), DetailsActivity.class);
             intent.putExtra("Screen", "Home");
             intent.putExtra("Class", _parent);
             Bundle bundle = new Bundle();

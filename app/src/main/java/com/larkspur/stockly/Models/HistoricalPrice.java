@@ -1,13 +1,9 @@
 package com.larkspur.stockly.Models;
 
-import android.util.Log;
-
 import java.util.List;
 
 public class HistoricalPrice implements IHistoricalPrice{
 
-    private int _historicalPriceId;
-    private IStock _stock;
     private List<Double> _historicalPrice;
 
     public HistoricalPrice(List<Double> historicalPrice){

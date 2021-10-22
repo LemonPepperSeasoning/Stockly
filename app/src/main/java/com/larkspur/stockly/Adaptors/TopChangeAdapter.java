@@ -10,16 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.larkspur.stockly.Activities.ListActivity;
 import com.larkspur.stockly.Activities.MainActivity;
-import com.larkspur.stockly.Activities.StockActivity;
+import com.larkspur.stockly.Activities.DetailsActivity;
 import com.larkspur.stockly.Adaptors.utils.LineChartHandler;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
@@ -50,7 +48,7 @@ public class TopChangeAdapter extends RecyclerView.Adapter<TopChangeAdapter.View
         @Override
         public void onClick(View view) {
             IStock stock = _stockList.get(getAdapterPosition());
-            Intent intent = new Intent(view.getContext(), StockActivity.class);
+            Intent intent = new Intent(view.getContext(), DetailsActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("stock", stock);
             Log.e("stock",stock.getCompName());

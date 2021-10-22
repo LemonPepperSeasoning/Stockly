@@ -1,12 +1,7 @@
 package com.larkspur.stockly.Activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Slide;
-import android.transition.Transition;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
 import androidx.cardview.widget.CardView;
@@ -105,7 +100,7 @@ public class HelpActivity extends CoreActivity {
     public void clickReturn(View view){
         Intent intent = this.getIntent();
         Class activity = (Class) intent.getExtras().getSerializable("Class");
-        if(activity == StockActivity.class){
+        if(activity == DetailsActivity.class){
             Bundle bundle = intent.getExtras();
             System.out.println(bundle);
             System.out.println("watch list stock is");
