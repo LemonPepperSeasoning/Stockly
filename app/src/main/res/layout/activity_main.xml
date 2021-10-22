@@ -14,7 +14,8 @@
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
-        <include layout="@layout/action_bar_minimized_question"
+        <include
+            layout="@layout/action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></include>
 
