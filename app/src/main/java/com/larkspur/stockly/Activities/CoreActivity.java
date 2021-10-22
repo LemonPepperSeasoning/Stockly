@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Data.DataCache;
+import com.larkspur.stockly.Data.IDataCache;
 import com.larkspur.stockly.Data.mappers.StockMapper;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IUser;
@@ -43,7 +44,7 @@ public abstract class CoreActivity extends AppCompatActivity implements
     protected SearchListViewAdaptor _adaptor;
     protected SearchView _editSearch;
     protected IUser _user;
-    protected DataCache _dataCache;
+    protected IDataCache _dataCache;
 
     /**
      * Default constructor
