@@ -60,13 +60,14 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
         SearchView.OnQueryTextListener {
                 
     private class ViewHolder {
-        TextView _stockName, _stockNameAndSymbol, _stockPrice, _stockPercent, _previousScreen, _description, _categoryText;
+        TextView _stockName, _stockSymbol,_stockNameTitle, _stockPrice, _stockPercent, _previousScreen, _description, _categoryText;
         LinearLayout _return;
         ImageView _stockImage, _addWatchList, _addPortfolio;
         CardView _categoryCard;
         public ViewHolder() {
-            _stockName = findViewById(R.id.stock_name);
-            _stockNameAndSymbol = findViewById(R.id.stock_name_and_symbol);
+            _stockName = findViewById(R.id.stock_name_view);
+            _stockNameTitle = findViewById(R.id.stock_name_title_view);
+            _stockSymbol = findViewById(R.id.stock_symbol_view);
             _stockPrice = findViewById(R.id.stock_price);
             _stockPercent = findViewById(R.id.stock_percent);
             _return = findViewById(R.id.return_view);
@@ -153,7 +154,9 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
     //        =======================Search functionality=============================
     private void setupStockView() {
         _vh._stockName.setText(_stock.getCompName());
-        _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
+//        _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");
+        _vh._stockSymbol.setText(_stock.getSymbol());
+        _vh._stockNameTitle.setText(_stock.getCompName());
 
 //        DecimalFormat df = new DecimalFormat("#.##");
 //        String formattedPrice = df.format(_stock.getPrice());
@@ -161,9 +164,9 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
 
         _vh._stockPrice.setText("$" + String.format("%.2f", _stock.getPrice()));
 
-        _vh._stockPercent.setText("+" +String.format("%.2f", percentChange) + "%");
+        _vh._stockPercent.setText("(+" +String.format("%.2f", percentChange) + "%)");
         if(percentChange < 0){
-            _vh._stockPercent.setText(String.format("%.2f", percentChange) + "%");
+            _vh._stockPercent.setText("(" + String.format("%.2f", percentChange) + "%)");
             _vh._stockPercent.setTextColor(Color.RED);
             _vh._stockPrice.setTextColor(Color.RED);
 //             _vh._stockPercent.setTextColor(getResources().getColor(android.R.color.holo_red_light));
