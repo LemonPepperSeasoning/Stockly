@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Data.DataCache;
 import com.larkspur.stockly.Data.IDataCache;
 import com.larkspur.stockly.Data.mappers.StockMapper;
@@ -37,12 +36,11 @@ import java.util.List;
  * Author: Jonathon, Alan
  */
 
-public abstract class CoreActivity extends AppCompatActivity implements
-        SearchView.OnQueryTextListener{
+public abstract class CoreActivity extends AppCompatActivity {
 
     protected DrawerLayout _drawerLayout;
-    protected SearchListViewAdaptor _adaptor;
-    protected SearchView _editSearch;
+//    protected SearchListViewAdaptor _adaptor;
+//    protected SearchView _editSearch;
     protected IUser _user;
     protected IDataCache _dataCache;
 
@@ -167,58 +165,57 @@ public abstract class CoreActivity extends AppCompatActivity implements
 
     //        =======================Search functionality=============================
 
-    /**
-     * Handles callbacks for changes to the text in the search bar.
-     * @param query any changes in text
-     * @return boolean of false to searchView to perform default actions (filter)
-     */
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
+//    /**
+//     * Handles callbacks for changes to the text in the search bar.
+//     * @param query any changes in text
+//     * @return boolean of false to searchView to perform default actions (filter)
+//     */
+//    @Override
+//    public boolean onQueryTextSubmit(String query) {
+//        return false;
+//    }
+//
+//    /**
+//     * Called when the user changes the text and calls the filter function for suggestions
+//     * @param newText the text input from the user in the search bar
+//     * @return boolean of false to searchView to perform default actions (filter)
+//     */
+//    @Override
+//    public boolean onQueryTextChange(String newText) {
+//        String text = newText;
+//        _adaptor.filter(text);
+//        return false;
+//    }
 
     /**
-     * Called when the user changes the text and calls the filter function for suggestions
-     * @param newText the text input from the user in the search bar
-     * @return boolean of false to searchView to perform default actions (filter)
-     */
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        _adaptor.filter(text);
-        return false;
-    }
-
-    /**
-     * Handles click functionality for search bar and display changes such as opening
-     * keyboard and text cursor and fetches stock data for filtering.
+     * Handles click functionality for redirecting to the search screen.
      * @param view SearchView
      */
     public void clickSearch(View view) {
         redirectActivity(this, SearchActivity.class);
     }
 
-    /**
-     * Handles click functionality for search bar and display changes such as collapsing
-     * keyboard and text cursor. Also removes any input text.
-     * @param view SearchView
-     */
-    public void closeSearch(View view) {
-        // Collapse searchList
-        ListView listview = findViewById(R.id.searchList);
-        listview.setVisibility(View.GONE);
-
-        //Hide keyboard
-        _editSearch.clearFocus();
-        _editSearch.requestFocusFromTouch();
-
-        //Stop blinking in searchbar
-
-        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setCursorVisible(false);
-
-        //Clear text in searchbar
-        searchEditText.setText("");
-    }
+//    /**
+//     * Handles click functionality for search bar and display changes such as collapsing
+//     * keyboard and text cursor. Also removes any input text.
+//     * @param view SearchView
+//     */
+//    public void closeSearch(View view) {
+//        // Collapse searchList
+//        ListView listview = findViewById(R.id.searchList);
+//        listview.setVisibility(View.GONE);
+//
+//        //Hide keyboard
+//        _editSearch.clearFocus();
+//        _editSearch.requestFocusFromTouch();
+//
+//        //Stop blinking in searchbar
+//
+//        EditText searchEditText = (EditText) _editSearch.findViewById(androidx.appcompat.R.id.search_src_text);
+//        searchEditText.setCursorVisible(false);
+//
+//        //Clear text in searchbar
+//        searchEditText.setText("");
+//    }
     
 }

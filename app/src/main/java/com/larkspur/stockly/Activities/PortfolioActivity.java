@@ -32,7 +32,7 @@ import java.util.List;
  * Author: Jonathon, Alan
  * Reference: https://github.com/PhilJay/MPAndroidChart (used library for graph)
  */
-public class PortfolioActivity extends CoreActivity implements SearchView.OnQueryTextListener {
+public class PortfolioActivity extends CoreActivity {
 
     /**
      * Represents every item in the screen and displays each one.

@@ -18,7 +18,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.google.firebase.firestore.Query;
 import com.larkspur.stockly.Adaptors.CategoryAdapter;
 import com.larkspur.stockly.Adaptors.CategoryItemDecoration;
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.TopChangeAdapter;
 import com.larkspur.stockly.Data.DataFetcher;
@@ -34,7 +33,7 @@ import java.util.List;
  * Author: Takahiro, Alan, Jonathon
  */
 
-public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends CoreActivity {
 
     /**
      * Represents every item in the screen and displays each one.

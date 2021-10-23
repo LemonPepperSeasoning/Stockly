@@ -25,7 +25,7 @@ import java.util.List;
  * user may be interested in, but has not put inside their portfolio. The user has the option
  * to remove a
  */
-public class WatchlistActivity extends CoreActivity implements SearchView.OnQueryTextListener {
+public class WatchlistActivity extends CoreActivity {
 
     /**
      * Represents every item in the screen and displays each one.

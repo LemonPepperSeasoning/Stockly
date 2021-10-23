@@ -35,8 +35,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-
 import com.larkspur.stockly.Activities.utils.LineChartHandler;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.Category;
@@ -56,8 +54,7 @@ import java.util.ArrayList;
  * and portfolio.
  * Author: Takahiro, Alin, Jonathon
  */
-public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
-        SearchView.OnQueryTextListener {
+public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener {
                 
     private class ViewHolder {
         TextView _stockName, _stockSymbol,_stockNameTitle, _stockPrice, _stockPercent, _previousScreen, _description, _categoryText;
