@@ -34,7 +34,8 @@
                 android:layout_weight="6"
                 android:layout_marginEnd="20dp"
                 android:layout_gravity="center_vertical"
-                android:iconifiedByDefault="false"/>
+                android:iconifiedByDefault="false"
+                android:theme="@style/CursorSearchView"/>
 
             <requestFocus></requestFocus>
 
