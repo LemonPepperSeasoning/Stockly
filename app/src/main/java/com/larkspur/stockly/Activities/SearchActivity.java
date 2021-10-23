@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,7 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
         RecyclerView _searchResultView;
         SearchView _searchView;
         EditText _searchText;
+        TextView _noResults;
 
         public ViewHolder() {
             _searchResultView = (RecyclerView) findViewById(R.id.searchResult);
@@ -31,6 +33,8 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
             // View for text for search user input
             _searchText = (EditText) _searchView.findViewById(androidx
                     .appcompat.R.id.search_src_text);
+
+            _noResults = (TextView) _searchView.findViewById(R.id.no_results);
         }
     }
 
@@ -85,6 +89,19 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
     @Override
     public boolean onQueryTextChange(String newText) {
         _adapter.getFilter().filter(newText);
+        // check the size of the list every time the input is changed
+        // if the size is 0, display the no search results found.
+
+        // if list is empty, add display a cardView saying "No search results found"
+        if ((_searchResult.size() == 0)) {
+            // Set visibility for view to true.
+            _vh._noResults.setVisibility(View.VISIBLE);
+        }
+        else {
+            // Hide the "no search results found" text.
+            _vh._noResults.setVisibility(View.GONE);
+        }
+
         return false;
     }
 
