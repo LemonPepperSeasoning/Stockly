@@ -128,10 +128,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 _searchResult.addAll((List<IStock>) results.values);
                 notifyDataSetChanged();
 
-                System.out.println("printing no results view");
-                System.out.println(_noResultsView);
-                System.out.println(_context);
-                System.out.println(_searchResult.size());
                 if (_searchResult.size() <= 0) {
                     // Hide recycler view.
 

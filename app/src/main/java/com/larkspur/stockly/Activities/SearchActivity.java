@@ -93,8 +93,7 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
     @Override
     public boolean onQueryTextChange(String newText) {
         _adapter.notifyDataSetChanged();
-        System.out.println("printing new text!");
-        System.out.println(newText);
+
         if(newText.equals("")){
             _searchResult.clear();
             _searchResult.addAll(_searchContext);
