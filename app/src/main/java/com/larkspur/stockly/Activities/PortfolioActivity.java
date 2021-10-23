@@ -1,6 +1,5 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;

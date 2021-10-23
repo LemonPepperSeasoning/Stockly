@@ -1,6 +1,5 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,7 +16,6 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.firebase.firestore.Query;
 import com.larkspur.stockly.Adaptors.CategoryAdapter;
-import com.larkspur.stockly.Adaptors.CategoryItemDecoration;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.TopChangeAdapter;
 import com.larkspur.stockly.Data.DataFetcher;
@@ -79,10 +77,6 @@ public class MainActivity extends CoreActivity {
     private TopChangeAdapter _topLoserAdapter;
     private List<IStock> _topGainerList;
     private List<IStock> _topLoserList;
-
-    //        =======================Search functionality=============================
-    ListView list;
-    //        =======================--------------------=============================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
