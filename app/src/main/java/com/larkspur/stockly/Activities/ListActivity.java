@@ -7,8 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.SearchView;
-
 import com.larkspur.stockly.Adaptors.BasicStockAdapter;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.Category;
@@ -23,7 +21,7 @@ import java.util.List;
  * from the main screen.
  * Author: Jonathon
  */
-public class ListActivity extends CoreActivity implements SearchView.OnQueryTextListener {
+public class ListActivity extends CoreActivity {
 
     /**
      * Represents every item in the screen and displays each one.
