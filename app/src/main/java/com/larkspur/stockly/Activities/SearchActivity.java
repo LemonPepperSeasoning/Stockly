@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.SearchAdapter;
+import com.larkspur.stockly.Adaptors.utils.VerticalSpaceItemDecoration;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.HistoricalPrice;
@@ -63,18 +64,9 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
         _vh._searchResultView.setAdapter(_adapter);
         _vh._searchResultView.setLayoutManager(lm);
         _vh._searchView.setOnQueryTextListener(this);
-//        _vh._searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String text) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String text) {
-//                _adapter.getFilter().filter(text);
-//                return true;
-//            }
-//        });
+
+        _vh._searchResultView.addItemDecoration(new VerticalSpaceItemDecoration(15));
+
         DataFetcher.fetchAllStocks(_searchContext, _searchResult, _adapter);
         _adapter.getFilter().filter("");
     }
@@ -86,6 +78,7 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
 
     public void clickBack(View view){
         redirectActivity(this,MainActivity.class);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
 

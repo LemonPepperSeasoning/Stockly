@@ -70,7 +70,6 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
 
     private List<IStock> _stockList;
     private Context _context;
-    private ViewGroup _parent;
 
     /**
      * Default constructor

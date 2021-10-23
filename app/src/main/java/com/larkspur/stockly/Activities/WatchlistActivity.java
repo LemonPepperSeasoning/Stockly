@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.larkspur.stockly.Adaptors.BasicStockAdapter;
-import com.larkspur.stockly.Adaptors.WatchlistAdapter;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.R;

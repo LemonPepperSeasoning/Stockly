@@ -10,8 +10,6 @@ import android.widget.TextView;
 import androidx.appcompat.widget.SearchView;
 
 import com.larkspur.stockly.Adaptors.BasicStockAdapter;
-import com.larkspur.stockly.Adaptors.ListViewAdapter;
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.Category;
 import com.larkspur.stockly.Models.IStock;

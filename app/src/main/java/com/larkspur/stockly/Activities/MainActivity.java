@@ -17,8 +17,6 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.github.mikephil.charting.charts.LineChart;
 import com.google.firebase.firestore.Query;
 import com.larkspur.stockly.Adaptors.CategoryAdapter;
-import com.larkspur.stockly.Adaptors.CategoryItemDecoration;
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
 import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.TopChangeAdapter;
 import com.larkspur.stockly.Data.DataFetcher;
@@ -104,10 +102,7 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
 
         _categoryAdapter = new CategoryAdapter();
         _vh._categories.setAdapter(_categoryAdapter);
-//        _vh._categories.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-//        _vh._categories.setLayoutManager(new GridLayoutManager(this, 2));
         _vh._categories.setLayoutManager(new GridLayoutManager(this, 2,GridLayoutManager.HORIZONTAL,false));
-//        _vh._categories.addItemDecoration(new CategoryItemDecoration(40));
 
         _shimmerViewGainer = (ShimmerFrameLayout) findViewById(R.id.shimmer_gainer);
         _shimmerViewLoser = (ShimmerFrameLayout) findViewById(R.id.shimmer_loser);

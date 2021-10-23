@@ -147,7 +147,7 @@ public class DataFetcher {
 
         // Getting numbers collection from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("company_v1")
+        db.collection("company")
                 .orderBy("WeekChange", direction)
                 .limit(1)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

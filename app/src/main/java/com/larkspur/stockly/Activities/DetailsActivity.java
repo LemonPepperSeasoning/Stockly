@@ -35,8 +35,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 
-import com.larkspur.stockly.Adaptors.SearchListViewAdaptor;
-
 import com.larkspur.stockly.Activities.utils.LineChartHandler;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.Category;
@@ -45,8 +43,6 @@ import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.IWatchlist;
 import com.larkspur.stockly.Models.User;
 import com.larkspur.stockly.R;
-
-import java.util.ArrayList;
 
 /**
  * This class handles the Stock Screen which holds the information on a specific stock. This screen
