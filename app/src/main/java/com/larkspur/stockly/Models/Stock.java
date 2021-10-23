@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Stock implements IStock {
 
-    private int _stockId;
     private String _companyName;
     private String _symbol;
     private String _description;
@@ -20,17 +19,6 @@ public class Stock implements IStock {
     private String _subindustry;
     private String _location;
 
-    public Stock() {
-    }
-
-    public Stock(int stockId, String companyName, String symbol) {
-        // constructor for lazy fetching or something like that
-        _stockId = stockId;
-        _companyName = companyName;
-        _symbol = symbol;
-    }
-
-    // The constructor I will be using for creating Stock object from Firebase.
     public Stock(String companyName,
                  String symbol,
                  Category category,
@@ -55,27 +43,8 @@ public class Stock implements IStock {
     }
 
     @Override
-    public void setCompName(String name) {
-        _companyName = name;
-    }
-
-    public void setname(String name) {
-        _companyName = name;
-    }
-
-    @Override
     public String getSymbol() {
         return this._symbol;
-    }
-
-    @Override
-    public void setSymbol(String symbol) {
-        _symbol = symbol;
-    }
-
-    @Override
-    public void setImageLink(List<String> links) {
-        _imageLink = links;
     }
 
     @Override
@@ -89,20 +58,9 @@ public class Stock implements IStock {
     }
 
     @Override
-    public void setDesc(String desc) {
-        _description = desc;
-    }
-
-    @Override
     public Category getCategory() {
         return this._category;
     }
-
-    @Override
-    public void setCategory(Category category) {
-        _category = category;
-    }
-
 
     @Override
     public Double getPrice() {
@@ -111,19 +69,8 @@ public class Stock implements IStock {
     }
 
     @Override
-    public void setPrice(Double price) {
-
-    }
-
-
-    @Override
     public IHistoricalPrice getHistoricalPrice() {
         return this._historicalPrice;
-    }
-
-    @Override
-    public void setHistoricalPrice(HistoricalPrice historicalPrice) {
-        _historicalPrice = historicalPrice;
     }
 
     @Override
@@ -131,18 +78,9 @@ public class Stock implements IStock {
         return _subindustry;
     }
 
-    @Override
-    public void setSubindustry(String subindustry) {
-        _subindustry = subindustry;
-    }
 
     @Override
     public String getLocation() {
         return _location;
-    }
-
-    @Override
-    public void setLocation(String location) {
-        _location = location;
     }
 }
