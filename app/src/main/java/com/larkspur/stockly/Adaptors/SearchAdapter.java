@@ -2,6 +2,8 @@ package com.larkspur.stockly.Adaptors;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +47,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             _stockName = (TextView) view.findViewById(R.id.stock_name_view);
         }
 
+
+
         @Override
         public void onClick(View view) {
             IStock stock = _searchResult.get(getAdapterPosition());
@@ -61,16 +65,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             intent.putExtras(bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             view.getContext().startActivity(intent);
-            Toast.makeText(_context, stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 
     List<IStock> _searchContext;
     List<IStock> _searchResult;
     private Context _context;
-    private ViewGroup _parent;
 
-    public SearchAdapter(List<IStock> searchContext, List<IStock> searchResult){
+    public SearchAdapter(List<IStock> searchContext, List<IStock> searchResult) {
         _searchContext = searchContext;
         _searchResult = searchResult;
     }
@@ -78,11 +80,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        _parent = parent;
         _context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(_context);
 
-        View stockView = inflater.inflate(R.layout.search_result_component, parent, false);
+        View stockView = inflater.inflate(R.layout.list_item, parent, false);
 
         ViewHolder holder = new ViewHolder(stockView);
         return holder;
@@ -90,10 +91,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        IStock stock = _searchResult.get(position);
-        holder._stockSymbol.setText(stock.getSymbol());
-        holder._stockPrice.setText((stock.getPrice().toString()));
-        holder._stockName.setText(stock.getCompName());
+        IStock currentStock = _searchResult.get(position);
+        holder._stockName.setText(currentStock.getCompName());
+        holder._stockSymbol.setText(currentStock.getSymbol());
+        //cut price to two decimal places
+        double percentChange = currentStock.getHistoricalPrice().getLast24HourChange();
+        holder._stockPrice.setText("$" + String.format("%.2f", currentStock.getPrice()) + " +" + String.format("%.2f", percentChange) + "%");
+
+        if (percentChange < 0) {
+            holder._stockPrice.setText("$" + String.format("%.2f", currentStock.getPrice()) + " " + String.format("%.2f", percentChange) + "%");//
+            holder._stockPrice.setTextColor(Color.RED);
+        } else {
+            holder._stockPrice.setTextColor(_context.getResources().getColor(R.color.colorPrimaryBlue));
+        }
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.larkspur.stockly.Adaptors.SearchAdapter;
+import com.larkspur.stockly.Adaptors.utils.VerticalSpaceItemDecoration;
 import com.larkspur.stockly.Data.DataFetcher;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.R;
@@ -48,6 +49,8 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
         _vh._searchResultView.setLayoutManager(lm);
         _vh._searchView.setOnQueryTextListener(this);
 
+        _vh._searchResultView.addItemDecoration(new VerticalSpaceItemDecoration(15));
+
         DataFetcher.fetchAllStocks(_searchContext, _searchResult, _adapter);
         _adapter.getFilter().filter("");
     }
@@ -59,6 +62,7 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
 
     public void clickBack(View view){
         redirectActivity(this,MainActivity.class);
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
 
