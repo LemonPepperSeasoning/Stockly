@@ -5,29 +5,51 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.larkspur.stockly.Models.Category;
+import com.larkspur.stockly.Models.HistoricalPrice;
+import com.larkspur.stockly.Models.IHistoricalPrice;
 import com.larkspur.stockly.Models.IPortfolio;
 import com.larkspur.stockly.Models.IStock;
 import com.larkspur.stockly.Models.Portfolio;
 import com.larkspur.stockly.Models.Stock;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 public class TestPortfolio {
 
     IPortfolio portfolio;
+    IStock x;
+    IStock y;
 
     @Before
     public void setupPortfolio(){
         portfolio = new Portfolio();
         portfolio.removeAllStocks();
+
+        List<String> imageLinkApple = new ArrayList<>();
+        List<Double> pricesApple = new ArrayList<>();
+        HistoricalPrice historicalPriceApple = new HistoricalPrice(pricesApple);
+        x = new Stock("Apple", "AAPL", Category.InformationTechnology,
+                "Technology Hardware, Storage & Peripherals", "Cupertino Califonia",
+                "some long desciption of apple, this is just a place holder text",imageLinkApple,
+                historicalPriceApple);
+
+        List<String> imageLinkAmazon = new ArrayList<>();
+        List<Double> pricesAmazon = new ArrayList<>();
+        HistoricalPrice historicalPriceAmazon = new HistoricalPrice(pricesAmazon);
+        y = new Stock("Amazon", "AMZN", Category.ConsumerDiscretionary,
+                "Internet & Direct Marketing Retail", "Seattle Washington",
+                "some long desciption of amazon, this is just a place holder text",imageLinkAmazon,
+                historicalPriceAmazon);
     }
 
     @Test
     public void TestCorrectAdd(){
-        IStock x = new Stock(1, "apple","AAPL");
+
         portfolio.addStock(x,10);
 
-        IStock y = new Stock(1, "amazon","AMZN");
         portfolio.addStock(y,20);
 
         Hashtable hashtableP = portfolio.getPortfolio();
@@ -38,7 +60,6 @@ public class TestPortfolio {
 
     @Test
     public void TestCorrectRemove(){
-        IStock x = new Stock(1, "apple","AAPL");
         portfolio.addStock(x,15);
 
         portfolio.removeStock(x,5);
@@ -52,10 +73,8 @@ public class TestPortfolio {
 
     @Test
     public void TestIncorrectRemoveStock(){
-        IStock x = new Stock(1, "apple","AAPL");
         portfolio.addStock(x,10);
 
-        IStock y = new Stock(1, "amazon","AMZN");
         // y does not exist in portflio
         portfolio.removeStock(y,10);
 
@@ -66,7 +85,6 @@ public class TestPortfolio {
 
     @Test
     public void TestIncorrectRemoveQuantity(){
-        IStock x = new Stock(1, "apple","AAPL");
         portfolio.addStock(x,10);
 
         portfolio.removeStock(x,15);
