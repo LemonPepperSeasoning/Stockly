@@ -54,7 +54,7 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
 
         _searchContext = new ArrayList<>();
         _searchResult = new ArrayList<>();
-        _adapter = new SearchAdapter(_searchContext, _searchResult);
+        _adapter = new SearchAdapter(_searchContext, _searchResult, this);
 
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
@@ -71,7 +71,7 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
         _vh._noResults.setVisibility(View.GONE);
 
         DataFetcher.fetchAllStocks(_searchContext, _searchResult, _adapter);
-        _adapter.getFilter().filter("");
+//        _adapter.getFilter().filter("");
     }
 
     public void setupSearchTextField(){
@@ -93,29 +93,15 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
     @Override
     public boolean onQueryTextChange(String newText) {
         _adapter.notifyDataSetChanged();
-
-        // check the size of the list every time the input is changed
-        // if the size is 0, display the no search results found.
-
-        Log.e("SearchContextSize", String.valueOf(_adapter.getContextSize()));
-        Log.e("SearchResultsSize",String.valueOf(_adapter.getItemCount()));
-
-        // if list is empty, add display a cardView saying "No search results found"
-        if ((_adapter.getItemCount() == 0)) {
-            // Hide recycler view.
-            _vh._searchResultView.setVisibility(View.GONE);
-            // Set visibility for text view to true.
-            _vh._noResults.setVisibility(View.VISIBLE);
+        System.out.println("printing new text!");
+        System.out.println(newText);
+        if(newText.equals("")){
+            _searchResult.clear();
+            _searchResult.addAll(_searchContext);
+        }else{
+            _adapter.getFilter().filter(newText);
+            _adapter.notifyDataSetChanged();
         }
-        else {
-            // Set visibility for recycler view to true.
-            _vh._searchResultView.setVisibility(View.VISIBLE);
-            // Hide the "no search results found" text.
-            _vh._noResults.setVisibility(View.GONE);
-        }
-
-        _adapter.getFilter().filter(newText);
-        _adapter.notifyDataSetChanged();
 
         return false;
     }
