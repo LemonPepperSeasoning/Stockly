@@ -1,6 +1,5 @@
 package com.larkspur.stockly.Activities;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -32,7 +31,7 @@ import java.util.List;
  * Author: Takahiro, Alan, Jonathon
  */
 
-public class MainActivity extends CoreActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends CoreActivity {
 
     /**
      * Represents every item in the screen and displays each one.
@@ -78,10 +77,6 @@ public class MainActivity extends CoreActivity implements SearchView.OnQueryText
     private TopChangeAdapter _topLoserAdapter;
     private List<IStock> _topGainerList;
     private List<IStock> _topLoserList;
-
-    //        =======================Search functionality=============================
-    ListView list;
-    //        =======================--------------------=============================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

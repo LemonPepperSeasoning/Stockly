@@ -5,31 +5,23 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
-
 import android.view.Gravity;
 import android.view.LayoutInflater;
-
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-
 import android.widget.ListView;
-
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-
-
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -52,8 +44,7 @@ import com.larkspur.stockly.R;
  * and portfolio.
  * Author: Takahiro, Alin, Jonathon
  */
-public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener,
-        SearchView.OnQueryTextListener {
+public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarChangeListener {
                 
     private class ViewHolder {
         TextView _stockName, _stockSymbol,_stockNameTitle, _stockPrice, _stockPercent, _previousScreen, _description, _categoryText;
@@ -147,7 +138,6 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
     /**
      * Initialises the stock view (contains the company name, symbol and price of stock)
      */
-    //        =======================Search functionality=============================
     private void setupStockView() {
         _vh._stockName.setText(_stock.getCompName());
 //        _vh._stockNameAndSymbol.setText(_stock.getCompName() + " (" + _stock.getSymbol() + ")");

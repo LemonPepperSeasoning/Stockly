@@ -1,34 +1,18 @@
 package com.larkspur.stockly.Activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.larkspur.stockly.Adaptors.MostViewAdapter;
 import com.larkspur.stockly.Adaptors.SearchAdapter;
 import com.larkspur.stockly.Adaptors.utils.VerticalSpaceItemDecoration;
 import com.larkspur.stockly.Data.DataFetcher;
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
 import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.Stock;
 import com.larkspur.stockly.R;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class SearchActivity extends CoreActivity implements SearchView.OnQueryTextListener {
 
