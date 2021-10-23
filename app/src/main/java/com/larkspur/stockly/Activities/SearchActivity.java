@@ -1,7 +1,11 @@
 package com.larkspur.stockly.Activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +23,15 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
     private class ViewHolder {
         RecyclerView _searchResultView;
         SearchView _searchView;
+        EditText _searchText;
 
         public ViewHolder() {
             _searchResultView = (RecyclerView) findViewById(R.id.searchResult);
             _searchView = (SearchView) findViewById(R.id.searchBar);
+
+            // View for text for search user input
+            _searchText = (EditText) _searchView.findViewById(androidx
+                    .appcompat.R.id.search_src_text);
         }
     }
 
@@ -50,6 +59,9 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
         _vh._searchView.setOnQueryTextListener(this);
 
         _vh._searchResultView.addItemDecoration(new VerticalSpaceItemDecoration(15));
+        
+        // Set text colour to white for search user input
+        _vh._searchText.setTextColor(Color.WHITE);
 
         DataFetcher.fetchAllStocks(_searchContext, _searchResult, _adapter);
         _adapter.getFilter().filter("");
