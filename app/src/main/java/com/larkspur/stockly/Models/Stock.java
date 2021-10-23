@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Stock implements IStock {
 
-    private int _stockId;
     private String _companyName;
     private String _symbol;
     private String _description;
