@@ -120,7 +120,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                _searchResult = (List<IStock>) results.values; //TODO : What is this?
+                // reset the list and populate it again
+                _searchResult.clear();
+                _searchResult.addAll((List<IStock>) results.values);
                 notifyDataSetChanged();
             }
 
