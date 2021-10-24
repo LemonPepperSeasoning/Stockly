@@ -2,8 +2,6 @@ package com.larkspur.stockly.models;
 
 import static org.junit.Assert.assertEquals;
 
-import com.larkspur.stockly.Models.Category;
-
 import org.junit.Test;
 
 import java.util.ArrayList;
