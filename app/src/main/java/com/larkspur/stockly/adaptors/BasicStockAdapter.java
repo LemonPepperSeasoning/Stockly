@@ -25,10 +25,14 @@ import java.util.List;
 
 /**
  * Basic adaptor for Stock item
+ * Currently used by Watchlist and list activity, as they share many of the same components and code.
  * Author: Takahiro & Alan
  */
 public class BasicStockAdapter extends ArrayAdapter {
 
+    /**
+     * contains all shared elements between watchlist and listview items
+     */
     private class ViewHolder {
         TextView _stockName, _stockSymbol, _stockPrice;
         LinearLayout _stockDetails;
@@ -42,7 +46,9 @@ public class BasicStockAdapter extends ArrayAdapter {
 
     }
 
-
+    /**
+     * initiates the watchlist view holder with an additional component - the remove stock button.
+     */
     private class WatchlistViewHolder extends ViewHolder {
         LinearLayout _removeStock;
 
@@ -53,7 +59,9 @@ public class BasicStockAdapter extends ArrayAdapter {
 
         }
     }
-
+    /**
+     * initiates the list view holder currently ,there are no additional components.
+     */
     private class ListViewHolder extends ViewHolder {
 
         public ListViewHolder(View currentListViewItem) {
@@ -97,6 +105,7 @@ public class BasicStockAdapter extends ArrayAdapter {
             currentListViewItem = LayoutInflater.from(getContext()).inflate(_layoutID, parent, false);
         }
         IStock currentStock = _stocks.get(position);
+        //if the current class is a ListActivity or a WatchListActivity
         if (parent.getContext().getClass().getSimpleName().equals("ListActivity") || parent.getContext().getClass().getSimpleName().equals("WatchlistActivity")) {
 
             return populateListItem(currentStock, currentListViewItem);
@@ -142,6 +151,7 @@ public class BasicStockAdapter extends ArrayAdapter {
 
         if (parentClass.equals("WatchlistActivity")) {
             WatchlistViewHolder watchlistVH = (WatchlistViewHolder) vh;
+            //ensures sent intent is related to the watchlist
             vh._stockDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -159,6 +169,7 @@ public class BasicStockAdapter extends ArrayAdapter {
                     activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             });
+            //add the remove button functionality
 
             watchlistVH._removeStock.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,6 +182,7 @@ public class BasicStockAdapter extends ArrayAdapter {
                 }
             });
         } else if ((parentClass.equals("ListActivity"))) {
+            //ensures sent intent is related to the list activity
 
             vh._stockDetails.setOnClickListener(new View.OnClickListener() {
                 @Override

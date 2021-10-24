@@ -70,25 +70,39 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
         _vh._noResults.setVisibility(View.GONE);
 
         DataFetcher.fetchAllStocks(_searchContext, _searchResult, _adapter);
-//        _adapter.getFilter().filter("");
+
     }
 
+    /**
+     *
+     */
     public void setupSearchTextField(){
         _vh._searchView.setIconified(false);
         _vh._searchView.setFocusable(false);
     }
-
+    /**
+     *Allows for search screen to return back to the main page.
+     */
     public void clickBack(View view){
         redirectActivity(this,MainActivity.class);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     }
 
-
+    /**
+     * OnQueryTextSubmit is when the user presses "enter" on the keyboard
+     * @param query - the string the user enters in the search bar
+     * @return
+     */
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
+    /**
+     * As text is entered in the search bar, this method is being called, and filters the list of stocks dynamically as the user is typing, when there is no input - display all stocks, else we filter.
+     * @param newText - the string the user enters in the search bar
+     * @return
+     */
     @Override
     public boolean onQueryTextChange(String newText) {
         _adapter.notifyDataSetChanged();
