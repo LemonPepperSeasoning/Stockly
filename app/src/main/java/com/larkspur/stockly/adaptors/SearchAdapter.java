@@ -98,7 +98,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     }
 
-
+    /**
+     * returns the size of the filtered search result List at the moment.
+     * @return the size of the filtered search result list.
+     */
     @Override
     public int getItemCount() {
         return _searchResult.size();
@@ -110,20 +113,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                // reset the list and populate it again
-//                _noResultsView = ((Activity)_context).findViewById(R.id.no_results);
+                // reset the list
                 _searchResult.clear();
+                //add all the new results into referenced list
                 _searchResult.addAll((List<IStock>) results.values);
                 notifyDataSetChanged();
 
                 if (_searchResult.size() <= 0) {
-                    // Hide recycler view.
 
                     // Set visibility for text view to true.
                     _noResultsView.setVisibility(View.VISIBLE);
                 }
                 else {
-                    // Set visibility for recycler view to true.
 
                     // Hide the "no search results found" text.
                     _noResultsView.setVisibility(View.GONE);

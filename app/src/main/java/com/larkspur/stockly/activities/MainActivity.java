@@ -116,7 +116,9 @@ public class MainActivity extends CoreActivity {
 
     }
 
-
+    /**
+     * GetStockMostView returns the top 10 most viewed stocks from our firebase firestore collection, and displays it onto our recycler view.
+     */
     private void getStockMostView(){
         List<IStock> stockList = _dataCache.getTopNMostViewed(10);
         if (stockList.isEmpty()){
@@ -132,6 +134,9 @@ public class MainActivity extends CoreActivity {
         }
     }
 
+    /**
+     * getGainer returns the stock that has had their value increase the most in a week, and displays it in the "top gainer" recycler view.
+     */
     private void getGainer(){
         IStock stock = _dataCache.getTopGainer();
         if (stock == null){
@@ -146,6 +151,9 @@ public class MainActivity extends CoreActivity {
         }
     }
 
+    /**
+     * getLoser returns the stock that has had their value decrease the most in a week, and displays it in the "top loser" recycler view.
+     */
     private void getLoser(){
         IStock stock = _dataCache.getTopLoser();
         if (stock == null){
@@ -159,6 +167,10 @@ public class MainActivity extends CoreActivity {
         }
     }
 
+    /**
+     * click home is overriden from the parent method to stop redirection back to the same screen - instead the drawer just closes.
+     * @param view home_button from main_nav_drawer.xml
+     */
     @Override
     public void clickHome(View view) {
         closeDrawer(_drawerLayout);
@@ -172,6 +184,11 @@ public class MainActivity extends CoreActivity {
         _shimmerViewLoser.startShimmer();
     }
 
+    /**
+     * Default method for committing any user interaction with screen when the screen is
+     * closed or the user switches to another screen. This allows the screen to "resume" once
+     * the user returns to the screen.
+     */
     @Override
     protected void onPause() {
         super.onPause();
