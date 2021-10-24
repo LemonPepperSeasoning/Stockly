@@ -22,9 +22,16 @@ import com.larkspur.stockly.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This adapter holds all the views for the SearchView. This is mainly for the recycler view
+ * for displaying the search suggestions.
+ * Author: Takahiro, Jonathon
+ */
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> implements Filterable {
 
-
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView _stockSymbol, _stockPrice, _stockName;
 
@@ -62,6 +69,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private Context _context;
     private TextView _noResultsView;
 
+    /**
+     * Default constructor
+     * @param searchContext the list of all stocks
+     * @param searchResult the list of stocks shown to the user in the search suggestions
+     * @param context this information required to access the xml files
+     */
     public SearchAdapter(List<IStock> searchContext, List<IStock> searchResult, Context context) {
         _searchContext = searchContext;
         _searchResult = searchResult;
@@ -69,6 +82,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         _noResultsView = ((Activity)_context).findViewById(R.id.no_results);
     }
 
+    /**
+     * Holds the views which are presented upon creation of the searchActivity screen.
+     * This includes the listView and SearchView.
+     * @param parent the layout in which the listView item is created
+     * @param viewType the listview
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -80,6 +100,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return holder;
     }
 
+    /**
+     * Holds the views which are created dynamically during the filtering process
+     * @param holder ViewHolder
+     * @param position position of stock in the list
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IStock currentStock = _searchResult.get(position);
