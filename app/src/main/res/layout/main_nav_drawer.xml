@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:layout_gravity="left"
     android:background="@drawable/side_menu"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:elevation="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
