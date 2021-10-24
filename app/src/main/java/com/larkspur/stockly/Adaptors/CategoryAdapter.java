@@ -54,7 +54,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             view.getContext().startActivity(intent);
             Activity activity = (Activity) view.getContext();
            activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            Toast.makeText(_context, category.toString() + " was clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 

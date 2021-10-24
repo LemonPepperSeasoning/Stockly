@@ -43,8 +43,6 @@ public abstract class CoreActivity extends AppCompatActivity {
     public void redirectActivity(Activity activity, Class aClass) {
         Intent intent = new Intent(activity, aClass);
         String screenName = activity.getTitle().toString();
-        System.out.println("this is the screen "+ screenName);
-//        Bundle options = ActivityOptions.makeCustomAnimation(activity, R.anim.slide_in_right,R.anim.slide_out_left).toBundle();
         intent.putExtra("Screen", screenName);
         intent.putExtra("Class",activity.getClass());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

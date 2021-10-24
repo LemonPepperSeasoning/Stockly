@@ -64,7 +64,6 @@ public class MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.ViewHo
             view.getContext().startActivity(intent);
             Activity activity =(Activity) view.getContext();
             activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            Toast.makeText(_context, stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 

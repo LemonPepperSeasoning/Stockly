@@ -109,7 +109,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     }
 
-    public int getContextSize() {return _searchContext.size();}
 
     @Override
     public int getItemCount() {

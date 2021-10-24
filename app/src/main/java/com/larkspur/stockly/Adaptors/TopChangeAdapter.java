@@ -58,7 +58,6 @@ public class TopChangeAdapter extends RecyclerView.Adapter<TopChangeAdapter.View
             intent.putExtras(bundle);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             view.getContext().startActivity(intent);
-//            Toast.makeText(getBaseContext(), stock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -133,7 +133,6 @@ public class PortfolioActivity extends CoreActivity {
      * @param view TextView
      */
     public void clickReturn(View view){
-        Intent intent = this.getIntent();
             redirectActivity(this, MainActivity.class);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 //        }

@@ -98,7 +98,6 @@ public class BasicStockAdapter extends ArrayAdapter {
             currentListViewItem = LayoutInflater.from(getContext()).inflate(_layoutID, parent, false);
         }
         IStock currentStock = _stocks.get(position);
-        System.out.println(parent.getContext().getClass().getSimpleName());
         if (parent.getContext().getClass().getSimpleName().equals("ListActivity") || parent.getContext().getClass().getSimpleName().equals("WatchlistActivity")) {
 
             return populateListItem(currentStock, currentListViewItem);
