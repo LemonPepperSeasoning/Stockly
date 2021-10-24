@@ -2,6 +2,10 @@ package com.larkspur.stockly.models;
 
 import java.util.List;
 
+/**
+ * This class represents the stock and handles all functionality relating to stock.
+ * Author: Takahiro
+ */
 public class Stock implements IStock {
 
     private String _companyName;
@@ -33,49 +37,39 @@ public class Stock implements IStock {
         _imageLink = imageLink;
     }
 
-    @Override
     public String getCompName() {
         return this._companyName;
     }
 
-    @Override
     public String getSymbol() {
         return this._symbol;
     }
 
-    @Override
     public List<String> getImageLink() {
         return this._imageLink;
     }
 
-    @Override
     public String getDesc() {
         return this._description;
     }
 
-    @Override
     public Category getCategory() {
         return this._category;
     }
 
-    @Override
     public Double getPrice() {
         // THIS HAS HIGH DEPENDENCY
         return this._historicalPrice.getPrice();
     }
 
-    @Override
     public IHistoricalPrice getHistoricalPrice() {
         return this._historicalPrice;
     }
 
-    @Override
     public String getSubindustry() {
         return _subindustry;
     }
 
-
-    @Override
     public String getLocation() {
         return _location;
     }
