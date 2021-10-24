@@ -51,7 +51,6 @@ public class TopChangeAdapter extends RecyclerView.Adapter<TopChangeAdapter.View
             Intent intent = new Intent(view.getContext(), DetailsActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("stock", stock);
-            Log.e("stock",stock.getCompName());
             intent.putExtra("Screen", "Home");
             intent.putExtra("Class", MainActivity.class);
             IStock test = (IStock) bundle.getSerializable("stock");
