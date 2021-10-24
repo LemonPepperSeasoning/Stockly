@@ -2,12 +2,6 @@ package com.larkspur.stockly.models;
 
 import static org.junit.Assert.assertEquals;
 
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
-import com.larkspur.stockly.Models.IHistoricalPrice;
-import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.Stock;
-
 import org.junit.Before;
 import org.junit.Test;
 

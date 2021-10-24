@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
-    tools:context=".Activities.HelpActivity"
+    tools:context=".activities.HelpActivity"
     android:animateLayoutChanges="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,14 +55,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="650dp"
             android:layout_marginTop="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/line">
+
 
             <LinearLayout
                 android:id="@+id/help_linear_view"
@@ -86,7 +87,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@+id/base_expandableCard_4"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:elevation="10dp"
+                        android:background="@drawable/settingscomponent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_one_4"
@@ -135,7 +138,7 @@
                             android:id="@+id/hidden_layout_4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#E0E0E0"
+                            android:background="@drawable/gradient_darker"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -150,7 +153,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_marginEnd="20dp"
                                 android:layout_marginBottom="20dp"
-                                android:textColor="@color/black"
+                                android:textColor="#EDE5E5"
                                 android:text="Stockly is your personal handy stock tracking app, allowing you to store and add stocks to your portfolio to see total net gains and loses, while also allowing you to keep on eye on stocks you are interested in through the watchlist."
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -176,7 +179,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@+id/base_expandableCard_2"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:elevation="10dp"
+                        android:background="@drawable/settingscomponent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_one_2"
@@ -225,7 +230,7 @@
                             android:id="@+id/hidden_layout_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#E0E0E0"
+                            android:background="@drawable/gradient_darker"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -240,7 +245,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_marginEnd="20dp"
                                 android:layout_marginBottom="20dp"
-                                android:textColor="@color/black"
+                                android:textColor="#EDE5E5"
                                 android:text="Too see a specific stock, just simply return to the home page, and press on the search bar on the very top of the screen. Otherwise, start viewing stocks by tapping the items on the home page"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -266,7 +271,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@+id/base_expandableCard_5"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:elevation="10dp"
+                        android:background="@drawable/settingscomponent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_one_5"
@@ -315,7 +322,7 @@
                             android:id="@+id/hidden_layout_5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#E0E0E0"
+                            android:background="@drawable/gradient_darker"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -330,7 +337,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_marginEnd="20dp"
                                 android:layout_marginBottom="20dp"
-                                android:textColor="@color/black"
+                                android:textColor="#EDE5E5"
                                 android:text="The portfolio allows you to store and see the value of the stocks you currently own, while also allowing you to see changes in price and net loss and gain overall of all your stocks."
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -357,7 +364,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="@+id/base_expandableCard_3"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:elevation="10dp"
+                        android:background="@drawable/settingscomponent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_one_3"
@@ -406,7 +415,7 @@
                             android:id="@+id/hidden_layout_3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#E0E0E0"
+                            android:background="@drawable/gradient_darker"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -421,7 +430,7 @@
                                 android:layout_marginTop="20dp"
                                 android:layout_marginEnd="20dp"
                                 android:layout_marginBottom="20dp"
-                                android:textColor="@color/black"
+                                android:textColor="#EDE5E5"
                                 android:text="At this moment in time, there is yet to be a light mode, however in the future there will be one."
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -446,9 +455,9 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#00FFFFFF"
                         app:layout_constraintBottom_toBottomOf="@+id/base_expandableCard_6"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/settingscomponent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_one_6"
@@ -463,7 +472,8 @@
                             app:layout_constraintBottom_toTopOf="@+id/hidden_layout_6"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:elevation="10dp">
 
                             <TextView
                                 android:id="@+id/testView2_6"
@@ -497,7 +507,7 @@
                             android:id="@+id/hidden_layout_6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#E0E0E0"
+                            android:background="@drawable/gradient_darker"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -513,7 +523,7 @@
                                 android:layout_marginEnd="20dp"
                                 android:layout_marginBottom="20dp"
                                 android:text="Created by Takahiro Ishiguro, Jonathon Lee and Alan Lin \n SOFTENG 306 2021"
-                                android:textColor="@color/black"
+                                android:textColor="#EDE5E5"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -524,97 +534,10 @@
 
                 </androidx.cardview.widget.CardView>
 
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:id="@+id/base_expandableCard_1"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginLeft="10dp"-->
-<!--                    android:layout_marginTop="20dp"-->
-<!--                    android:layout_marginRight="10dp"-->
-<!--                    app:cardBackgroundColor="?attr/actionMenuTextColor"-->
-<!--                    app:cardCornerRadius="20dp">-->
-
-<!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:background="#00FFFFFF"-->
-<!--                        app:layout_constraintBottom_toBottomOf="@+id/base_expandableCard_1"-->
-<!--                        app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                            android:id="@+id/layout_one_1"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:layout_marginStart="5dp"-->
-<!--                            android:layout_marginTop="5dp"-->
-<!--                            android:layout_marginEnd="5dp"-->
-<!--                            android:layout_marginBottom="5dp"-->
-<!--                            android:background="#00FFFFFF"-->
-<!--                            android:visibility="visible"-->
-<!--                            app:layout_constraintBottom_toTopOf="@+id/hidden_layout_1"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintStart_toStartOf="parent"-->
-<!--                            app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                            <TextView-->
-<!--                                android:id="@+id/textView2_1"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginStart="20dp"-->
-<!--                                android:layout_marginTop="5dp"-->
-<!--                                android:background="#00FFFFFF"-->
-<!--                                android:text="What is this Question?"-->
-<!--                                android:textColor="#EDE5E5"-->
-<!--                                android:textSize="16sp"-->
-<!--                                app:layout_constraintStart_toStartOf="parent"-->
-<!--                                app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                            <ImageButton-->
-<!--                                android:id="@+id/expand_button_1"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginTop="2dp"-->
-<!--                                android:layout_marginRight="10dp"-->
-<!--                                android:background="#00FFFFFF"-->
-<!--                                android:contentDescription="expand button"-->
-<!--                                android:padding="0dp"-->
-<!--                                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                                app:layout_constraintTop_toTopOf="parent"-->
-<!--                                app:srcCompat="@drawable/expand_button"-->
-<!--                                tools:ignore="TouchTargetSizeCheck" />-->
-<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                            android:id="@+id/hidden_layout_1"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:background="#8D8888EA"-->
-<!--                            android:visibility="gone"-->
-<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintStart_toStartOf="parent"-->
-<!--                            app:layout_constraintTop_toBottomOf="@+id/layout_one_1">-->
-
-<!--                            <TextView-->
-<!--                                android:id="@+id/textView3_1"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginStart="20dp"-->
-<!--                                android:layout_marginTop="20dp"-->
-<!--                                android:layout_marginEnd="20dp"-->
-<!--                                android:layout_marginBottom="20dp"-->
-<!--                                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sagittis egestas magna, eu sagittis mauris vulputate at. Maecenas finibus nec nisl eget pellentesque. Nunc sodales mauris in efficitur finibus. Vivamus mauris massa, tincidunt aliquam tortor at, suscipit mollis lacus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Sed non porta ex, vitae viverra eros. Curabitur eu nibh nec urna gravida blandit. Fusce massa metus, convallis et efficitur sit amet, rhoncus in eros. Aenean nec neque ipsum. Vivamus id tortor ex. Donec tempus commodo sem at luctus."-->
-<!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                                app:layout_constraintStart_toStartOf="parent"-->
-<!--                                app:layout_constraintTop_toTopOf="parent" />-->
-<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--                </androidx.cardview.widget.CardView>-->
             </LinearLayout>
-        </ScrollView>
+
+
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

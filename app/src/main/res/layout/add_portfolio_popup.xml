@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
+    android:background="@drawable/gradient_darker"
+    app:cardElevation="10dp"
     app:cardCornerRadius="20dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/black"
+        android:background="@drawable/gradient_darker"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/popup_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -51,7 +54,7 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"
-                android:src="@drawable/fowardarrow_icon" />
+                android:src="@drawable/foward_arrow_white" />
         </LinearLayout>
 
         <Button

@@ -5,14 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.larkspur.stockly.Models.Category;
-import com.larkspur.stockly.Models.HistoricalPrice;
-import com.larkspur.stockly.Models.IHistoricalPrice;
-import com.larkspur.stockly.Models.IPortfolio;
-import com.larkspur.stockly.Models.IStock;
-import com.larkspur.stockly.Models.Portfolio;
-import com.larkspur.stockly.Models.Stock;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
