@@ -18,6 +18,11 @@ import com.larkspur.stockly.models.IHistoricalPrice;
 
 import java.util.ArrayList;
 
+/**
+ * This class handles all the functionality of the line charts in the DetailsActivity page
+ * as well as the top gainers and top losers graphs in the MainActivity page.
+ * Author: Jonathon Lee
+ */
 public class LineChartHandler {
 
     private Typeface tfLight;

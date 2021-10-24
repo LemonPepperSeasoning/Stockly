@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+ * This class handles all the functionality of the Pie Chart inside the PortfolioActivity class.
+ * Author: Takahiro, Jonathon
+ */
 public class PieChartHandler {
 
     /**

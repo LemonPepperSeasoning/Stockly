@@ -23,8 +23,16 @@ import com.larkspur.stockly.R;
 
 import java.util.List;
 
+/**
+ * This adapter is used for holding the top gainer and top losers views in the
+ * MainActivity screen.
+ * Author: Takahiro
+ */
 public class TopChangeAdapter extends RecyclerView.Adapter<TopChangeAdapter.ViewHolder> {
 
+    /**
+     * Represents every item in the screen and displays each one.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView _name, _symbol, _price;
         LineChart _chart;
