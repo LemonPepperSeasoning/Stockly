@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -85,7 +84,6 @@ public class MainActivity extends CoreActivity {
 
         this.setTitle("Home");
 
-
         _shimmerView = (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         _vh._mostPopular.setItemAnimator(new DefaultItemAnimator());
@@ -122,11 +120,10 @@ public class MainActivity extends CoreActivity {
     private void getStockMostView(){
         List<IStock> stockList = _dataCache.getTopNMostViewed(10);
         if (stockList.isEmpty()){
-            Log.e("new data", "HERE============");
 
             DataFetcher.fetchStockMostView(_mostViewedStocks,_mostViewAdapater,_shimmerView);
+
         }else{
-            Log.e("Prefetched data", "HERE============");
             _mostViewedStocks.clear();;
             _mostViewedStocks.addAll(stockList);
             _mostViewAdapater.notifyDataSetChanged();
@@ -140,7 +137,6 @@ public class MainActivity extends CoreActivity {
         if (stock == null){
             DataFetcher.fetchTopChange(Query.Direction.DESCENDING,_topGainerList,_topGainerAdapter,_shimmerViewGainer);
         }else{
-            Log.e("Prefetched data", "HERE============");
 
             _topGainerList.clear();
             _topGainerList.add(stock);
