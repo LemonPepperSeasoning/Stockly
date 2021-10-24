@@ -4,6 +4,10 @@ import android.graphics.Color;
 
 import com.larkspur.stockly.R;
 
+/**
+ * This class represents the category of the stocks.
+ * Author: Alan
+ */
 public enum Category {
 
     Industrials("Industrials", Color.rgb(220,20,60), R.drawable.industrials),
@@ -18,25 +22,42 @@ public enum Category {
     Energy("Energy", Color.rgb(255,20,147), R.drawable.energy),
     Financials("Financials", Color.rgb(255,250,205), R.drawable.financials);
 
-    //private static Category _category;
     private final String _categoryName;
     private final int _color;
     private final int _drawableId;
 
+    /**
+     * Basic constructor for enum.
+     * @param categoryName
+     * @param rgb
+     * @param drawableId
+     */
     private Category(String categoryName, int rgb, int drawableId ) {
         this._categoryName = categoryName;
         this._color = rgb;
         this._drawableId = drawableId;
     }
 
+    /**
+     * Get category name
+     * @return String : representing the category name
+     */
     public String getCategoryName() {
         return this._categoryName;
     }
 
+    /**
+     * Get the icon of the category.
+     * @return int : representing the drawable id.
+     */
     public int getDrawableId(){
         return this._drawableId;
     }
 
+    /**
+     * Get color of the category. (this color is used to paint the category icons)
+     * @return int : representing the color.
+     */
     public int getColor(){
         return this._color;
     }
@@ -46,6 +67,12 @@ public enum Category {
         return _categoryName;
     }
 
+    /**
+     * Get Category value of a string.
+     * Given string, return a Category object.
+     * @param value : string representing the category.
+     * @return Category : Category Enum object.
+     */
     public static Category getValue(String value){
         Category category;
         String newValue = value.replaceAll(" ", "").replace("\n","");

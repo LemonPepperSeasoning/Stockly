@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+/**
+ * This class represents the cache of the application.
+ * It saves the firebase query results and return them when asked again.
+ * Author: Takahiro
+ */
 public class DataCache implements IDataCache{
 
     private static DataCache single_instance = null;

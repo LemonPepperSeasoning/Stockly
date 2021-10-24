@@ -34,8 +34,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  Makes a query to Firestore database for stock information on one thread while
+ *  another thread executes the java functions (creating stock items using onComplete
+ *  function). Stock items are created and put inside a list for use. All stock items are
+ *  called in order
+ */
 public class DataFetcher {
 
+    /**
+     *  Fetch category with the matching cateogry.
+     * @param category : category of the stock we want to get.
+     * @param list : List object that is currently connected to adapter.
+     * @param adapter : adapter to notify that the data has been changed.
+     */
     public static void fetchCategoryStocks(Category category, List<IStock> list, BaseAdapter adapter){
         DataCache dataCache = DataCache.getInstance();
         List<IStock> stockList = new LinkedList<>();
@@ -66,10 +78,10 @@ public class DataFetcher {
     }
 
     /**
-     *  Makes a query to Firestore database for stock information on one thread while
-     *  another thread executes the java functions (creating stock items using onComplete
-     *  function). Stock items are created and put inside a list for use. All stock items are
-     *  called in order
+     *  Fetch stock with the highest view count.
+     * @param shimmerView : shimmerView to stop and hide, once the data is fetch.
+     * @param list : List object that is currently connected to adapter.
+     * @param adapter : adapter to notify that the data has been changed.
      */
     public static void fetchStockMostView(List<IStock> list, RecyclerView.Adapter adapter, ShimmerFrameLayout shimmerView){
         DataCache dataCache = DataCache.getInstance();
@@ -141,6 +153,13 @@ public class DataFetcher {
         }
     }
 
+    /**
+     *  Fetch stock with the biggest percentage change in a span of a week.
+     * @param direction : direction to search for. (ASCENDING for top loser, DESCENDING for top gainer)
+     * @param shimmerView : shimmerView to stop and hide, once the data is fetch.
+     * @param list : List object that is currently connected to adapter.
+     * @param adapter : adapter to notify that the data has been changed.
+     */
     public static void fetchTopChange(Query.Direction direction,List<IStock> list, RecyclerView.Adapter adapter,ShimmerFrameLayout shimmerView) {
         final IStock[] stock = new IStock[1];
         DataCache dataCache = DataCache.getInstance();
@@ -177,6 +196,12 @@ public class DataFetcher {
         });
     }
 
+    /**
+     *  Fetch all stocks that is in company colleciton.
+     * @param list : list representing the context.
+     * @param list2 : list representing the filtered result.
+     * @param adapter : adapter to notify that the data has been changed.
+     */
     public static void fetchAllStocks(List<IStock> list, List<IStock> list2, RecyclerView.Adapter adapter){
         DataCache stockHandler = DataCache.getInstance();
         List<IStock> stockList = new LinkedList<>();

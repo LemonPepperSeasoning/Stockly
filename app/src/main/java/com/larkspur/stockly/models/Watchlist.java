@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents the watchlist and handles all functionality relating to watchlist.
+ * Author: Takahiro
+ */
 public class Watchlist implements IWatchlist {
 
     private Map<String,IStock> _watchlist;
@@ -12,7 +16,6 @@ public class Watchlist implements IWatchlist {
         _watchlist = new HashMap<>();
     }
 
-    @Override
     public void addStock(IStock stock) {
         if (_watchlist.containsKey(stock.getSymbol())) {
             //TODO : Might want to throw exception
@@ -21,7 +24,6 @@ public class Watchlist implements IWatchlist {
         _watchlist.put(stock.getSymbol(),stock);
     }
 
-    @Override
     public void removeStock(IStock stock) {
         if (!_watchlist.containsKey(stock.getSymbol())){
             //TODO : Might want to throw exception
@@ -30,20 +32,16 @@ public class Watchlist implements IWatchlist {
         _watchlist.remove(stock.getSymbol());
     }
 
-    @Override
     public List<IStock> getWatchlist() {
         List<IStock> stockList = new ArrayList<>(_watchlist.values());
         return stockList;
     }
 
-    @Override
     public void removeAllStocks() {
         _watchlist.clear();
     }
 
-    @Override
     public boolean hasStock(IStock stock) {
         return _watchlist.containsKey(stock.getSymbol());
     }
-
 }

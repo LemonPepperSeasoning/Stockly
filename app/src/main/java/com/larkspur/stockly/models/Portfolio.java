@@ -3,6 +3,10 @@ package com.larkspur.stockly.models;
 
 import java.util.Hashtable;
 
+/**
+ * This class represents the portfolio and handles all functionality relating to portfolio.
+ * Author: Takahiro
+ */
 public class Portfolio implements IPortfolio{
 
     private Hashtable<String,IStock> _stocks;
@@ -13,7 +17,6 @@ public class Portfolio implements IPortfolio{
         _stocks = new Hashtable<>();
     }
 
-    @Override
     public void addStock(IStock stock, int quantity) {
 
         Integer cQuantity = _quantity.get(stock.getSymbol());
@@ -26,7 +29,6 @@ public class Portfolio implements IPortfolio{
         }
     }
 
-    @Override
     public void removeStock(IStock stock, int quantity) {
 
         Integer cQuantity = _quantity.get(stock.getSymbol());
@@ -45,7 +47,6 @@ public class Portfolio implements IPortfolio{
         }
     }
 
-    @Override
     public Hashtable<IStock, Integer> getPortfolio() {
         Hashtable<IStock,Integer> x = new Hashtable<>();
         for (String s : _quantity.keySet()){
@@ -54,13 +55,11 @@ public class Portfolio implements IPortfolio{
         return x;
     }
 
-    @Override
     public void removeAllStocks() {
         _stocks.clear();
         _quantity.clear();
     }
 
-    @Override
     public int getQuantity(String stockSymbol) {
         try{
             int x = _quantity.get(stockSymbol);
@@ -70,7 +69,6 @@ public class Portfolio implements IPortfolio{
         }
     }
 
-    @Override
     public Double getTotalValue(){
         Double total = 0.0;
         for (String s : _stocks.keySet()){
@@ -87,7 +85,6 @@ public class Portfolio implements IPortfolio{
         return total;
     }
 
-    @Override
     public Double getTotal24HrChange(){
 
         Double todayValue = getTotalValue();
