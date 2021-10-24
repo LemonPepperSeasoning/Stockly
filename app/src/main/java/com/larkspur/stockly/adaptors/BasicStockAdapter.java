@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Basic adaptor for Stock item
- * Currently used by Watchlist and list activity, as they share many of the same components and code. 
+ * Currently used by Watchlist and list activity, as they share many of the same components and code.
  * Author: Takahiro & Alan
  */
 public class BasicStockAdapter extends ArrayAdapter {
