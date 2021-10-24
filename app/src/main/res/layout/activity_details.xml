@@ -228,7 +228,7 @@
                 </LinearLayout>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -237,13 +237,22 @@
 
                     <TextView
                         android:id="@+id/stock_name_view"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="Apple Inc."
                         android:textColor="@color/white"
                         android:textSize="22sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:layout_gravity="right"
+                        android:gravity="right">
 
                     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -269,7 +278,8 @@
                             android:textStyle="bold" />
 
                     </androidx.cardview.widget.CardView>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

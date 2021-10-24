@@ -145,23 +145,18 @@ public class PorfolioAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), DetailsActivity.class);
-                System.out.println(v.getContext());
+
                 intent.putExtra("Screen", "Portfolio");
                 intent.putExtra("Class", _context.getClass());
-                System.out.println("serializing stock");
-                System.out.println(_context.getClass());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("stock", currentStock);
-                System.out.println(bundle.getSerializable("stock"));
-                IStock test = (IStock) bundle.getSerializable("stock");
-                System.out.println(test.getCompName());
+
 
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(intent);
                 Activity activity =(Activity) v.getContext();
                 activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                Toast.makeText(_context, currentStock.getSymbol() + " was clicked!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -185,7 +180,6 @@ public class PorfolioAdapter extends ArrayAdapter {
                 closePopup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        System.out.println(numberOfStocks.getText().toString());
                         if (!numberOfStocks.getText().toString().equals("")) {
                             int numStocks = Integer.parseInt(numberOfStocks.getText().toString());
                             if (numStocks > currentNumStocks) {
@@ -210,7 +204,6 @@ public class PorfolioAdapter extends ArrayAdapter {
                 minus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        System.out.println(numberOfStocks.getText().toString());
                         if (numberOfStocks.getText().toString().equals("") || numberOfStocks.getText().toString().equals("0")) {
                         } else {
                             int newNumStocks = Integer.parseInt(numberOfStocks.getText().toString()) - 1;
@@ -222,7 +215,6 @@ public class PorfolioAdapter extends ArrayAdapter {
                 plus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        System.out.println(numberOfStocks.getText().toString());
                         if (numberOfStocks.getText().toString().equals("")) {
                             numberOfStocks.setText("1");
                         } else if (Integer.parseInt(numberOfStocks.getText().toString()) == currentNumStocks) {

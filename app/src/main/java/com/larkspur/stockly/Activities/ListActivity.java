@@ -83,7 +83,7 @@ public class ListActivity extends CoreActivity {
      * called for one specific category.
      */
 
-    public void getCategoryStocks(Category category) {
+    private void getCategoryStocks(Category category) {
         List<IStock> stockList = _dataCache.getCategoryStock(category);
         if (stockList == null) {
             DataFetcher.fetchCategoryStocks(category, _categoryStocks, _listAdapter);

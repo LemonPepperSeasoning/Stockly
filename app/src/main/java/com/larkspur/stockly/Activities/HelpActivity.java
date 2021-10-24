@@ -102,9 +102,6 @@ public class HelpActivity extends CoreActivity {
         Class activity = (Class) intent.getExtras().getSerializable("Class");
         if(activity == DetailsActivity.class){
             Bundle bundle = intent.getExtras();
-            System.out.println(bundle);
-            System.out.println("watch list stock is");
-            System.out.println(bundle.getSerializable("stock"));
             intent.putExtras(bundle);
             redirectActivity(this, activity, bundle);
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

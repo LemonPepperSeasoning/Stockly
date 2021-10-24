@@ -34,19 +34,33 @@
                 android:layout_weight="6"
                 android:layout_marginEnd="20dp"
                 android:layout_gravity="center_vertical"
-                android:iconifiedByDefault="false"/>
+                android:iconifiedByDefault="false"
+                android:theme="@style/CursorSearchView"/>
 
             <requestFocus></requestFocus>
 
         </LinearLayout>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="No search results found."
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textAlignment="center"
+            android:paddingTop="15dp"
+            android:id="@+id/no_results"
+            android:visibility="gone"
+            />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchResult"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="5dp"
             android:clipToPadding="false"
             />
+
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

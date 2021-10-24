@@ -115,13 +115,11 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
             }
 
             _vh._description.setText(_stock.getDesc());
-            System.out.println(_stock.getDesc());
             setupStockView();
             chart = findViewById(R.id.chart1);
             LineChartHandler.setupGraph(chart,true,Color.rgb(46, 46, 51));
             LineChartHandler.setData(_stock.getHistoricalPrice(),chart);
 
-            Toast.makeText(this, _stock.getSymbol() + " was Launched!", Toast.LENGTH_SHORT).show();
         } else {
             throw new RuntimeException("Stock not found!");
         }
@@ -175,13 +173,11 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
                 intent.putExtra("Screen", "Stock");
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("stock", _stock);
-                System.out.println((view.getContext().getClass()));
                 intent.putExtra("Class", view.getContext().getClass());
                 intent.putExtra("Category", category.getCategoryName());
                 intent.putExtras(bundle);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 view.getContext().startActivity(intent);
-                Toast.makeText(view.getContext(), category.toString() + " was clicked!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -358,7 +354,6 @@ public class DetailsActivity extends CoreActivity implements SeekBar.OnSeekBarCh
         closePopup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(numberOfStocks.getText().toString());
                 if (!numberOfStocks.getText().toString().equals("")) {
                     int numStocks = Integer.parseInt(numberOfStocks.getText().toString());
                     if (numStocks != 0) {

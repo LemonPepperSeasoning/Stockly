@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CursorSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="colorControlActivated">#FFFFFF</item>
+    </style>
+</resources>

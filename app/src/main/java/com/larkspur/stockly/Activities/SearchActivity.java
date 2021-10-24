@@ -1,7 +1,12 @@
 package com.larkspur.stockly.Activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,10 +24,18 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
     private class ViewHolder {
         RecyclerView _searchResultView;
         SearchView _searchView;
+        EditText _searchText;
+        TextView _noResults;
 
         public ViewHolder() {
             _searchResultView = (RecyclerView) findViewById(R.id.searchResult);
             _searchView = (SearchView) findViewById(R.id.searchBar);
+
+            // View for text for search user input
+            _searchText = (EditText) findViewById(androidx
+                    .appcompat.R.id.search_src_text);
+
+            _noResults = (TextView) findViewById(R.id.no_results);
         }
     }
 
@@ -41,7 +54,7 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
 
         _searchContext = new ArrayList<>();
         _searchResult = new ArrayList<>();
-        _adapter = new SearchAdapter(_searchContext, _searchResult);
+        _adapter = new SearchAdapter(_searchContext, _searchResult, this);
 
         LinearLayoutManager lm = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
 
@@ -50,9 +63,15 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
         _vh._searchView.setOnQueryTextListener(this);
 
         _vh._searchResultView.addItemDecoration(new VerticalSpaceItemDecoration(15));
+        
+        // Set text colour to white for search user input
+        _vh._searchText.setTextColor(Color.WHITE);
+
+        // Hide the "no search results found" text.
+        _vh._noResults.setVisibility(View.GONE);
 
         DataFetcher.fetchAllStocks(_searchContext, _searchResult, _adapter);
-        _adapter.getFilter().filter("");
+//        _adapter.getFilter().filter("");
     }
 
     public void setupSearchTextField(){
@@ -73,7 +92,16 @@ public class SearchActivity extends CoreActivity implements SearchView.OnQueryTe
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        _adapter.getFilter().filter(newText);
+        _adapter.notifyDataSetChanged();
+
+        if(newText.equals("")){
+            _searchResult.clear();
+            _searchResult.addAll(_searchContext);
+        }else{
+            _adapter.getFilter().filter(newText);
+            _adapter.notifyDataSetChanged();
+        }
+
         return false;
     }
 

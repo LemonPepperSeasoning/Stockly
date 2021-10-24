@@ -1,5 +1,6 @@
 package com.larkspur.stockly.Adaptors;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,7 +41,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         public ViewHolder(@NonNull View view) {
             super(view);
             _parent = view.getContext().getClass();
-
             view.setOnClickListener(this);
             _stockSymbol = (TextView) view.findViewById(R.id.stock_symbol_view);
             _stockPrice = (TextView) view.findViewById(R.id.stock_price_view);
@@ -71,16 +71,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     List<IStock> _searchContext;
     List<IStock> _searchResult;
     private Context _context;
+    private TextView _noResultsView;
 
-    public SearchAdapter(List<IStock> searchContext, List<IStock> searchResult) {
+    public SearchAdapter(List<IStock> searchContext, List<IStock> searchResult, Context context) {
         _searchContext = searchContext;
         _searchResult = searchResult;
+        _context = context;
+        _noResultsView = ((Activity)_context).findViewById(R.id.no_results);
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        _context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(_context);
 
         View stockView = inflater.inflate(R.layout.list_item, parent, false);
@@ -107,6 +109,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     }
 
+
     @Override
     public int getItemCount() {
         return _searchResult.size();
@@ -118,8 +121,25 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                _searchResult = (List<IStock>) results.values; //TODO : What is this?
+                // reset the list and populate it again
+//                _noResultsView = ((Activity)_context).findViewById(R.id.no_results);
+                _searchResult.clear();
+                _searchResult.addAll((List<IStock>) results.values);
                 notifyDataSetChanged();
+
+                if (_searchResult.size() <= 0) {
+                    // Hide recycler view.
+
+                    // Set visibility for text view to true.
+                    _noResultsView.setVisibility(View.VISIBLE);
+                    System.out.println("set visible");
+                }
+                else {
+                    // Set visibility for recycler view to true.
+
+                    // Hide the "no search results found" text.
+                    _noResultsView.setVisibility(View.GONE);
+                }
             }
 
             @Override
