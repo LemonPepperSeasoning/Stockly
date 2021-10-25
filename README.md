@@ -36,4 +36,4 @@ To build the app
 
 
 ## Development process documentation
-- [Meeting minutes](https://github.com/SoftEng306-2021/project-2-project-2-team-15/wiki/Meeting-minutes)
+- [Meeting minutes](https://github.com/LemonPepperSeasoning/Stockly/wiki/Meeting-minutes)
