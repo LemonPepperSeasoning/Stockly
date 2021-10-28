@@ -8,7 +8,7 @@ Users may also use the portfolio to store stocks which they have invested in and
 Stockly is available on the Google Play Store.
 
 <p align="left">
-<a href="">
+<a href="https://play.google.com/store/apps/details?id=com.larkspur.stockly">
     <img alt="Get it on Google Play"
         height="80"
         src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
@@ -32,7 +32,7 @@ To build the app
 &nbsp;
 
 ## UI preview
-<img src="https://user-images.githubusercontent.com/62321081/138582771-0c1d8100-f8ef-4c30-8cce-1da8a2f83b7c.png" width="200"> <img src="https://user-images.githubusercontent.com/62321081/138582802-fae92336-84a2-4d2e-966d-f66c4c9f8d4b.png" width="200"> <img src="https://user-images.githubusercontent.com/62321081/138582832-c507ad1f-1273-4bda-853b-4fb3583a1226.png" width="200"> <img src="https://user-images.githubusercontent.com/62321081/138582861-b0a12686-3fda-47b6-8ba1-e2debc123efd.png" width="200">
+<img src="https://user-images.githubusercontent.com/62321081/138582771-0c1d8100-f8ef-4c30-8cce-1da8a2f83b7c.png" width="180"> <img src="https://user-images.githubusercontent.com/62321081/138582802-fae92336-84a2-4d2e-966d-f66c4c9f8d4b.png" width="180"> <img src="https://user-images.githubusercontent.com/62321081/138582832-c507ad1f-1273-4bda-853b-4fb3583a1226.png" width="180"> <img src="https://user-images.githubusercontent.com/62321081/138582861-b0a12686-3fda-47b6-8ba1-e2debc123efd.png" width="180">
 
 
 ## Development process documentation
